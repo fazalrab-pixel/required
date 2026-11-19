@@ -2,1324 +2,553 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>REQUIRED — Because Life Needs It</title>
   <style>
     :root {
-      --primary: #0c831f;
-      --primary-dark: #086316;
-      --accent: #f8cb46;
-      --bg: #f4f6fb;
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --bg: #f4f6f8;
       --card: #ffffff;
-      --text: #1c1c1c;
-      --muted: #666666;
-      --border: #e5e7eb;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
       --danger: #dc2626;
-      --shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
-      --radius: 14px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      padding-bottom: 95px;
-    }
-
-    /* Top Brand Header */
-    .topbar {
-      background: linear-gradient(135deg, #0c831f 0%, #075914 100%);
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 90px; }
+    header {
+      background: linear-gradient(135deg, #15803d, #16a34a);
       color: #fff;
-      padding: 14px 16px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .brand-wrap {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .brand-title {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      line-height: 1.1;
-      color: var(--accent);
-    }
-
-    .brand-tag {
-      font-size: 11px;
-      font-weight: 500;
-      color: #e6f4ea;
-      margin-top: 2px;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 8px;
-    }
-
-    .icon-btn {
-      background: rgba(255, 255, 255, 0.16);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: #fff;
-      padding: 7px 11px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-
-    .icon-btn:active {
-      transform: scale(0.96);
-    }
-
-    /* Sticky Search & Categories */
-    .sticky-controls {
+      padding: 14px 16px;
       position: sticky;
       top: 0;
-      z-index: 50;
-      background: #fff;
-      padding: 10px 14px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
     }
-
-    .search-box {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .search-box input {
-      width: 100%;
-      padding: 11px 14px 11px 38px;
-      border-radius: 12px;
-      border: 1.5px solid var(--border);
-      background: #f9fafb;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .search-box input:focus {
-      border-color: var(--primary);
-      background: #fff;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 12px;
-      font-size: 15px;
-      color: var(--muted);
-    }
-
-    .cat-strip {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-top: 10px;
-      scrollbar-width: none;
-    }
-
-    .cat-strip::-webkit-scrollbar {
-      display: none;
-    }
-
-    .cat-pill {
-      white-space: nowrap;
-      padding: 7px 13px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: #f3f4f6;
-      color: #374151;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .cat-pill.active {
-      background: var(--primary);
+    .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .brand h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: 0.5px; }
+    .brand p { font-size: 0.75rem; opacity: 0.9; }
+    .header-actions { display: flex; gap: 8px; }
+    .icon-btn {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
       color: #fff;
-      border-color: var(--primary);
-    }
-
-    /* Product Grid */
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 14px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #333;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 11px;
-    }
-
-    @media (min-width: 640px) {
-      .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (min-width: 900px) {
-      .product-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .p-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 10px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
-
-    .p-badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: #ecfdf5;
-      color: var(--primary);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 6px;
-      border: 1px solid #bbf7d0;
-    }
-
-    .p-img {
-      width: 100%;
-      height: 105px;
-      object-fit: contain;
-      background: #fafafa;
-      border-radius: 10px;
-      margin-bottom: 8px;
-      padding: 6px;
-    }
-
-    .p-title {
-      font-size: 13.5px;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.25;
-      margin-bottom: 3px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .p-unit {
-      font-size: 11.5px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .p-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: auto;
-    }
-
-    .p-price {
-      font-size: 14.5px;
-      font-weight: 800;
-      color: #111;
-    }
-
-    .add-btn {
-      background: #f0fdf4;
-      color: var(--primary);
-      border: 1.5px solid var(--primary);
-      padding: 6px 14px;
-      border-radius: 9px;
-      font-size: 12.5px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .qty-box {
-      display: flex;
-      align-items: center;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 9px;
-      overflow: hidden;
-    }
-
-    .qty-box button {
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 15px;
-      font-weight: 800;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-
-    .qty-box span {
-      font-size: 13px;
-      font-weight: 700;
-      padding: 0 4px;
-    }
-
-    /* Floating Cart Bar */
-    .cart-float {
-      position: fixed;
-      bottom: 14px;
-      left: 14px;
-      right: 14px;
-      max-width: 600px;
-      margin: 0 auto;
-      background: var(--primary);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 14px;
-      display: none;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 10px 25px rgba(12, 131, 31, 0.35);
-      z-index: 90;
-      cursor: pointer;
-    }
-
-    .cart-float.show {
-      display: flex;
-    }
-
-    .cart-info {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cart-info small {
-      font-size: 11px;
-      opacity: 0.9;
-    }
-
-    .cart-info strong {
-      font-size: 15px;
-    }
-
-    .cart-btn {
-      font-weight: 800;
-      font-size: 14px;
-      background: rgba(255, 255, 255, 0.18);
-      padding: 7px 12px;
-      border-radius: 10px;
-    }
-
-    /* Modals & Drawers */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      z-index: 120;
-      display: none;
-      align-items: flex-end;
-      justify-content: center;
-    }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
-
-    @media (min-width: 640px) {
-      .modal-backdrop {
-        align-items: center;
-        padding: 16px;
-      }
-    }
-
-    .modal-sheet {
-      background: #fff;
-      width: 100%;
-      max-width: 540px;
-      max-height: 90vh;
-      border-radius: 20px 20px 0 0;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      animation: slideUp 0.2s ease-out;
-    }
-
-    @media (min-width: 640px) {
-      .modal-sheet {
-        border-radius: 18px;
-      }
-    }
-
-    @keyframes slideUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .modal-header {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 800;
-      font-size: 16px;
-    }
-
-    .close-btn {
-      background: #f3f4f6;
-      border: none;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .modal-body {
-      padding: 16px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    /* Cart, Checkout, Account & Admin Elements */
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px 0;
-      border-bottom: 1px dashed var(--border);
-      gap: 8px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .form-group label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #374151;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1.5px solid var(--border);
-      border-radius: 10px;
-      font-size: 13.5px;
-      outline: none;
-    }
-
-    .form-input:focus {
-      border-color: var(--primary);
-    }
-
-    .gps-btn {
-      background: #eff6ff;
-      color: #1d4ed8;
-      border: 1px solid #bfdbfe;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    .pay-tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .pay-tab {
-      padding: 9px;
-      border-radius: 10px;
-      border: 1.5px solid var(--border);
-      background: #f9fafb;
-      font-size: 12.5px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    .pay-tab.active {
-      border-color: var(--primary);
-      background: #ecfdf5;
-      color: var(--primary);
-    }
-
-    .upi-box {
-      background: #f8fafc;
-      border: 1px solid #cbd5e1;
-      border-radius: 12px;
-      padding: 12px;
-      font-size: 12.5px;
-    }
-
-    .upi-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 6px;
-      background: #fff;
-      padding: 8px 10px;
+      padding: 6px 11px;
       border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-
-    .copy-mini {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
     }
-
-    .wa-submit-btn {
-      background: #25d366;
-      color: #fff;
-      border: none;
-      padding: 13px;
-      border-radius: 12px;
-      font-size: 14.5px;
-      font-weight: 800;
-      cursor: pointer;
+    .search-wrap { max-width: 1100px; margin: 10px auto 0; }
+    .search-wrap input {
       width: 100%;
-      margin-top: 4px;
-    }
-
-    .primary-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
       padding: 10px 14px;
       border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
+      border: none;
+      font-size: 0.92rem;
+      outline: none;
     }
-
-    .danger-btn {
-      background: #fee2e2;
-      color: var(--danger);
-      border: 1px solid #fecaca;
-      padding: 5px 9px;
-      border-radius: 7px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
+        .grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+      gap: 12px; padding: 4px 16px 20px; max-width: 1100px; margin: auto;
     }
-
-    .order-card {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 12px;
-      background: #fafafa;
-      font-size: 12.5px;
+    .card {
+      background: var(--card); border-radius: 12px; padding: 12px;
+      border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between;
     }
-
-    .admin-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 8px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      gap: 8px;
-      font-size: 12.5px;
+    .prod-emoji {
+      font-size: 34px; text-align: center; background: #f0fdf4;
+      border-radius: 10px; padding: 12px 0; margin-bottom: 8px;
     }
-
+    .prod-cat { font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; }
+    .prod-title { font-size: 14px; font-weight: 700; margin: 3px 0; line-height: 1.3; }
+    .prod-unit { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+    .card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+    .price { font-size: 15px; font-weight: 800; }
+    .add-btn {
+      background: #dcfce7; color: var(--primary-dark); border: 1px solid #86efac;
+      padding: 5px 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer;
+    }
+    .qty-box {
+      display: flex; align-items: center; gap: 8px; background: var(--primary);
+      color: #fff; border-radius: 8px; padding: 4px 8px; font-weight: 700; font-size: 13px;
+    }
+    .qty-box button { background: none; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
+    .cart-bar {
+      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 28px); max-width: 600px; background: var(--primary-dark);
+      color: #fff; padding: 13px 18px; border-radius: 14px; display: none;
+      justify-content: space-between; align-items: center; z-index: 60;
+      box-shadow: 0 8px 24px rgba(21,128,61,0.35); cursor: pointer;
+    }
+    .modal {
+      position: fixed; inset: 0; background: rgba(15,23,42,0.55);
+      display: none; align-items: flex-end; justify-content: center; z-index: 100;
+    }
+    .modal.open { display: flex; }
+    .modal-box {
+      background: #fff; width: 100%; max-width: 540px; max-height: 90vh;
+      overflow-y: auto; border-radius: 18px 18px 0 0; padding: 18px;
+    }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+    .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+    .field { margin-bottom: 11px; }
+    .field label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--muted); }
+    .field input, .field textarea, .field select {
+      width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px;
+    }
+    .pay-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
+    .pay-tab {
+      flex: 1; padding: 9px; border: 1px solid var(--border); border-radius: 8px;
+      text-align: center; font-weight: 700; font-size: 13px; cursor: pointer; background: #f8fafc;
+    }
+    .pay-tab.active { border-color: var(--primary); background: #dcfce7; color: var(--primary-dark); }
+    .upi-box { background: #f0fdf4; border: 1px dashed var(--primary); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
+    .wa-submit-btn {
+      width: 100%; background: var(--primary); color: #fff; border: none;
+      padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 6px;
+    }
+    .wa-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
     .toast {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #111827;
-      color: #fff;
-      padding: 9px 16px;
-      border-radius: 20px;
-      font-size: 12.5px;
-      font-weight: 600;
-      z-index: 200;
-      display: none;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
+      background: #0f172a; color: #fff; padding: 10px 16px; border-radius: 10px;
+      font-size: 13px; font-weight: 600; z-index: 200; display: none;
     }
-
-    .toast.show {
-      display: block;
-    }
+    .admin-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 6px; }
+    .sm-btn { padding: 5px 8px; border-radius: 6px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; }
   </style>
 </head>
 <body>
-  <!-- Notification Toast -->
-  <div id="toast" class="toast"></div>
-
-  <!-- Top Brand Header -->
-  <header class="topbar">
-    <div class="brand-wrap">
-      <div class="brand-title">REQUIRED</div>
-      <div class="brand-tag">Because Life Needs It • Fast Local Delivery</div>
+  <header>
+    <div class="brand">
+      <h1>🛒 REQUIRED</h1>
+      <p>Because Life Needs It • Fast Home Delivery</p>
     </div>
-    <div class="top-actions">
-      <button class="icon-btn" id="accountBtn" onclick="openAccountModal()">👤 Login / Orders</button>
+    <div class="header-btns">
+      <button class="icon-btn" onclick="openOrdersModal()">📦 Orders</button>
       <button class="icon-btn" onclick="openAdminPrompt()">⚙️ Admin</button>
     </div>
   </header>
 
-  <!-- Sticky Search & Category Filters -->
-  <div class="sticky-controls">
-    <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Search atta, rice, oil, milk, snacks, soap..."
-        oninput="renderProducts()"
-      />
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search atta, dal, oil, snacks, soap..." oninput="renderProducts()" />
+  </div>
+
+  <div class="cats" id="categoryBar"></div>
+  <div class="grid" id="productGrid"></div>
+
+  <div class="cart-bar" id="cartBar" onclick="openCheckout()">
+    <div>
+      <strong id="cartCountText">0 Items</strong> • <span id="cartTotalText">₹0</span>
     </div>
-    <div class="cat-strip" id="catStrip">
-      <button class="cat-pill active" onclick="selectCategory('All', this)">All</button>
-      <button class="cat-pill" onclick="selectCategory('Atta, Rice & Dal', this)">Atta, Rice & Dal</button>
-      <button class="cat-pill" onclick="selectCategory('Oil, Ghee & Masala', this)">Oil, Ghee & Masala</button>
-      <button class="cat-pill" onclick="selectCategory('Dairy & Bakery', this)">Dairy & Bakery</button>
-      <button class="cat-pill" onclick="selectCategory('Snacks & Biscuits', this)">Snacks & Biscuits</button>
-      <button class="cat-pill" onclick="selectCategory('Tea, Coffee & Drinks', this)">Tea, Coffee & Drinks</button>
-      <button class="cat-pill" onclick="selectCategory('Personal Care', this)">Personal Care</button>
-      <button class="cat-pill" onclick="selectCategory('Household & Cleaning', this)">Household & Cleaning</button>
+    <strong>Proceed to Checkout →</strong>
+  </div>
+
+  <div class="toast" id="toast"></div>
+    <!-- Checkout Modal -->
+  <div class="modal" id="checkoutModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>🛍️ Your Cart & Checkout</h3>
+        <button class="close-btn" onclick="closeModal('checkoutModal')">✕</button>
+      </div>
+      <div id="cartItemsView" style="margin-bottom:12px;"></div>
+      <div id="billSummary" style="background:#f8fafc;padding:10px;border-radius:8px;font-size:13px;margin-bottom:12px;"></div>
+
+      <div class="field">
+        <label>Full Name *</label>
+        <input type="text" id="custName" placeholder="Apna naam likhein" />
+      </div>
+      <div class="field">
+        <label>Mobile Number (10 digits) *</label>
+        <input type="tel" id="custPhone" maxlength="10" placeholder="9876543210" />
+      </div>
+      <div class="field">
+        <label>Delivery Address *</label>
+        <textarea id="custAddress" rows="2" placeholder="House no, Gali, Landmark, Area"></textarea>
+        <button type="button" class="sm-btn" style="margin-top:5px;background:#e0f2fe;color:#0369a1;" onclick="captureLocation()">📍 Add Live GPS Location</button>
+        <span id="gpsStatus" style="font-size:11px;color:#15803d;margin-left:6px;"></span>
+      </div>
+
+      <label style="display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:var(--muted);">Payment Method</label>
+      <div class="pay-tabs">
+        <div class="pay-tab active" id="tabCOD" onclick="setPayment('COD')">💵 Cash on Delivery</div>
+        <div class="pay-tab" id="tabUPI" onclick="setPayment('UPI')">📲 Pay via UPI</div>
+      </div>
+
+      <div class="upi-box" id="upiSection" style="display:none;">
+        <div>UPI ID: <strong id="displayUpiId">fazalrab56@oksbi</strong>
+          <button type="button" class="sm-btn" style="background:#16a34a;color:#fff;margin-left:6px;" onclick="copyUpi()">Copy</button>
+        </div>
+        <div class="field" style="margin-top:8px;margin-bottom:0;">
+          <input type="text" id="upiRefInput" placeholder="Payment ke baad 12-digit UTR / Ref ID daalein" />
+        </div>
+      </div>
+
+      <button type="button" class="wa-submit-btn" onclick="placeWhatsAppOrder()">✅ Place Order</button>
+    </div>
+  </div>
+    <!-- Orders Modal -->
+  <div class="modal" id="ordersModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>📦 My Recent Orders</h3>
+        <button class="close-btn" onclick="closeModal('ordersModal')">✕</button>
+      </div>
+      <div id="myOrdersList"></div>
     </div>
   </div>
 
-  <!-- Main Product Catalog -->
-  <main class="container">
-    <div class="section-head">
-      <span id="gridTitle">All Grocery Items</span>
-      <span id="gridCount">100 items</span>
-    </div>
-    <div class="product-grid" id="productGrid"></div>
-  </main>
-
-  <!-- Floating Cart Summary Bar -->
-  <div class="cart-float" id="cartFloat" onclick="openCartModal()">
-    <div class="cart-info">
-      <small id="floatCount">0 items added</small>
-      <strong id="floatTotal">₹0</strong>
-    </div>
-    <div class="cart-btn">View Cart & Checkout →</div>
-  </div>
-    <!-- 1. Cart & Checkout Modal -->
-  <div class="modal-backdrop" id="cartModal" onclick="backdropClose(event, 'cartModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <span>🛒 Cart & Checkout</span>
-        <button class="close-btn" onclick="closeModal('cartModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <div id="cartItemsList"></div>
-
-        <!-- Bill Summary -->
-        <div class="upi-box" id="billBox">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <span>Items Total</span>
-            <strong id="billSubtotal">₹0</strong>
-          </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-            <span>Delivery Charge</span>
-            <strong id="billDelivery">₹0</strong>
-          </div>
-          <div style="display:flex; justify-content:space-between; border-top:1px solid #cbd5e1; padding-top:6px; font-size:14px;">
-            <strong>Grand Total</strong>
-            <strong style="color:var(--primary);" id="billTotal">₹0</strong>
-          </div>
-        </div>
-
-        <!-- Delivery Details -->
-        <div class="form-group">
-          <label>Customer Name *</label>
-          <input type="text" id="custName" class="form-input" placeholder="Apna poora naam likhein" />
-        </div>
-
-        <div class="form-group">
-          <label>Mobile / WhatsApp Number *</label>
-          <input type="tel" id="custPhone" class="form-input" placeholder="10-digit mobile number" maxlength="10" />
-        </div>
-
-        <div class="form-group">
-          <label>Complete Delivery Address *</label>
-          <input type="text" id="custAddress" class="form-input" placeholder="House/Flat No, Colony, Landmark..." />
-        </div>
-
-        <button type="button" class="gps-btn" onclick="captureGPS()">📍 Attach Live GPS Location (Faster Delivery)</button>
-        <div id="gpsStatus" style="font-size:11.5px; color:#0c831f; font-weight:600; display:none;"></div>
-
-        <!-- Payment Method -->
-        <div class="form-group">
-          <label>Payment Option</label>
-          <div class="pay-tabs">
-            <div class="pay-tab active" id="tabCOD" onclick="setPaymentMethod('COD')">💵 Cash on Delivery</div>
-            <div class="pay-tab" id="tabUPI" onclick="setPaymentMethod('UPI')">📲 FamPay / UPI</div>
-          </div>
-        </div>
-
-        <!-- FamPay / UPI Box -->
-        <div class="upi-box" id="upiDetailsBox" style="display:none;">
-          <div style="font-weight:700; color:#111;">Pay via FamPay / Any UPI App:</div>
-          <div class="upi-row">
-            <span id="displayUpiId" style="font-weight:700; color:var(--primary);">required@fam</span>
-            <button type="button" class="copy-mini" onclick="copyUpiId()">Copy UPI</button>
-          </div>
-          <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
-            <a id="upiDeepLink" href="#" class="primary-btn" style="text-decoration:none; text-align:center; flex:1;">Open UPI App to Pay</a>
-          </div>
-          <div class="form-group" style="margin-top:8px;">
-            <label>UPI Transaction / UTR ID (Optional)</label>
-            <input type="text" id="upiRefInput" class="form-input" placeholder="Payment ke baad 12-digit UTR dalen" />
-          </div>
-        </div>
-
-        <button type="button" class="wa-submit-btn" onclick="placeWhatsAppOrder()">
-          ✅ Place Order on WhatsApp
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. Login / Signup & Order History Modal -->
-  <div class="modal-backdrop" id="accountModal" onclick="backdropClose(event, 'accountModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <span>👤 Account & Order History</span>
-        <button class="close-btn" onclick="closeModal('accountModal')">✕</button>
-      </div>
-      <div class="modal-body">
-        <!-- Login / Signup Form -->
-        <div id="authSection" style="display:flex; flex-direction:column; gap:10px;">
-          <p style="font-size:12.5px; color:var(--muted);">
-            Login ya naya account banayein taaki aapke purane orders aur reorder history save rahein.
-          </p>
-          <div class="form-group">
-            <label>Your Name</label>
-            <input type="text" id="authName" class="form-input" placeholder="Enter your name" />
-          </div>
-          <div class="form-group">
-            <label>Mobile Number</label>
-            <input type="tel" id="authPhone" class="form-input" placeholder="10-digit mobile number" maxlength="10" />
-          </div>
-          <div class="form-group">
-            <label>4-Digit PIN</label>
-            <input type="password" id="authPin" class="form-input" placeholder="Create or enter 4-digit PIN" maxlength="4" />
-          </div>
-          <button type="button" class="primary-btn" onclick="handleAuth()">Login / Create Account</button>
-        </div>
-
-        <!-- Logged-In Profile & Orders -->
-        <div id="profileSection" style="display:none; flex-direction:column; gap:12px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; background:#ecfdf5; padding:10px 12px; border-radius:10px;">
-            <div>
-              <strong id="userWelcome" style="color:var(--primary); font-size:14px;">Welcome!</strong>
-              <div id="userPhoneDisplay" style="font-size:12px; color:#374151;"></div>
-            </div>
-            <button type="button" class="danger-btn" onclick="logoutUser()">Logout</button>
-          </div>
-          <div style="font-weight:800; font-size:13.5px;">Past Orders (Tap Reorder to Add Again)</div>
-          <div id="orderHistoryList" style="display:flex; flex-direction:column; gap:8px;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. Admin Panel Modal (PIN: 2411) -->
-  <div class="modal-backdrop" id="adminModal" onclick="backdropClose(event, 'adminModal')">
-    <div class="modal-sheet">
-      <div class="modal-header">
-        <span>⚙️ Admin Panel — REQUIRED</span>
+  <!-- Admin Modal -->
+  <div class="modal" id="adminModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>⚙️ Admin Panel</h3>
         <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
       </div>
-      <div class="modal-body">
-        <!-- Store Configuration -->
-        <div class="upi-box" style="display:flex; flex-direction:column; gap:8px;">
-          <strong style="font-size:13px;">Store Payment & WhatsApp Settings</strong>
-          <div class="form-group">
-            <label>WhatsApp Order Number (with 91, e.g. 919876543210)</label>
-            <input type="text" id="adminWaInput" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label>FamPay / Merchant UPI ID</label>
-            <input type="text" id="adminUpiInput" class="form-input" />
-          </div>
-          <div class="form-group">
-            <label>Delivery Charge (₹)</label>
-            <input type="number" id="adminDelFeeInput" class="form-input" />
-          </div>
-          <button type="button" class="primary-btn" onclick="saveStoreSettings()">Save Store Settings</button>
-        </div>
+      <div class="field"><label>Store WhatsApp Number</label><input type="text" id="adminWaInput" /></div>
+      <div class="field"><label>Store UPI ID</label><input type="text" id="adminUpiInput" /></div>
+      <div class="field"><label>Delivery Charge (₹)</label><input type="number" id="adminDelFeeInput" /></div>
+      <button class="wa-submit-btn" style="margin-bottom:14px;" onclick="saveStoreSettings()">💾 Save Store Settings</button>
 
-        <!-- Add New Product -->
-        <div class="upi-box" style="display:flex; flex-direction:column; gap:8px;">
-          <strong style="font-size:13px;">+ Add New Grocery Product</strong>
-          <input type="text" id="newProdName" class="form-input" placeholder="Product Name (e.g. Aashirvaad Atta)" />
-          <select id="newProdCat" class="form-input">
-            <option value="Atta, Rice & Dal">Atta, Rice & Dal</option>
-            <option value="Oil, Ghee & Masala">Oil, Ghee & Masala</option>
-            <option value="Dairy & Bakery">Dairy & Bakery</option>
-            <option value="Snacks & Biscuits">Snacks & Biscuits</option>
-            <option value="Tea, Coffee & Drinks">Tea, Coffee & Drinks</option>
-            <option value="Personal Care">Personal Care</option>
-            <option value="Household & Cleaning">Household & Cleaning</option>
-          </select>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-            <input type="text" id="newProdUnit" class="form-input" placeholder="Unit (e.g. 5 kg)" />
-            <input type="number" id="newProdPrice" class="form-input" placeholder="Price ₹" />
-          </div>
-          <input type="text" id="newProdImg" class="form-input" placeholder="Image URL (optional)" />
-          <button type="button" class="primary-btn" onclick="adminAddProduct()">Add Item to Store</button>
-        </div>
-
-        <!-- Manage Existing Catalog -->
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <strong style="font-size:13px;">Manage Catalog Items</strong>
-          <button type="button" class="danger-btn" onclick="resetCatalog()">Reset Default 100</button>
-        </div>
-        <input type="text" id="adminSearchInput" class="form-input" placeholder="Search item to edit price or delete..." oninput="renderAdminProducts()" />
-        <div id="adminProductList" style="display:flex; flex-direction:column; gap:6px;"></div>
+      <h4 style="margin-bottom:8px;">➕ Add New Item</h4>
+      <div class="field"><input type="text" id="newProdName" placeholder="Item Name" /></div>
+      <div class="field">
+        <select id="newProdCat">
+          <option>Atta & Rice</option><option>Dal & Pulses</option><option>Oil & Ghee</option>
+          <option>Spices & Masala</option><option>Dairy & Bakery</option><option>Snacks & Drinks</option>
+          <option>Personal Care</option><option>Household</option>
+        </select>
       </div>
+      <div class="field"><input type="text" id="newProdUnit" placeholder="Unit (e.g. 1 kg, 500 ml, 1 pc)" /></div>
+      <div class="field"><input type="number" id="newProdPrice" placeholder="Price (₹)" /></div>
+      <div class="field"><input type="text" id="newProdImg" placeholder="Emoji Icon (e.g. 🌾)" value="🛒" /></div>
+      <button class="wa-submit-btn" style="background:#0284c7;margin-bottom:14px;" onclick="adminAddProduct()">Add Product</button>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h4>📋 Manage Catalog</h4>
+        <button class="sm-btn" style="background:#fee2e2;color:#b91c1c;" onclick="resetCatalog()">Reset 100 Items</button>
+      </div>
+      <div id="adminProdList" style="max-height:220px;overflow-y:auto;margin-bottom:14px;"></div>
+
+      <h4 style="margin-bottom:8px;">🧾 All Customer Orders</h4>
+      <div id="adminOrdersList" style="max-height:220px;overflow-y:auto;"></div>
+    </div>
+  </div>
+    <!-- Orders Modal -->
+  <div class="modal" id="ordersModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>📦 My Recent Orders</h3>
+        <button class="close-btn" onclick="closeModal('ordersModal')">✕</button>
+      </div>
+      <div id="myOrdersList"></div>
+    </div>
+  </div>
+
+  <!-- Admin Modal -->
+  <div class="modal" id="adminModal">
+    <div class="modal-box">
+      <div class="modal-head">
+        <h3>⚙️ Admin Panel</h3>
+        <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
+      </div>
+      <div class="field"><label>Store WhatsApp Number</label><input type="text" id="adminWaInput" /></div>
+      <div class="field"><label>Store UPI ID</label><input type="text" id="adminUpiInput" /></div>
+      <div class="field"><label>Delivery Charge (₹)</label><input type="number" id="adminDelFeeInput" /></div>
+      <button class="wa-submit-btn" style="margin-bottom:14px;" onclick="saveStoreSettings()">💾 Save Store Settings</button>
+
+      <h4 style="margin-bottom:8px;">➕ Add New Item</h4>
+      <div class="field"><input type="text" id="newProdName" placeholder="Item Name" /></div>
+      <div class="field">
+        <select id="newProdCat">
+          <option>Atta & Rice</option><option>Dal & Pulses</option><option>Oil & Ghee</option>
+          <option>Spices & Masala</option><option>Dairy & Bakery</option><option>Snacks & Drinks</option>
+          <option>Personal Care</option><option>Household</option>
+        </select>
+      </div>
+      <div class="field"><input type="text" id="newProdUnit" placeholder="Unit (e.g. 1 kg, 500 ml, 1 pc)" /></div>
+      <div class="field"><input type="number" id="newProdPrice" placeholder="Price (₹)" /></div>
+      <div class="field"><input type="text" id="newProdImg" placeholder="Emoji Icon (e.g. 🌾)" value="🛒" /></div>
+      <button class="wa-submit-btn" style="background:#0284c7;margin-bottom:14px;" onclick="adminAddProduct()">Add Product</button>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <h4>📋 Manage Catalog</h4>
+        <button class="sm-btn" style="background:#fee2e2;color:#b91c1c;" onclick="resetCatalog()">Reset 100 Items</button>
+      </div>
+      <div id="adminProdList" style="max-height:220px;overflow-y:auto;margin-bottom:14px;"></div>
+
+      <h4 style="margin-bottom:8px;">🧾 All Customer Orders</h4>
+      <div id="adminOrdersList" style="max-height:220px;overflow-y:auto;"></div>
     </div>
   </div>
     <script>
-    // ==========================================
-    // STORE CONFIGURATION & STORAGE KEYS
-    // ==========================================
     const ADMIN_PIN = "2411";
-
+    const WEB3FORMS_KEY = "1380f4ad-246d-4617-a192-2f5063a2028e";
     const STORAGE_KEYS = {
-      CONFIG: "required_store_config_v1",
-      PRODUCTS: "required_store_products_v1",
-      CART: "required_store_cart_v1",
-      USER: "required_store_user_v1",
-      USERS_DB: "required_store_users_db_v1",
-      ORDERS: "required_store_orders_v1"
+      PRODUCTS: "req_products_v1",
+      CART: "req_cart_v1",
+      ORDERS: "req_orders_v1",
+      CONFIG: "req_config_v1"
     };
 
-    const DEFAULT_CONFIG = {
-      storeName: "REQUIRED",
-      whatsappNumber: "919876543210", // Admin Panel se apna WhatsApp number update karein
-      upiId: "required@fam",
-      deliveryFee: 20,
-      freeDeliveryAbove: 499
-    };
-
-    // SVG Fallback Generator (Taaki bina internet image links ke bhi har item saaf dikhe)
-    function makeItemSVG(emoji, bg) {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
-        <rect width="160" height="120" rx="14" fill="${bg || '#f0fdf4'}"/>
-        <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-size="48">${emoji}</text>
-      </svg>`;
-      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
-    }
-
-    function getProductImage(item) {
-      if (item.img && item.img.trim().startsWith("http")) {
-        return item.img.trim();
-      }
-      return makeItemSVG(item.emoji || "🛒", item.bg || "#f3f4f6");
-    }
-
-    // ==========================================
-    // COMPLETE 100-ITEM GROCERY CATALOG
-    // ==========================================
     const DEFAULT_PRODUCTS = [
-      // 1. Atta, Rice & Dal (1 - 16)
-      { id: 1, name: "Aashirvaad Shudh Chakki Atta", cat: "Atta, Rice & Dal", unit: "5 kg", price: 245, badge: "Bestseller", emoji: "🌾", bg: "#fef3c7", img: "" },
-      { id: 2, name: "Fortune Chakki Fresh Atta", cat: "Atta, Rice & Dal", unit: "10 kg", price: 440, badge: "Value Pack", emoji: "🌾", bg: "#fef3c7", img: "" },
-      { id: 3, name: "India Gate Basmati Rice Dubar", cat: "Atta, Rice & Dal", unit: "1 kg", price: 115, badge: "", emoji: "🍚", bg: "#f3f4f6", img: "" },
-      { id: 4, name: "Daawat Rozana Basmati Rice", cat: "Atta, Rice & Dal", unit: "5 kg", price: 365, badge: "Popular", emoji: "🍚", bg: "#f3f4f6", img: "" },
-      { id: 5, name: "Daily Kolam Steam Rice", cat: "Atta, Rice & Dal", unit: "5 kg", price: 290, badge: "", emoji: "🍚", bg: "#f3f4f6", img: "" },
-      { id: 6, name: "Toor / Arhar Dal Unpolished", cat: "Atta, Rice & Dal", unit: "1 kg", price: 168, badge: "Fresh Stock", emoji: "🫘", bg: "#fef9c3", img: "" },
-      { id: 7, name: "Moong Dal Yellow Split", cat: "Atta, Rice & Dal", unit: "1 kg", price: 132, badge: "", emoji: "🟡", bg: "#fef9c3", img: "" },
-      { id: 8, name: "Chana Dal Premium", cat: "Atta, Rice & Dal", unit: "1 kg", price: 98, badge: "", emoji: "🟡", bg: "#fef3c7", img: "" },
-      { id: 9, name: "Masoor Dal Red Split", cat: "Atta, Rice & Dal", unit: "1 kg", price: 108, badge: "", emoji: "🟠", bg: "#ffedd5", img: "" },
-      { id: 10, name: "Urad Dal White Split", cat: "Atta, Rice & Dal", unit: "1 kg", price: 145, badge: "", emoji: "⚪", bg: "#f3f4f6", img: "" },
-      { id: 11, name: "Kabuli Chana / Safed Chole", cat: "Atta, Rice & Dal", unit: "1 kg", price: 148, badge: "", emoji: "🫘", bg: "#fef3c7", img: "" },
-      { id: 12, name: "Rajma Chitra Premium", cat: "Atta, Rice & Dal", unit: "1 kg", price: 155, badge: "", emoji: "🫘", bg: "#fee2e2", img: "" },
-      { id: 13, name: "Mota Poha / Thick Flattened Rice", cat: "Atta, Rice & Dal", unit: "1 kg", price: 58, badge: "", emoji: "🥣", bg: "#f3f4f6", img: "" },
-      { id: 14, name: "Sooji / Rava Fine", cat: "Atta, Rice & Dal", unit: "500 g", price: 32, badge: "", emoji: "🌾", bg: "#fef9c3", img: "" },
-      { id: 15, name: "Fortune Besan Gram Flour", cat: "Atta, Rice & Dal", unit: "1 kg", price: 95, badge: "", emoji: "🟡", bg: "#fef3c7", img: "" },
-      { id: 16, name: "Sabudana / Sago Pearls", cat: "Atta, Rice & Dal", unit: "500 g", price: 48, badge: "", emoji: "⚪", bg: "#f3f4f6", img: "" },
-
-      // 2. Oil, Ghee & Masala (17 - 32)
-      { id: 17, name: "Fortune Sunlite Sunflower Oil", cat: "Oil, Ghee & Masala", unit: "1 L", price: 138, badge: "Top Pick", emoji: "🌻", bg: "#fef9c3", img: "" },
-      { id: 18, name: "Fortune Kachi Ghani Mustard Oil", cat: "Oil, Ghee & Masala", unit: "1 L", price: 155, badge: "", emoji: "🧴", bg: "#fef3c7", img: "" },
-      { id: 19, name: "Saffola Gold Blended Oil", cat: "Oil, Ghee & Masala", unit: "1 L", price: 165, badge: "", emoji: "🛢️", bg: "#fef9c3", img: "" },
-      { id: 20, name: "Amul Pure Cow Ghee Pouch", cat: "Oil, Ghee & Masala", unit: "1 L", price: 615, badge: "Pure Ghee", emoji: "🧈", bg: "#fef3c7", img: "" },
-      { id: 21, name: "Patanjali Cow Ghee Jar", cat: "Oil, Ghee & Masala", unit: "500 ml", price: 330, badge: "", emoji: "🍯", bg: "#fef3c7", img: "" },
-      { id: 22, name: "Tata Sampann Turmeric Powder", cat: "Oil, Ghee & Masala", unit: "200 g", price: 68, badge: "", emoji: "🟡", bg: "#fef08a", img: "" },
-      { id: 23, name: "Everest Tikhalal Chilli Powder", cat: "Oil, Ghee & Masala", unit: "200 g", price: 88, badge: "", emoji: "🌶️", bg: "#fee2e2", img: "" },
-      { id: 24, name: "MDH Deggi Mirch Powder", cat: "Oil, Ghee & Masala", unit: "100 g", price: 86, badge: "", emoji: "🌶️", bg: "#fee2e2", img: "" },
-      { id: 25, name: "Catch Coriander / Dhaniya Powder", cat: "Oil, Ghee & Masala", unit: "200 g", price: 62, badge: "", emoji: "🌿", bg: "#dcfce7", img: "" },
-      { id: 26, name: "Everest Garam Masala", cat: "Oil, Ghee & Masala", unit: "100 g", price: 84, badge: "", emoji: "🧂", bg: "#ffedd5", img: "" },
-      { id: 27, name: "MDH Kitchen King Masala", cat: "Oil, Ghee & Masala", unit: "100 g", price: 82, badge: "", emoji: "🍛", bg: "#ffedd5", img: "" },
-      { id: 28, name: "Tata Iodized Salt", cat: "Oil, Ghee & Masala", unit: "1 kg", price: 28, badge: "Essential", emoji: "🧂", bg: "#e0f2fe", img: "" },
-      { id: 29, name: "Whole Jeera / Cumin Seeds", cat: "Oil, Ghee & Masala", unit: "200 g", price: 96, badge: "", emoji: "🌱", bg: "#fef3c7", img: "" },
-      { id: 30, name: "Rai / Black Mustard Seeds", cat: "Oil, Ghee & Masala", unit: "200 g", price: 34, badge: "", emoji: "⚫", bg: "#f3f4f6", img: "" },
-      { id: 31, name: "Refined White Sugar / Cheeni", cat: "Oil, Ghee & Masala", unit: "1 kg", price: 46, badge: "", emoji: "🧊", bg: "#f3f4f6", img: "" },
-      { id: 32, name: "Desi Jaggery / Gud Cubes", cat: "Oil, Ghee & Masala", unit: "500 g", price: 45, badge: "", emoji: "🟫", bg: "#ffedd5", img: "" },
-
-      // 3. Dairy & Bakery (33 - 45)
-      { id: 33, name: "Amul Taaza Toned Milk", cat: "Dairy & Bakery", unit: "1 L", price: 72, badge: "Daily", emoji: "🥛", bg: "#e0f2fe", img: "" },
-      { id: 34, name: "Amul Gold Full Cream Milk", cat: "Dairy & Bakery", unit: "500 ml", price: 34, badge: "", emoji: "🥛", bg: "#fee2e2", img: "" },
-      { id: 35, name: "Amul Pasteurised Butter", cat: "Dairy & Bakery", unit: "100 g", price: 58, badge: "Bestseller", emoji: "🧈", bg: "#fef9c3", img: "" },
-      { id: 36, name: "Amul Fresh Malai Paneer", cat: "Dairy & Bakery", unit: "200 g", price: 92, badge: "Fresh", emoji: "🧀", bg: "#f3f4f6", img: "" },
-      { id: 37, name: "Amul Cheese Slices (10 pcs)", cat: "Dairy & Bakery", unit: "200 g", price: 140, badge: "", emoji: "🧀", bg: "#fef3c7", img: "" },
-      { id: 38, name: "Amul Masti Dahi Cup", cat: "Dairy & Bakery", unit: "400 g", price: 38, badge: "", emoji: "🥣", bg: "#e0f2fe", img: "" },
-      { id: 39, name: "Harvest Gold White Bread", cat: "Dairy & Bakery", unit: "400 g", price: 45, badge: "", emoji: "🍞", bg: "#fef3c7", img: "" },
-      { id: 40, name: "Britannia 100% Whole Wheat Bread", cat: "Dairy & Bakery", unit: "400 g", price: 55, badge: "Healthy", emoji: "🍞", bg: "#ffedd5", img: "" },
-      { id: 41, name: "Fresh Farm White Eggs (6 pcs)", cat: "Dairy & Bakery", unit: "6 pcs", price: 48, badge: "", emoji: "🥚", bg: "#f3f4f6", img: "" },
-      { id: 42, name: "Fresh Farm White Eggs Tray", cat: "Dairy & Bakery", unit: "30 pcs", price: 210, badge: "Saver", emoji: "🥚", bg: "#fef3c7", img: "" },
-      { id: 43, name: "Britannia Toastea Rusk", cat: "Dairy & Bakery", unit: "300 g", price: 52, badge: "", emoji: "🥖", bg: "#ffedd5", img: "" },
-      { id: 44, name: "Amul Kool Elaichi Milk Bottle", cat: "Dairy & Bakery", unit: "180 ml", price: 25, badge: "", emoji: "🍼", bg: "#dcfce7", img: "" },
-      { id: 45, name: "Nestle Milkmaid Condensed Milk", cat: "Dairy & Bakery", unit: "380 g", price: 144, badge: "", emoji: "🥫", bg: "#e0f2fe", img: "" },
-
-      // 4. Snacks & Biscuits (46 - 60)
-      { id: 46, name: "Maggi 2-Minute Masala Noodles (4 Pack)", cat: "Snacks & Biscuits", unit: "280 g", price: 56, badge: "Hot", emoji: "🍜", bg: "#fef08a", img: "" },
-      { id: 47, name: "Sunfeast YiPPee! Magic Masala (4 Pack)", cat: "Snacks & Biscuits", unit: "240 g", price: 48, badge: "", emoji: "🍜", bg: "#ffedd5", img: "" },
-      { id: 48, name: "Parle-G Gold Family Pack", cat: "Snacks & Biscuits", unit: "1 kg", price: 95, badge: "Value", emoji: "🍪", bg: "#fef3c7", img: "" },
-      { id: 49, name: "Britannia Good Day Cashew", cat: "Snacks & Biscuits", unit: "200 g", price: 40, badge: "", emoji: "🍪", bg: "#fef9c3", img: "" },
-      { id: 50, name: "Cadbury Oreo Vanilla Creme", cat: "Snacks & Biscuits", unit: "120 g", price: 35, badge: "", emoji: "🍪", bg: "#dbeafe", img: "" },
-      { id: 51, name: "Sunfeast Dark Fantasy Choco Fills", cat: "Snacks & Biscuits", unit: "75 g", price: 40, badge: "", emoji: "🍫", bg: "#ffedd5", img: "" },
-      { id: 52, name: "Lay's India's Magic Masala Chips", cat: "Snacks & Biscuits", unit: "50 g", price: 20, badge: "", emoji: "🥔", bg: "#dbeafe", img: "" },
-      { id: 53, name: "Kurkure Masala Munch", cat: "Snacks & Biscuits", unit: "75 g", price: 20, badge: "", emoji: "🌶️", bg: "#ffedd5", img: "" },
-      { id: 54, name: "Haldiram's Aloo Bhujia", cat: "Snacks & Biscuits", unit: "200 g", price: 55, badge: "Popular", emoji: "🥨", bg: "#fee2e2", img: "" },
-      { id: 55, name: "Haldiram's Khatta Meetha Mixture", cat: "Snacks & Biscuits", unit: "200 g", price: 50, badge: "", emoji: "🥜", bg: "#fef3c7", img: "" },
-      { id: 56, name: "Kissan Fresh Tomato Ketchup", cat: "Snacks & Biscuits", unit: "950 g", price: 125, badge: "", emoji: "🍅", bg: "#fee2e2", img: "" },
-      { id: 57, name: "Ching's Dark Soy Sauce", cat: "Snacks & Biscuits", unit: "200 g", price: 45, badge: "", emoji: "🍾", bg: "#f3f4f6", img: "" },
-      { id: 58, name: "Kellogg's Corn Flakes Original", cat: "Snacks & Biscuits", unit: "250 g", price: 105, badge: "", emoji: "🥣", bg: "#fef9c3", img: "" },
-      { id: 59, name: "Saffola Masala Oats Classic", cat: "Snacks & Biscuits", unit: "500 g", price: 165, badge: "", emoji: "🥣", bg: "#dcfce7", img: "" },
-      { id: 60, name: "Cadbury Dairy Milk Silk Chocolate", cat: "Snacks & Biscuits", unit: "60 g", price: 85, badge: "", emoji: "🍫", bg: "#ede9fe", img: "" },
-
-      // 5. Tea, Coffee & Drinks (61 - 72)
-      { id: 61, name: "Tata Tea Gold Leaf Tea", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 265, badge: "Bestseller", emoji: "🍵", bg: "#fef3c7", img: "" },
-      { id: 62, name: "Brooke Bond Red Label Tea", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 235, badge: "", emoji: "🍵", bg: "#fee2e2", img: "" },
-      { id: 63, name: "Taj Mahal Rich Tea Box", cat: "Tea, Coffee & Drinks", unit: "250 g", price: 165, badge: "", emoji: "☕", bg: "#ffedd5", img: "" },
-      { id: 64, name: "Nescafe Classic Instant Coffee Jar", cat: "Tea, Coffee & Drinks", unit: "50 g", price: 160, badge: "", emoji: "☕", bg: "#fee2e2", img: "" },
-      { id: 65, name: "Bru Instant Coffee Pouch", cat: "Tea, Coffee & Drinks", unit: "50 g", price: 115, badge: "", emoji: "☕", bg: "#dcfce7", img: "" },
-      { id: 66, name: "Cadbury Bournvita Jar", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 235, badge: "", emoji: "🥤", bg: "#ffedd5", img: "" },
-      { id: 67, name: "Horlicks Classic Malt Refill", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 245, badge: "", emoji: "🥛", bg: "#dbeafe", img: "" },
-      { id: 68, name: "Real Fruit Power Mixed Fruit", cat: "Tea, Coffee & Drinks", unit: "1 L", price: 115, badge: "", emoji: "🧃", bg: "#ffedd5", img: "" },
-      { id: 69, name: "Tropicana 100% Orange Juice", cat: "Tea, Coffee & Drinks", unit: "1 L", price: 130, badge: "", emoji: "🍊", bg: "#fef3c7", img: "" },
-      { id: 70, name: "Coca-Cola Soft Drink Bottle", cat: "Tea, Coffee & Drinks", unit: "750 ml", price: 40, badge: "Chilled", emoji: "🥤", bg: "#fee2e2", img: "" },
-      { id: 71, name: "Sprite Lemon-Lime Soft Drink", cat: "Tea, Coffee & Drinks", unit: "750 ml", price: 40, badge: "", emoji: "🍋", bg: "#dcfce7", img: "" },
-      { id: 72, name: "Hamdard Rooh Afza Sharbat", cat: "Tea, Coffee & Drinks", unit: "750 ml", price: 175, badge: "", emoji: "🍷", bg: "#fce7f3", img: "" },
-
-      // 6. Personal Care (73 - 86)
-      { id: 73, name: "Dettol Original Soap (Pack of 4)", cat: "Personal Care", unit: "4 x 125 g", price: 165, badge: "Protection", emoji: "🧼", bg: "#dcfce7", img: "" },
-      { id: 74, name: "Dove Cream Beauty Bar (Pack of 3)", cat: "Personal Care", unit: "3 x 100 g", price: 175, badge: "", emoji: "🧼", bg: "#e0f2fe", img: "" },
-      { id: 75, name: "Lifebuoy Total 10 Soap (Pack of 4)", cat: "Personal Care", unit: "4 x 125 g", price: 132, badge: "", emoji: "🧼", bg: "#fee2e2", img: "" },
-      { id: 76, name: "Colgate Strong Teeth Toothpaste", cat: "Personal Care", unit: "200 g", price: 118, badge: "Bestseller", emoji: "🪥", bg: "#fee2e2", img: "" },
-      { id: 77, name: "Pepsodent Germicheck Toothpaste", cat: "Personal Care", unit: "200 g", price: 108, badge: "", emoji: "🪥", bg: "#dbeafe", img: "" },
-      { id: 78, name: "Sensodyne Fresh Mint Toothpaste", cat: "Personal Care", unit: "75 g", price: 135, badge: "", emoji: "🦷", bg: "#e0f2fe", img: "" },
-      { id: 79, name: "Clinic Plus Strong & Long Shampoo", cat: "Personal Care", unit: "340 ml", price: 195, badge: "", emoji: "🧴", bg: "#dbeafe", img: "" },
-      { id: 80, name: "Head & Shoulders Cool Menthol", cat: "Personal Care", unit: "340 ml", price: 295, badge: "", emoji: "🧴", bg: "#e0f2fe", img: "" },
-      { id: 81, name: "Parachute 100% Pure Coconut Oil", cat: "Personal Care", unit: "250 ml", price: 110, badge: "", emoji: "🥥", bg: "#dbeafe", img: "" },
-      { id: 82, name: "Nivea Soft Light Moisturizing Cream", cat: "Personal Care", unit: "100 ml", price: 165, badge: "", emoji: "🫙", bg: "#f3f4f6", img: "" },
-      { id: 83, name: "Vaseline Intensive Care Body Lotion", cat: "Personal Care", unit: "200 ml", price: 170, badge: "", emoji: "🧴", bg: "#fef9c3", img: "" },
-      { id: 84, name: "Dettol Antiseptic Liquid Bottle", cat: "Personal Care", unit: "250 ml", price: 125, badge: "First Aid", emoji: "🩹", bg: "#ffedd5", img: "" },
-      { id: 85, name: "Gillette Guard Razor + 2 Blades", cat: "Personal Care", unit: "1 Pack", price: 65, badge: "", emoji: "🪒", bg: "#e0f2fe", img: "" },
-      { id: 86, name: "Whisper Ultra Clean Sanitary Pads", cat: "Personal Care", unit: "15 Pads", price: 175, badge: "", emoji: "📦", bg: "#dcfce7", img: "" },
-
-      // 7. Household & Cleaning (87 - 100)
-      { id: 87, name: "Surf Excel Easy Wash Detergent", cat: "Household & Cleaning", unit: "1.5 kg", price: 210, badge: "Top Pick", emoji: "🧺", bg: "#dbeafe", img: "" },
-      { id: 88, name: "Tide Plus Double Power Jasmine", cat: "Household & Cleaning", unit: "1 kg", price: 135, badge: "", emoji: "🧺", bg: "#ffedd5", img: "" },
-      { id: 89, name: "Ariel Matic Top Load Liquid", cat: "Household & Cleaning", unit: "1 L", price: 225, badge: "", emoji: "🧴", bg: "#dcfce7", img: "" },
-      { id: 90, name: "Rin Detergent Bar (Pack of 4)", cat: "Household & Cleaning", unit: "4 x 250 g", price: 92, badge: "", emoji: "🧼", bg: "#e0f2fe", img: "" },
-      { id: 91, name: "Vim Dishwash Gel Lemon Pouch", cat: "Household & Cleaning", unit: "750 ml", price: 155, badge: "", emoji: "🍋", bg: "#fef08a", img: "" },
-      { id: 92, name: "Vim Dishwash Bar (Pack of 3)", cat: "Household & Cleaning", unit: "3 x 200 g", price: 65, badge: "", emoji: "🧽", bg: "#dcfce7", img: "" },
-      { id: 93, name: "Harpic Power Plus Toilet Cleaner", cat: "Household & Cleaning", unit: "1 L", price: 185, badge: "", emoji: "🚽", bg: "#dbeafe", img: "" },
-      { id: 94, name: "Lizol Disinfectant Floor Cleaner", cat: "Household & Cleaning", unit: "975 ml", price: 195, badge: "", emoji: "🧹", bg: "#fce7f3", img: "" },
-      { id: 95, name: "Colin Glass & Surface Cleaner", cat: "Household & Cleaning", unit: "500 ml", price: 98, badge: "", emoji: "🪟", bg: "#e0f2fe", img: "" },
-      { id: 96, name: "Good Knight Gold Flash Machine + Refill", cat: "Household & Cleaning", unit: "1 Unit", price: 95, badge: "", emoji: "🦟", bg: "#fee2e2", img: "" },
-      { id: 97, name: "Hit Flying Insect Killer Spray", cat: "Household & Cleaning", unit: "400 ml", price: 195, badge: "", emoji: "スプレー", bg: "#fee2e2", img: "" },
-      { id: 98, name: "Scotch-Brite Scrub Pad (Pack of 3)", cat: "Household & Cleaning", unit: "3 pcs", price: 45, badge: "", emoji: "🧽", bg: "#dcfce7", img: "" },
-      { id: 99, name: "Medium Garbage Bags Roll (30 Bags)", cat: "Household & Cleaning", unit: "1 Roll", price: 65, badge: "", emoji: "🗑️", bg: "#f3f4f6", img: "" },
-      { id: 100, name: "Odonil Bathroom Air Freshener (4 Pack)", cat: "Household & Cleaning", unit: "4 x 50 g", price: 148, badge: "", emoji: "🌸", bg: "#ede9fe", img: "" }
+      { id: 1, name: "Aashirvaad Shudh Chakki Atta", cat: "Atta & Rice", unit: "5 kg", price: 245, img: "🌾" },
+      { id: 2, name: "Fortune Chakki Fresh Atta", cat: "Atta & Rice", unit: "5 kg", price: 230, img: "🌾" },
+      { id: 3, name: "India Gate Basmati Rice", cat: "Atta & Rice", unit: "1 kg", price: 115, img: "🍚" },
+      { id: 4, name: "Daawat Rozana Basmati Rice", cat: "Atta & Rice", unit: "5 kg", price: 360, img: "🍚" },
+      { id: 5, name: "Kolam Steam Rice", cat: "Atta & Rice", unit: "5 kg", price: 290, img: "🍚" },
+      { id: 6, name: "Poha (Thick Flattened Rice)", cat: "Atta & Rice", unit: "1 kg", price: 58, img: "🥣" },
+      { id: 7, name: "Sooji / Rava", cat: "Atta & Rice", unit: "500 g", price: 32, img: "🥣" },
+      { id: 8, name: "Besan (Chana Flour)", cat: "Atta & Rice", unit: "1 kg", price: 92, img: "🟡" },
+      { id: 9, name: "Maida (Refined Flour)", cat: "Atta & Rice", unit: "1 kg", price: 46, img: "⚪" },
+      { id: 10, name: "Daliya (Broken Wheat)", cat: "Atta & Rice", unit: "500 g", price: 38, img: "🌾" },
+      { id: 11, name: "Sabudana (Sago)", cat: "Atta & Rice", unit: "500 g", price: 48, img: "⚪" },
+      { id: 12, name: "Rolled Oats", cat: "Atta & Rice", unit: "1 kg", price: 165, img: "🥣" },
+      { id: 13, name: "Arhar / Toor Dal", cat: "Dal & Pulses", unit: "1 kg", price: 168, img: "🫘" },
+      { id: 14, name: "Moong Dal Yellow", cat: "Dal & Pulses", unit: "1 kg", price: 135, img: "🫘" },
+      { id: 15, name: "Moong Sabut Green", cat: "Dal & Pulses", unit: "1 kg", price: 128, img: "🟢" },
+      { id: 16, name: "Chana Dal", cat: "Dal & Pulses", unit: "1 kg", price: 96, img: "🟡" },
+      { id: 17, name: "Masoor Dal Red", cat: "Dal & Pulses", unit: "1 kg", price: 105, img: "🟠" },
+      { id: 18, name: "Urad Dal White Split", cat: "Dal & Pulses", unit: "1 kg", price: 145, img: "⚪" },
+      { id: 19, name: "Urad Sabut Black", cat: "Dal & Pulses", unit: "1 kg", price: 140, img: "⚫" },
+      { id: 20, name: "Kabuli Chana (White)", cat: "Dal & Pulses", unit: "1 kg", price: 142, img: "🫘" },
+      { id: 21, name: "Kala Chana (Desi)", cat: "Dal & Pulses", unit: "1 kg", price: 88, img: "🟤" },
+      { id: 22, name: "Rajma Chitra", cat: "Dal & Pulses", unit: "1 kg", price: 148, img: "🫘" },
+      { id: 23, name: "Rajma Red Jammu", cat: "Dal & Pulses", unit: "1 kg", price: 158, img: "🫘" },
+      { id: 24, name: "Matar White (Safed)", cat: "Dal & Pulses", unit: "1 kg", price: 84, img: "⚪" },
+      { id: 25, name: "Soyabean Chunks", cat: "Dal & Pulses", unit: "500 g", price: 65, img: "🧆" },
+      { id: 26, name: "Raw Peanuts (Moongfali)", cat: "Dal & Pulses", unit: "500 g", price: 78, img: "🥜" },
+      { id: 27, name: "Fortune Sunlite Refined Oil", cat: "Oil & Ghee", unit: "1 L", price: 138, img: "🌻" },
+      { id: 28, name: "Fortune Kachi Ghani Mustard Oil", cat: "Oil & Ghee", unit: "1 L", price: 155, img: "🧴" },
+      { id: 29, name: "Saffola Gold Cooking Oil", cat: "Oil & Ghee", unit: "1 L", price: 175, img: "💛" },
+      { id: 30, name: "Amul Pure Desi Ghee", cat: "Oil & Ghee", unit: "500 ml", price: 325, img: "🧈" },
+      { id: 31, name: "Patanjali Cow Ghee", cat: "Oil & Ghee", unit: "500 ml", price: 340, img: "🧈" },
+      { id: 32, name: "Groundnut Filtered Oil", cat: "Oil & Ghee", unit: "1 L", price: 185, img: "🥜" },
+      { id: 33, name: "Coconut Cooking Oil", cat: "Oil & Ghee", unit: "500 ml", price: 125, img: "🥥" },
+      { id: 34, name: "Vanaspati Ghee", cat: "Oil & Ghee", unit: "500 g", price: 76, img: "🥫" },
+      { id: 35, name: "Tata Salt Iodized", cat: "Spices & Masala", unit: "1 kg", price: 28, img: "🧂" },
+      { id: 36, name: "Sendha Namak (Rock Salt)", cat: "Spices & Masala", unit: "500 g", price: 35, img: "🧂" },
+      { id: 37, name: "Refined White Sugar", cat: "Spices & Masala", unit: "1 kg", price: 46, img: "🍬" },
+      { id: 38, name: "Desi Gud (Jaggery)", cat: "Spices & Masala", unit: "1 kg", price: 62, img: "🟫" },
+      { id: 39, name: "Haldi Powder (Turmeric)", cat: "Spices & Masala", unit: "200 g", price: 58, img: "🟡" },
+      { id: 40, name: "Lal Mirch Powder", cat: "Spices & Masala", unit: "200 g", price: 74, img: "🌶️" },
+      { id: 41, name: "Dhaniya Powder", cat: "Spices & Masala", unit: "200 g", price: 52, img: "🌿" },
+      { id: 42, name: "Everest Garam Masala", cat: "Spices & Masala", unit: "100 g", price: 86, img: "🍲" },
+      { id: 43, name: "MDH Kitchen King Masala", cat: "Spices & Masala", unit: "100 g", price: 82, img: "🍲" },
+      { id: 44, name: "MDH Chana Masala", cat: "Spices & Masala", unit: "100 g", price: 78, img: "🍲" },
+      { id: 45, name: "Jeera Whole (Cumin)", cat: "Spices & Masala", unit: "200 g", price: 95, img: "🌿" },
+      { id: 46, name: "Rai / Mustard Seeds", cat: "Spices & Masala", unit: "200 g", price: 34, img: "⚫" },
+      { id: 47, name: "Kali Mirch (Black Pepper)", cat: "Spices & Masala", unit: "100 g", price: 98, img: "⚫" },
+      { id: 48, name: "Hari Elaichi (Cardamom)", cat: "Spices & Masala", unit: "50 g", price: 135, img: "🟢" },
+      { id: 49, name: "Kasuri Methi", cat: "Spices & Masala", unit: "50 g", price: 32, img: "🍃" },
+      { id: 50, name: "Maggi Masala-ae-Magic", cat: "Spices & Masala", unit: "12 pack", price: 60, img: "✨" },
+            { id: 51, name: "Amul Taaza Toned Milk", cat: "Dairy & Bakery", unit: "1 L", price: 72, img: "🥛" },
+      { id: 52, name: "Amul Gold Full Cream Milk", cat: "Dairy & Bakery", unit: "500 ml", price: 34, img: "🥛" },
+      { id: 53, name: "Amul Pasteurised Butter", cat: "Dairy & Bakery", unit: "100 g", price: 58, img: "🧈" },
+      { id: 54, name: "Amul Fresh Paneer", cat: "Dairy & Bakery", unit: "200 g", price: 92, img: "🧀" },
+      { id: 55, name: "Amul Cheese Slices", cat: "Dairy & Bakery", unit: "100 g", price: 85, img: "🧀" },
+      { id: 56, name: "Fresh Dahi (Curd Cup)", cat: "Dairy & Bakery", unit: "400 g", price: 42, img: "🥣" },
+      { id: 57, name: "White Sandwich Bread", cat: "Dairy & Bakery", unit: "400 g", price: 40, img: "🍞" },
+      { id: 58, name: "Whole Wheat Brown Bread", cat: "Dairy & Bakery", unit: "400 g", price: 48, img: "🍞" },
+      { id: 59, name: "Pav Buns Pack", cat: "Dairy & Bakery", unit: "6 pcs", price: 30, img: "🍔" },
+      { id: 60, name: "Britannia Suji Rusk", cat: "Dairy & Bakery", unit: "300 g", price: 55, img: "🥖" },
+      { id: 61, name: "Tata Tea Premium", cat: "Snacks & Drinks", unit: "500 g", price: 245, img: "🍵" },
+      { id: 62, name: "Red Label Natural Care Tea", cat: "Snacks & Drinks", unit: "250 g", price: 140, img: "🍵" },
+      { id: 63, name: "Nescafe Classic Coffee", cat: "Snacks & Drinks", unit: "50 g", price: 165, img: "☕" },
+      { id: 64, name: "Bru Instant Coffee", cat: "Snacks & Drinks", unit: "50 g", price: 115, img: "☕" },
+      { id: 65, name: "Maggi 2-Minute Noodles", cat: "Snacks & Drinks", unit: "4 pack", price: 56, img: "🍜" },
+      { id: 66, name: "Yippee Magic Masala Noodles", cat: "Snacks & Drinks", unit: "4 pack", price: 54, img: "🍜" },
+      { id: 67, name: "Parle-G Gold Biscuits", cat: "Snacks & Drinks", unit: "250 g", price: 30, img: "🍪" },
+      { id: 68, name: "Britannia Good Day Cashew", cat: "Snacks & Drinks", unit: "200 g", price: 40, img: "🍪" },
+      { id: 69, name: "Oreo Chocolate Cream", cat: "Snacks & Drinks", unit: "120 g", price: 35, img: "🍪" },
+      { id: 70, name: "Haldiram Aloo Bhujia", cat: "Snacks & Drinks", unit: "400 g", price: 98, img: "🥨" },
+      { id: 71, name: "Haldiram Khatta Meetha", cat: "Snacks & Drinks", unit: "400 g", price: 92, img: "🥨" },
+      { id: 72, name: "Lays Classic Salted Chips", cat: "Snacks & Drinks", unit: "50 g", price: 20, img: "🥔" },
+      { id: 73, name: "Kissan Fresh Tomato Ketchup", cat: "Snacks & Drinks", unit: "500 g", price: 88, img: "🍅" },
+      { id: 74, name: "Real Mixed Fruit Juice", cat: "Snacks & Drinks", unit: "1 L", price: 120, img: "🧃" },
+      { id: 75, name: "Coca-Cola Soft Drink", cat: "Snacks & Drinks", unit: "750 ml", price: 45, img: "🥤" },
+      { id: 76, name: "Rooh Afza Sharbat", cat: "Snacks & Drinks", unit: "750 ml", price: 175, img: "🍷" },
+      { id: 77, name: "Dettol Original Bath Soap", cat: "Personal Care", unit: "4 x 75 g", price: 148, img: "🧼" },
+      { id: 78, name: "Dove Cream Beauty Bar", cat: "Personal Care", unit: "3 x 100 g", price: 185, img: "🧼" },
+      { id: 79, name: "Lifebuoy Total 10 Soap", cat: "Personal Care", unit: "4 x 125 g", price: 136, img: "🧼" },
+      { id: 80, name: "Colgate Strong Teeth Paste", cat: "Personal Care", unit: "200 g", price: 112, img: "🪥" },
+      { id: 81, name: "Sensodyne Fresh Mint", cat: "Personal Care", unit: "80 g", price: 145, img: "🪥" },
+      { id: 82, name: "Oral-B Medium Toothbrush", cat: "Personal Care", unit: "Pack of 2", price: 50, img: "🪥" },
+      { id: 83, name: "Clinic Plus Strong Shampoo", cat: "Personal Care", unit: "340 ml", price: 195, img: "🧴" },
+      { id: 84, name: "Head & Shoulders Anti-Dandruff", cat: "Personal Care", unit: "180 ml", price: 175, img: "🧴" },
+      { id: 85, name: "Parachute 100% Coconut Hair Oil", cat: "Personal Care", unit: "300 ml", price: 132, img: "🥥" },
+      { id: 86, name: "Dettol Liquid Handwash", cat: "Personal Care", unit: "200 ml", price: 99, img: "🧴" },
+      { id: 87, name: "Nivea Soft Light Moisturizer", cat: "Personal Care", unit: "100 ml", price: 170, img: "🫙" },
+      { id: 88, name: "Whisper Ultra Clean Pads", cat: "Personal Care", unit: "15 pads", price: 165, img: "🩹" },
+      { id: 89, name: "Surf Excel Easy Wash Powder", cat: "Household", unit: "1 kg", price: 142, img: "🧺" },
+      { id: 90, name: "Tide Plus Double Power", cat: "Household", unit: "1 kg", price: 128, img: "🧺" },
+      { id: 91, name: "Rin Detergent Bar", cat: "Household", unit: "250 g", price: 25, img: "🧼" },
+      { id: 92, name: "Vim Dishwash Lemon Gel", cat: "Household", unit: "500 ml", price: 108, img: "🍽️" },
+      { id: 93, name: "Vim Dishwash Bar", cat: "Household", unit: "300 g", price: 32, img: "🧼" },
+      { id: 94, name: "Scotch-Brite Scrub Pad", cat: "Household", unit: "Pack of 3", price: 45, img: "🧽" },
+      { id: 95, name: "Harpic Power Plus Toilet Cleaner", cat: "Household", unit: "500 ml", price: 98, img: "🚽" },
+      { id: 96, name: "Lizol Disinfectant Floor Cleaner", cat: "Household", unit: "500 ml", price: 112, img: "🧹" },
+      { id: 97, name: "Good Knight Gold Flash Refill", cat: "Household", unit: "45 ml", price: 82, img: "🦟" },
+      { id: 98, name: "Garbage Bags Medium Roll", cat: "Household", unit: "30 bags", price: 65, img: "🗑️" },
+      { id: 99, name: "Aluminium Foil Roll", cat: "Household", unit: "9 meter", price: 75, img: "🧻" },
+      { id: 100, name: "Kitchen Tissue Paper Roll", cat: "Household", unit: "2 rolls", price: 90, img: "🧻" }
     ];
-
-    // ==========================================
-    // APP STATE INITIALIZATION
-    // ==========================================
-    let storeConfig = JSON.parse(localStorage.getItem(STORAGE_KEYS.CONFIG)) || { ...DEFAULT_CONFIG };
-    let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS)) || JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+          let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS)) || JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
     let cart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART)) || {};
-    let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || null;
-
-    let selectedCategory = "All";
+    let storeConfig = JSON.parse(localStorage.getItem(STORAGE_KEYS.CONFIG)) || {
+      whatsappNumber: "919999999999",
+      upiId: "fazalrab56@oksbi",
+      deliveryFee: 20
+    };
+    let activeCat = "All";
     let paymentMethod = "COD";
     let capturedGPS = "";
-          // ==========================================
-    // UI HELPERS & TOAST NOTIFICATIONS
-    // ==========================================
-    let toastTimer = null;
+
     function showToast(msg) {
       const t = document.getElementById("toast");
       t.textContent = msg;
-      t.classList.add("show");
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
+      t.style.display = "block";
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { t.style.display = "none"; }, 2600);
     }
 
-    function openModal(id) {
-      document.getElementById(id).classList.add("open");
+    function openModal(id) { document.getElementById(id).classList.add("open"); }
+    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+    function renderCategories() {
+      const cats = ["All", ...new Set(products.map(p => p.cat))];
+      document.getElementById("categoryBar").innerHTML = cats.map(c =>
+        `<button class="cat-pill ${c === activeCat ? "active" : ""}" onclick="selectCat('${c}')">${c}</button>`
+      ).join("");
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove("open");
-    }
-
-    function backdropClose(e, id) {
-      if (e.target.id === id) closeModal(id);
-    }
-
-    // ==========================================
-    // SEARCH, CATEGORY FILTER & PRODUCT GRID
-    // ==========================================
-    function selectCategory(cat, btnEl) {
-      selectedCategory = cat;
-      document.querySelectorAll(".cat-pill").forEach(b => b.classList.remove("active"));
-      if (btnEl) btnEl.classList.add("active");
+    function selectCat(cat) {
+      activeCat = cat;
+      renderCategories();
       renderProducts();
     }
 
     function renderProducts() {
-      const query = document.getElementById("searchInput").value.trim().toLowerCase();
-      const grid = document.getElementById("productGrid");
-      const titleEl = document.getElementById("gridTitle");
-      const countEl = document.getElementById("gridCount");
-
-      const filtered = products.filter(item => {
-        const matchCat = selectedCategory === "All" || item.cat === selectedCategory;
-        const matchQuery =
-          !query ||
-          item.name.toLowerCase().includes(query) ||
-          item.cat.toLowerCase().includes(query) ||
-          item.unit.toLowerCase().includes(query);
-        return matchCat && matchQuery;
-      });
-
-      titleEl.textContent = selectedCategory === "All" ? "All Grocery Items" : selectedCategory;
-      countEl.textContent = `${filtered.length} items`;
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px 10px; color:#666;">
-          Koi item nahi mila. Doosra naam search karein.
-        </div>`;
-        return;
-      }      grid.innerHTML = filtered
-        .map(item => {
-          const qty = cart[item.id] || 0;
-          const badgeHtml = item.badge ? `<span class="p-badge">${item.badge}</span>` : "";
-          const actionHtml =
-            qty > 0
-              ? `<div class="qty-box">
-                  <button onclick="changeQty(${item.id}, -1)">−</button>
-                  <span>${qty}</span>
-                  <button onclick="changeQty(${item.id}, 1)">+</button>
-                </div>`
-              : `<button class="add-btn" onclick="changeQty(${item.id}, 1)">ADD</button>`;
-
-          return `
-            <div class="p-card">
-              ${badgeHtml}
-              <img class="p-img" src="${getProductImage(item)}" alt="${item.name}" loading="lazy" />
-              <div>
-                <div class="p-title">${item.name}</div>
-                <div class="p-unit">${item.unit}</div>
-              </div>
-              <div class="p-bottom">
-                <div class="p-price">₹${item.price}</div>
-                ${actionHtml}
-              </div>
+      const q = document.getElementById("searchInput").value.trim().toLowerCase();
+      const filtered = products.filter(p =>
+        (activeCat === "All" || p.cat === activeCat) &&
+        (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q))
+      );
+      document.getElementById("productGrid").innerHTML = filtered.map(p => {
+        const qty = cart[p.id] || 0;
+        return `
+          <div class="card">
+            <div>
+              <div class="prod-emoji">${p.img || "🛒"}</div>
+              <div class="prod-cat">${p.cat}</div>
+              <div class="prod-title">${p.name}</div>
+              <div class="prod-unit">${p.unit}</div>
             </div>
-          `;
-        })
-        .join("");
+            <div class="card-foot">
+              <span class="price">₹${p.price}</span>
+              ${qty === 0
+                ? `<button class="add-btn" onclick="changeQty(${p.id}, 1)">+ Add</button>`
+                : `<div class="qty-box">
+                     <button onclick="changeQty(${p.id}, -1)">−</button>
+                     <span>${qty}</span>
+                     <button onclick="changeQty(${p.id}, 1)">+</button>
+                   </div>`
+              }
+            </div>
+          </div>`;
+      }).join("");
     }
+          function saveCart() { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart)); }
 
-    // ==========================================
-    // CART LOGIC & BILLING
-    // ==========================================
-    function saveCart() {
-      localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
-    }
-
-    function changeQty(productId, delta) {
-      const nextQty = (cart[productId] || 0) + delta;
-      if (nextQty <= 0) {
-        delete cart[productId];
-      } else {
-        cart[productId] = nextQty;
-      }
+    function changeQty(id, delta) {
+      const next = (cart[id] || 0) + delta;
+      if (next <= 0) delete cart[id];
+      else cart[id] = next;
       saveCart();
       renderProducts();
       updateCartUI();
-
-      if (document.getElementById("cartModal").classList.contains("open")) {
-        renderCartModal();
-      }
     }
 
     function getCartTotals() {
-      let totalItems = 0;
-      let subtotal = 0;
       const itemsList = [];
-
-      Object.keys(cart).forEach(idStr => {
-        const id = Number(idStr);
-        const qty = cart[id];
-        const prod = products.find(p => p.id === id);
-        if (prod && qty > 0) {
-          totalItems += qty;
-          subtotal += prod.price * qty;
-          itemsList.push({ ...prod, qty, lineTotal: prod.price * qty });
+      let subtotal = 0;
+      for (const [idStr, qty] of Object.entries(cart)) {
+        const p = products.find(x => x.id === Number(idStr));
+        if (p && qty > 0) {
+          const lineTotal = p.price * qty;
+          subtotal += lineTotal;
+          itemsList.push({ ...p, qty, lineTotal });
         }
-      });
-
-      const delFee = Number(storeConfig.deliveryFee) || 0;
-      const freeLimit = Number(storeConfig.freeDeliveryAbove) || 499;
-      const delivery = subtotal === 0 ? 0 : subtotal >= freeLimit ? 0 : delFee;
-      const grandTotal = subtotal + delivery;
-
-      return { totalItems, subtotal, delivery, grandTotal, itemsList };
+      }
+      const delivery = subtotal > 0 ? Number(storeConfig.deliveryFee || 0) : 0;
+      return { itemsList, subtotal, delivery, grandTotal: subtotal + delivery };
     }
 
     function updateCartUI() {
-      const { totalItems, grandTotal } = getCartTotals();
-      const floatBar = document.getElementById("cartFloat");
-      if (totalItems > 0) {
-        document.getElementById("floatCount").textContent = `${totalItems} item${totalItems > 1 ? "s" : ""} added`;
-        document.getElementById("floatTotal").textContent = `₹${grandTotal}`;
-        floatBar.classList.add("show");
+      const { itemsList, grandTotal } = getCartTotals();
+      const count = itemsList.reduce((sum, i) => sum + i.qty, 0);
+      const bar = document.getElementById("cartBar");
+      if (count > 0) {
+        bar.style.display = "flex";
+        document.getElementById("cartCountText").textContent = `${count} Item${count > 1 ? "s" : ""}`;
+        document.getElementById("cartTotalText").textContent = `₹${grandTotal}`;
       } else {
-        floatBar.classList.remove("show");
+        bar.style.display = "none";
       }
-    }
-          function openCartModal() {
-      const { totalItems } = getCartTotals();
-      if (totalItems === 0) {
-        showToast("Pehle cart mein kuch items add karein!");
-        return;
-      }
-      if (currentUser) {
-        const nameEl = document.getElementById("custName");
-        const phoneEl = document.getElementById("custPhone");
-        if (!nameEl.value) nameEl.value = currentUser.name || "";
-        if (!phoneEl.value) phoneEl.value = currentUser.phone || "";
-      }
-      renderCartModal();
-      openModal("cartModal");
     }
 
-    function renderCartModal() {
+    function openCheckout() {
       const { itemsList, subtotal, delivery, grandTotal } = getCartTotals();
-      const listEl = document.getElementById("cartItemsList");
-      if (itemsList.length === 0) {
-        closeModal("cartModal");
-        return;
-      }
-      listEl.innerHTML = itemsList
-        .map(item => `
-          <div class="cart-item">
-            <div style="flex:1;">
-              <div style="font-weight:700; font-size:13px;">${item.name}</div>
-              <div style="font-size:11.5px; color:#666;">${item.unit} × ₹${item.price} = <strong>₹${item.lineTotal}</strong></div>
-            </div>
-            <div class="qty-box">
-              <button onclick="changeQty(${item.id}, -1)">−</button>
-              <span>${item.qty}</span>
-              <button onclick="changeQty(${item.id}, 1)">+</button>
-            </div>
-          </div>`)
-        .join("");
-
-      document.getElementById("billSubtotal").textContent = `₹${subtotal}`;
-      document.getElementById("billDelivery").textContent = delivery === 0 ? "FREE" : `₹${delivery}`;
-      document.getElementById("billTotal").textContent = `₹${grandTotal}`;
-      if (typeof updateUpiLinks === "function") updateUpiLinks();
-    }
-
-    // ==========================================
-    // USER LOGIN, ORDER HISTORY & REORDER
-    // ==========================================
-    function updateAccountHeader() {
-      const btn = document.getElementById("accountBtn");
-      btn.textContent = currentUser && currentUser.name ? `👤 ${currentUser.name.split(" ")[0]}` : "👤 Login / Orders";
-    }
-
-    function openAccountModal() {
-      const authSec = document.getElementById("authSection");
-      const profSec = document.getElementById("profileSection");
-      if (currentUser) {
-        authSec.style.display = "none";
-        profSec.style.display = "flex";
-        document.getElementById("userWelcome").textContent = `Namaste, ${currentUser.name}!`;
-        document.getElementById("userPhoneDisplay").textContent = `Mobile: ${currentUser.phone}`;
-        renderOrderHistory();
-      } else {
-        authSec.style.display = "flex";
-        profSec.style.display = "none";
-      }
-      openModal("accountModal");
-    }
-
-    function handleAuth() {
-      const name = document.getElementById("authName").value.trim();
-      const phone = document.getElementById("authPhone").value.trim();
-      const pin = document.getElementById("authPin").value.trim();
-      if (!name || phone.length !== 10 || pin.length !== 4) {
-        showToast("Sahi Name, 10-digit Mobile aur 4-digit PIN dalen");
-        return;
-      }
-      const usersDb = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS_DB)) || {};
-      if (usersDb[phone] && usersDb[phone].pin !== pin) {
-        showToast("Galat PIN! Sahi 4-digit PIN dalen.");
-        return;
-      }
-      usersDb[phone] = { name, phone, pin };
-      localStorage.setItem(STORAGE_KEYS.USERS_DB, JSON.stringify(usersDb));
-      currentUser = { name, phone };
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
-      updateAccountHeader();
-      showToast("Login successful!");
-      openAccountModal();
-    }
-
-    function logoutUser() {
-      currentUser = null;
-      localStorage.removeItem(STORAGE_KEYS.USER);
-      updateAccountHeader();
-      showToast("Logged out");
-      openAccountModal();
-    }
-          function renderOrderHistory() {
-      const listEl = document.getElementById("orderHistoryList");
-      const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
-      const userOrders = currentUser ? allOrders.filter(o => o.phone === currentUser.phone) : [];
-      if (userOrders.length === 0) {
-        listEl.innerHTML = `<div style="font-size:12.5px; color:#666; padding:10px 0;">Abhi tak koi order nahi kiya gaya hai.</div>`;
-        return;
-      }
-      listEl.innerHTML = userOrders.slice().reverse().map(ord => `
-        <div class="order-card">
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <strong>Order #${ord.id}</strong>
-            <span style="color:var(--primary); font-weight:700;">₹${ord.total} (${ord.payment})</span>
-          </div>
-          <div style="font-size:11px; color:#666; margin-bottom:6px;">${ord.date} • ${ord.items.length} items</div>
-          <div style="font-size:11.5px; color:#333; margin-bottom:8px;">${ord.items.map(i => `${i.name} (${i.qty})`).join(", ")}</div>
-          <button type="button" class="primary-btn" style="padding:6px 10px; font-size:11.5px;" onclick="reorderPastOrder('${ord.id}')">🔄 Reorder Items</button>
+      if (!itemsList.length) return showToast("Cart khaali hai!");
+      document.getElementById("displayUpiId").textContent = storeConfig.upiId || "fazalrab56@oksbi";
+      document.getElementById("cartItemsView").innerHTML = itemsList.map(i => `
+        <div class="admin-row">
+          <span><strong>${i.name}</strong> (${i.unit}) × ${i.qty}</span>
+          <span>₹${i.lineTotal}</span>
         </div>`).join("");
+      document.getElementById("billSummary").innerHTML = `
+        <div>Items Total: <strong>₹${subtotal}</strong></div>
+        <div>Delivery Charge: <strong>₹${delivery}</strong></div>
+        <div style="font-size:15px;margin-top:4px;color:#15803d;">Grand Total: <strong>₹${grandTotal}</strong></div>`;
+      openModal("checkoutModal");
     }
 
-    function reorderPastOrder(orderId) {
-      const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
-      const found = allOrders.find(o => String(o.id) === String(orderId));
-      if (!found) return;
-      found.items.forEach(item => {
-        if (products.some(p => p.id === item.id)) cart[item.id] = (cart[item.id] || 0) + item.qty;
-      });
-      saveCart();
-      renderProducts();
-      updateCartUI();
-      closeModal("accountModal");
-      showToast("Purane items cart mein add ho gaye!");
-      openCartModal();
+    function setPayment(method) {
+      paymentMethod = method;
+      document.getElementById("tabCOD").classList.toggle("active", method === "COD");
+      document.getElementById("tabUPI").classList.toggle("active", method === "UPI");
+      document.getElementById("upiSection").style.display = method === "UPI" ? "block" : "none";
     }
 
-    // ==========================================
-    // GPS, FAMPAY UPI & WHATSAPP CHECKOUT
-    // ==========================================
-        function captureGPS() {
-      const st = document.getElementById("gpsStatus");
-      if (!navigator.geolocation) return showToast("GPS support nahi hai");
-      st.style.display = "block";
-      st.textContent = "⏳ Location fetch ho rahi hai...";
-      navigator.geolocation.getCurrentPosition(
-        p => {
-          capturedGPS = `https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}`;
-          st.textContent = "✅ Live GPS Location attached!";
-          showToast("GPS Location attach ho gayi!");
-        },
-        () => { st.textContent = "⚠️ Location allow karein ya address likhein."; },
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    }
-
-    function setPaymentMethod(m) {
-      paymentMethod = m;
-      document.getElementById("tabCOD").classList.toggle("active", m === "COD");
-      document.getElementById("tabUPI").classList.toggle("active", m === "UPI");
-      document.getElementById("upiDetailsBox").style.display = m === "UPI" ? "block" : "none";
-      if (m === "UPI") updateUpiLinks();
-    }
-
-    function updateUpiLinks() {
-      const { grandTotal } = getCartTotals();
-      const upi = storeConfig.upiId || "required@fam";
-      document.getElementById("displayUpiId").textContent = upi;
-      document.getElementById("upiDeepLink").href = `upi://pay?pa=${encodeURIComponent(upi)}&pn=REQUIRED&am=${grandTotal}&cu=INR`;
-    }
-
-    function copyUpiId() {
-      const upi = storeConfig.upiId || "required@fam";
+    function copyUpi() {
+      const upi = storeConfig.upiId || "fazalrab56@oksbi";
       if (navigator.clipboard) navigator.clipboard.writeText(upi);
       showToast(`UPI ID copied: ${upi}`);
-      }
-          async function placeWhatsAppOrder() {
-      const OWNER_GMAIL = storeConfig.whatsappNumber && storeConfig.whatsappNumber.includes("@")
-        ? storeConfig.whatsappNumber.trim()
-        : "Fazalrab56@gmail.com";
+    }
 
+    function captureLocation() {
+      if (!navigator.geolocation) return showToast("GPS supported nahi hai");
+      document.getElementById("gpsStatus").textContent = "Fetching GPS...";
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          capturedGPS = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
+          document.getElementById("gpsStatus").textContent = "✅ GPS Attached";
+        },
+        () => { document.getElementById("gpsStatus").textContent = "❌ GPS denied"; }
+      );
+    }
+          async function placeWhatsAppOrder() {
       const name = document.getElementById("custName").value.trim();
       const phone = document.getElementById("custPhone").value.trim();
       const address = document.getElementById("custAddress").value.trim();
       const utr = document.getElementById("upiRefInput").value.trim();
       const { itemsList, subtotal, delivery, grandTotal } = getCartTotals();
 
-      if (!name || phone.length < 10 || !address) return showToast("Name, Mobile aur Address bharein");
-      if (!itemsList.length) return;
+      if (!name || phone.length < 10 || !address) return showToast("Name, 10-digit phone aur address bharein!");
+      if (!itemsList.length) return showToast("Cart khaali hai!");
+      if (paymentMethod === "UPI" && !utr) return showToast("UPI payment ka UTR / Ref ID daalein!");
 
       const btn = document.querySelector(".wa-submit-btn");
       btn.disabled = true;
@@ -1327,54 +556,71 @@
 
       const orderId = String(Date.now()).slice(-6);
       const orderDate = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
-      const payText = paymentMethod === "UPI" ? `UPI${utr ? " (UTR:" + utr + ")" : ""}` : "COD";
+      const payText = paymentMethod === "UPI" ? `UPI (UTR: ${utr})` : "Cash on Delivery";
       const itemsText = itemsList.map((i, idx) => `${idx + 1}. ${i.name} (${i.unit}) x${i.qty} = Rs.${i.lineTotal}`).join("\n");
 
-      const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
-      allOrders.push({ id: orderId, date: orderDate, name, phone, address, payment: payText, total: grandTotal, items: itemsList });
-      localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(allOrders));
+      try {
+        const res = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `New Order #${orderId} - Rs.${grandTotal}`,
+            from_name: "REQUIRED Store",
+            Customer: `${name} | ${phone}`,
+            Address: `${address} | GPS: ${capturedGPS || "N/A"}`,
+            Items: itemsText,
+            Total: `Sub Rs.${subtotal} + Del Rs.${delivery} = Rs.${grandTotal}`,
+            Payment: payText,
+            Date: orderDate
+          })
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || "Email failed");
 
-      try }
-            const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          access_key: "1380f4ad-246d-4617-a192-2f5063a2028e",
-          subject: `New Order #${orderId} - Rs.${grandTotal}`,
-          from_name: "Online Store",
-          Customer: `${name} | ${phone}`,
-          Address: `${address} | GPS: ${capturedGPS || "N/A"}`,
-          Items: itemsText,
-          Total: `Sub Rs.${subtotal} + Del Rs.${delivery} = Rs.${grandTotal}`,
-          Payment: payText,
-          Date: orderDate
-        })
-      });
-      const data = await res.json();
-      if (!data.success) throw new Error(data.message || "Email failed")
-        cart = {}; saveCart(); renderProducts(); updateCartUI(); closeModal("cartModal");
+        const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
+        allOrders.unshift({ id: orderId, date: orderDate, name, phone, address, itemsText, grandTotal, payText });
+        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(allOrders));
+
+        cart = {}; saveCart(); renderProducts(); updateCartUI();
+        closeModal("checkoutModal");
         alert(`✅ Order Placed! Order ID: #${orderId}\nTotal: ₹${grandTotal}`);
-      } catch (e) { showToast("Network error! Dobara try karein."); }
-      btn.disabled = false;
-      btn.textContent = "✅ Place Order";
-          }
-          // ==========================================
-    // ADMIN PANEL (PIN: 2411) & APP START
-    // ==========================================
+      } catch (e) {
+        showToast("Network error! Dobara try karein.");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "✅ Place Order";
+      }
+    }
+
+    function openOrdersModal() {
+      const orders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
+      document.getElementById("myOrdersList").innerHTML = orders.length
+        ? orders.map(o => `
+            <div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;font-size:13px;">
+              <div><strong>Order #${o.id}</strong> • ₹${o.grandTotal} (${o.payText})</div>
+              <div style="color:var(--muted);font-size:11px;margin:2px 0;">${o.date}</div>
+              <pre style="white-space:pre-wrap;font-size:12px;margin-top:4px;">${o.itemsText}</pre>
+            </div>`).join("")
+        : "<p style='color:var(--muted);font-size:13px;'>Abhi tak koi order nahi hai.</p>";
+      openModal("ordersModal");
+    }
+
     function openAdminPrompt() {
       const pin = prompt("Enter Admin PIN:");
-      if (pin !== ADMIN_PIN) return showToast("Galat Admin PIN!");
-      document.getElementById("adminWaInput").value = storeConfig.whatsappNumber || "Fazalrab56@gmail.com";
-      document.getElementById("adminUpiInput").value = storeConfig.upiId || "required@fam";
+      if (pin !== ADMIN_PIN) return showToast("Galat PIN!");
+      document.getElementById("adminWaInput").value = storeConfig.whatsappNumber || "";
+      document.getElementById("adminUpiInput").value = storeConfig.upiId || "";
       document.getElementById("adminDelFeeInput").value = storeConfig.deliveryFee ?? 20;
       renderAdminProducts();
+      renderAdminOrders();
       openModal("adminModal");
     }
 
     function saveStoreSettings() {
-      storeConfig.whatsappNumber = document.getElementById("adminWaInput").value.trim() || "Fazalrab56@gmail.com";
-      storeConfig.upiId = document.getElementById("adminUpiInput").value.trim() || "9329736019@fam";
-      storeConfig.deliveryFee = Number(document.getElementById("adminDelFeeInput").value) || 0;
+      storeConfig.whatsappNumber = document.getElementById("adminWaInput").value.trim();
+      storeConfig.upiId = document.getElementById("adminUpiInput").value.trim();
+      storeConfig.deliveryFee = Number(document.getElementById("adminDelFeeInput").value || 0);
       localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(storeConfig));
       showToast("Store settings saved!");
     }
@@ -1382,38 +628,24 @@
     function adminAddProduct() {
       const name = document.getElementById("newProdName").value.trim();
       const cat = document.getElementById("newProdCat").value;
-      const unit = document.getElementById("newProdUnit").value.trim() || "1 Pack";
+      const unit = document.getElementById("newProdUnit").value.trim() || "1 pc";
       const price = Number(document.getElementById("newProdPrice").value);
-      const img = document.getElementById("newProdImg").value.trim();
-      if (!name || !price) return showToast("Product Name aur Price dalen");
-      products.unshift({ id: Date.now(), name, cat, unit, price, badge: "New", emoji: "🛒", bg: "#f0fdf4", img });
+      const img = document.getElementById("newProdImg").value.trim() || "🛒";
+      if (!name || !price) return showToast("Name aur price bharein!");
+      products.unshift({ id: Date.now(), name, cat, unit, price, img });
       localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-      ["newProdName", "newProdUnit", "newProdPrice", "newProdImg"].forEach(id => (document.getElementById(id).value = ""));
-      renderProducts();
-      renderAdminProducts();
-      showToast("New item added!");
+      renderProducts(); renderAdminProducts();
+      showToast("Item added!");
     }
 
-    function renderAdminProducts() {
-      const q = (document.getElementById("adminSearchInput").value || "").toLowerCase();
-      const list = products.filter(p => p.name.toLowerCase().includes(q));
-      document.getElementById("adminProductList").innerHTML = list.map(p => `
-        <div class="admin-row">
-          <div style="flex:1;"><strong>${p.name}</strong><div style="font-size:11px;color:#666;">${p.unit} • ₹${p.price}</div></div>
-          <button class="copy-mini" onclick="editProdPrice(${p.id})">Edit ₹</button>
-          <button class="danger-btn" onclick="deleteProd(${p.id})">Del</button>
-        </div>`).join("");
-    }
-
-    function editProdPrice(id) {
+    function editPrice(id) {
       const p = products.find(x => x.id === id);
       if (!p) return;
-      const val = prompt(`Naya price likhein (${p.name}):`, p.price);
-      if (val !== null && Number(val) > 0) {
-        p.price = Number(val);
+      const np = prompt(`New price for ${p.name}:`, p.price);
+      if (np !== null && !isNaN(Number(np)) && Number(np) > 0) {
+        p.price = Number(np);
         localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-        renderProducts();
-        renderAdminProducts();
+        renderProducts(); renderAdminProducts();
         showToast("Price updated!");
       }
     }
@@ -1421,8 +653,7 @@
     function deleteProd(id) {
       products = products.filter(p => p.id !== id);
       localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-      renderProducts();
-      renderAdminProducts();
+      renderProducts(); renderAdminProducts();
       showToast("Item deleted");
     }
 
@@ -1430,16 +661,31 @@
       if (!confirm("Kya aap saare 100 default items reset karna chahte hain?")) return;
       products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
       localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-      renderProducts();
-      renderAdminProducts();
+      renderCategories(); renderProducts(); renderAdminProducts();
       showToast("100 items reset!");
     }
 
-    const orderBtn = document.querySelector(".wa-submit-btn");
-    if (orderBtn) orderBtn.textContent = "✅ Place Order";
+    function renderAdminProducts() {
+      document.getElementById("adminProdList").innerHTML = products.map(p => `
+        <div class="admin-row">
+          <span>${p.name} (₹${p.price})</span>
+          <div>
+            <button class="sm-btn" style="background:#fef3c7;color:#92400e;" onclick="editPrice(${p.id})">Edit</button>
+            <button class="sm-btn" style="background:#fee2e2;color:#b91c1c;" onclick="deleteProd(${p.id})">Del</button>
+          </div>
+        </div>`).join("");
+    }
+
+    function renderAdminOrders() {
+      const orders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
+      document.getElementById("adminOrdersList").innerHTML = orders.length
+        ? orders.map(o => `<div class="admin-row"><span>#${o.id} • ${o.name} (${o.phone})</span><strong>₹${o.grandTotal}</strong></div>`).join("")
+        : "<p style='color:var(--muted);font-size:12px;'>No orders yet.</p>";
+    }
+
+    renderCategories();
     renderProducts();
     updateCartUI();
-    updateAccountHeader();
   </script>
 </body>
 </html>
