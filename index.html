@@ -339,4 +339,86 @@ document.getElementById("shopView").insertAdjacentHTML("beforeend", '<div style=
 </script>
 </body>
 </html>
+<!-- Checkout Form (Apne Cart section ke niche lagayein) -->
+<div id="checkout-box" style="max-width: 450px; margin: 20px auto; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+  <h3>Order Details</h3>
+  <input type="text" id="cust-name" placeholder="Aapka Naam" required style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;" />
+  <input type="tel" id="cust-phone" placeholder="Mobile Number" required style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;" />
+  <textarea id="cust-address" placeholder="Delivery Address" required style="width: 100%; padding: 10px; margin-bottom: 10px; box-sizing: border-box;"></textarea>
+  
+  <select id="payment-mode" style="width: 100%; padding: 10px; margin-bottom: 12px; box-sizing: border-box;">
+    <option value="Cash on Delivery">Cash on Delivery (COD)</option>
+    <option value="UPI Paid">UPI Payment</option>
+  </select>
+
+  <button type="button" id="order-btn" onclick="sendOrderToGmail()" style="width: 100%; padding: 12px; background: #16a34a; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer;">
+    Confirm Order
+  </button>
+  <p id="order-status" style="margin-top: 10px; font-weight: bold;"></p>
+</div>
+
+<script>
+async function sendOrderToGmail() {
+  const name = document.getElementById("cust-name").value.trim();
+  const phone = document.getElementById("cust-phone").value.trim();
+  const address = document.getElementById("cust-address").value.trim();
+  const payment = document.getElementById("payment-mode").value;
+  const statusText = document.getElementById("order-status");
+  const btn = document.getElementById("order-btn");
+
+  if (!name || !phone || !address) {
+    alert("Kripya naam, mobile number aur address bharein.");
+    return;
+  }
+
+  // Apne cart array aur total variable ko yahan connect karein
+  const orderItems = (typeof cart !== "undefined" && cart.length > 0)
+    ? cart.map(item => `${item.name} (x${item.qty}) - Rs.${item.price * item.qty}`).join("\n")
+    : "Cart items list";
+
+  const totalAmount = (typeof total !== "undefined") ? total : "0";
+
+  btn.disabled = true;
+  btn.innerText = "Order bheja ja raha hai...";
+
+  const orderData = {
+    _subject: `Naya Order - ${name} (${phone})`,
+    _template: "table",
+    Customer_Name: name,
+    Phone: phone,
+    Address: address,
+    Payment_Mode: payment,
+    Items: orderItems,
+    Total_Amount: `Rs. ${totalAmount}`
+  };
+
+  try {
+    const response = await fetch("https://formsubmit.co/ajax/Fazalrab56@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(orderData)
+    });
+
+    const result = await response.json();
+
+    if (result.success === "true" || result.success === true) {
+      statusText.style.color = "green";
+      statusText.innerText = "Order successfully bhej diya gaya hai!";
+    } else {
+      statusText.style.color = "red";
+      statusText.innerText = "Order bhejne me dikkat aayi, dobara try karein.";
+    }
+  } catch (error) {
+    statusText.style.color = "red";
+    statusText.innerText = "Network error! Internet connection check karein.";
+  } finally {
+    btn.disabled = false;
+    btn.innerText = "Confirm Order";
+  }
+}
+</script>
+
 
