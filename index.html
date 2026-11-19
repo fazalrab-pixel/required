@@ -2371,4 +2371,226 @@ Complete responsive Blinkit-style web storefront built with HTML5, CSS3, and Van
    - `js/app.js`
 2. Open your repository **Settings → Pages → Build and deployment**.
 3. Select **Deploy from a branch** (`main` / `/root`) and click **Save**.
+      /* ==================== PART 21: QR SCANNER + ADMIN PAYMENT CONFIRMATION ==================== */
+(function initQrAndPaymentAdmin() {
+  const SCANNER_IMAGE_PATH = "5846.png";
+
+  function setupScannerUI() {
+    const selectEl = document.getElementById("paymentMethodSelect");
+    if (!selectEl) return;
+
+    if (!selectEl.querySelector('option[value="QR_SCANNER"]')) {
+      const qrOpt = document.createElement("option");
+      qrOpt.value = "QR_SCANNER";
+      qrOpt.textContent = "📲 Scan & Pay (UPI QR Scanner)";
+      selectEl.insertBefore(qrOpt, selectEl.firstChild);
+      selectEl.value = "QR_SCANNER";
+    }
+
+    const paymentCard = selectEl.closest(".payment-card");
+    if (paymentCard && !document.getElementById("qrScannerPayBox")) {
+      const box = document.createElement("div");
+      box.id = "qrScannerPayBox";
+      box.style.cssText = `
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 14px;
+        background: #141414;
+        color: #FFFFFF;
+        text-align: center;
+        border: 1.5px solid #0C831F;
+      `;
+      box.innerHTML = `
+        <div style="font-size:12px; font-weight:800; color:#F8CB46; letter-spacing:0.4px; margin-bottom:4px;">
+          SCAN & PAY USING ANY UPI APP
+        </div>
+        <div style="font-size:13px; margin-bottom:10px;">
+          Payable Amount: <strong id="qrPayAmountText" style="font-size:16px; color:#4ADE80;">₹0</strong>
+        </div>
+        <div style="background:#1E1E1E; padding:10px; border-radius:12px; display:inline-block; border:1px solid #333;">
+          <img src="${SCANNER_IMAGE_PATH}" alt="Payment QR Scanner"
+               style="width:200px; height:200px; object-fit:contain; border-radius:10px; display:block;"
+               onerror="this.alt='Upload 5846.png in GitHub root folder';" />
+        </div>
+        <div style="font-size:11px; color:#BBBBBB; margin-top:8px;">
+          GPay • PhonePe • Paytm • FamPay • BHIM UPI
+        </div>
+        <input type="text" id="qrUtrInput" maxlength="20"
+               placeholder="Enter 12-digit UTR / Transaction ID"
+               style="width:100%; margin-top:10px; height:38px; border-radius:8px; border:1px solid #444; background:#222; color:#fff; padding:0 10px; font-size:12.5px;" />
+      `;
+      paymentCard.appendChild(box);
+
+      selectEl.addEventListener("change", () => {
+        box.style.display = selectEl.value === "QR_SCANNER" ? "block" : "none";
+      });
+    }
+  }
+
+  const originalRenderCartDrawer = App.renderCartDrawer.bind(App);
+  App.renderCartDrawer = function () {
+    originalRenderCartDrawer();
+    setupScannerUI();
+    const s = App.getCartSummary();
+    const amtEl = document.getElementById("qrPayAmountText");
+    if (amtEl) amtEl.textContent = `₹${s.grandTotal}`;
+    const selectEl = document.getElementById("paymentMethodSelect");
+    const box = document.getElementById("qrScannerPayBox");
+    if (selectEl && box) {
+      box.style.display = selectEl.value === "QR_SCANNER" ? "block" : "none";
+    }
+  };
+
+  const originalPlaceOrder = App.placeOrder.bind(App);
+  App.placeOrder = function () {
+    const selectEl = document.getElementById("paymentMethodSelect");
+    const utrInput = document.getElementById("qrUtrInput");
+    const isQr = selectEl && selectEl.value === "QR_SCANNER";
+    const utrVal = utrInput ? utrInput.value.trim() : "";
+
+    originalPlaceOrder();
+
+    const paymentLabel = isQr
+      ? (utrVal ? `QR Scanner (UTR: ${utrVal})` : "QR Scanner (No UTR entered)")
+      : (selectEl ? selectEl.value : "UPI");
+
+    const user = Auth.getUser();
+    if (user.orders && user.orders.length > 0) {
+      user.orders[0].payment = paymentLabel;
+      user.orders[0].paymentStatus = "Pending Verification";
+      Auth.saveUser(user);
+    }
+    const allOrders = Auth.getAllGlobalOrders();
+    if (allOrders && allOrders.length > 0) {
+      allOrders[0].payment = paymentLabel;
+      allOrders[0].paymentStatus = "Pending Verification";
+      Auth.saveAllGlobalOrders(allOrders);
+    }
+    if (utrInput) utrInput.value = "";
+  };
+
+  // Admin Function: Confirm or Reject Payment
+  App.updatePaymentStatusAdmin = function (orderId, newPayStatus) {
+    const allOrders = Auth.getAllGlobalOrders();
+    const target = allOrders.find(o => o.id === orderId);
+    if (target) {
+      target.paymentStatus = newPayStatus;
+      Auth.saveAllGlobalOrders(allOrders);
+    }
+
+    const user = Auth.getUser();
+    const userOrder = user.orders.find(o => o.id === orderId);
+    if (userOrder) {
+      userOrder.paymentStatus = newPayStatus;
+      Auth.saveUser(user);
+    }
+
+    App.showToast(`Order #${orderId}: ${newPayStatus}`);
+    App.openAdminDashboard();
+  };
+
+  // Enhanced Admin Dashboard with Payment Confirm / Not Confirmed buttons
+  App.openAdminDashboard = function () {
+    const allOrders = Auth.getAllGlobalOrders();
+    const totalRevenue = allOrders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+    const deliveredCount = allOrders.filter(o => o.status === "Delivered").length;
+
+    const ordersHtml = allOrders.length
+      ? allOrders.map(o => {
+          let badgeClass = "";
+          if (o.status === "Shipped" || o.status === "Out for Delivery") badgeClass = "shipped";
+          if (o.status === "Delivered") badgeClass = "delivered";
+
+          const payStat = o.paymentStatus || "Pending Verification";
+          let payBg = "#FFF3CD", payColor = "#856404", payIcon = "⏳";
+          if (payStat === "Payment Confirmed") {
+            payBg = "#D4EDDA"; payColor = "#155724"; payIcon = "✅";
+          } else if (payStat === "Payment Not Confirmed") {
+            payBg = "#F8D7DA"; payColor = "#721C24"; payIcon = "❌";
+          }
+
+          return `
+            <div class="admin-order-card">
+              <div class="admin-order-head">
+                <strong>#${o.id} • ₹${o.total}</strong>
+                <span class="status-badge ${badgeClass}">${o.status}</span>
+              </div>
+
+              <div style="background:${payBg}; color:${payColor}; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:800; margin-bottom:8px;">
+                ${payIcon} Payment Status: ${payStat}
+              </div>
+
+              <div style="font-size:12.5px; line-height:1.45;">
+                👤 <b>${o.customerName || "Customer"}</b> (${o.customerPhone || "N/A"})<br>
+                📍 ${o.address}<br>
+                💳 <b>Paid via:</b> ${o.payment}<br>
+                🕒 <small>${o.date}</small>
+              </div>
+
+              <div class="admin-items-box">
+                <strong>Ordered Items:</strong><br>
+                ${o.items.map(it => `${it.icon || "•"} ${it.name} (${it.weight}) × <b>${it.qty}</b> = ₹${it.price * it.qty}`).join("<br>")}
+              </div>
+
+              <div style="font-size:11px; font-weight:800; margin-top:6px; color:var(--text-secondary);">1. VERIFY PAYMENT:</div>
+              <div class="admin-btn-row">
+                <button class="admin-status-btn deliv-btn" onclick="App.updatePaymentStatusAdmin('${o.id}', 'Payment Confirmed')">✅ Payment Confirmed</button>
+                <button class="admin-status-btn" style="border-color:#D32F2F; color:#D32F2F;" onclick="App.updatePaymentStatusAdmin('${o.id}', 'Payment Not Confirmed')">❌ Not Confirmed</button>
+              </div>
+
+              <div style="font-size:11px; font-weight:800; margin-top:8px; color:var(--text-secondary);">2. UPDATE DELIVERY STATUS:</div>
+              <div class="admin-btn-row">
+                <button class="admin-status-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Packed')">📦 Mark as Packed</button>
+                <button class="admin-status-btn ship-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Shipped')">🚚 Mark as Shipped</button>
+                <button class="admin-status-btn ship-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Out for Delivery')">🛵 Out for Delivery</button>
+                <button class="admin-status-btn deliv-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Delivered')">✅ Mark as Delivered</button>
+              </div>
+            </div>
+          `;
+        }).join("")
+      : `<p style="font-size:13px;">Abhi tak koi order nahi aaya hai.</p>`;
+
+    App.openGenericModal("🛡️ Blinkit Admin Dashboard", `
+      <div class="admin-stats-grid">
+        <div class="admin-stat-box"><strong>${allOrders.length}</strong><small>Total Orders</small></div>
+        <div class="admin-stat-box"><strong>₹${totalRevenue}</strong><small>Revenue</small></div>
+        <div class="admin-stat-box"><strong>${deliveredCount}</strong><small>Delivered</small></div>
+      </div>
+      ${ordersHtml}
+    `);
+  };
+
+  // Show Payment Confirmation Status in Customer's "Your Orders" too
+  App.openOrdersModal = function () {
+    const user = Auth.getUser();
+    const html = user.orders.length
+      ? user.orders.map(o => {
+          const payStat = o.paymentStatus || "Pending Verification";
+          const payColor = payStat === "Payment Confirmed" ? "#0C831F" : (payStat === "Payment Not Confirmed" ? "#D32F2F" : "#B26A00");
+          return `
+            <div style="border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:8px;">
+              <div style="display:flex; justify-content:space-between;">
+                <strong>Order #${o.id}</strong>
+                <span style="color:#0C831F; font-weight:800; font-size:12px;">● ${o.status}</span>
+              </div>
+              <div style="font-size:11.5px; font-weight:700; color:${payColor}; margin-top:3px;">
+                Payment: ${payStat}
+              </div>
+              <small>${o.date} • ${o.items.length} items • ₹${o.total}</small>
+              <div style="font-size:12px; margin-top:5px; color:var(--text-secondary);">
+                ${o.items.map(it => `${it.icon || "•"} ${it.name} x${it.qty}`).join(", ")}
+              </div>
+            </div>
+          `;
+        }).join("")
+      : `<p>No orders placed yet. Start shopping from Home!</p>`;
+    App.openGenericModal("Your Orders (Live Status)", html);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupScannerUI);
+  } else {
+    setupScannerUI();
+  }
+})();
         
