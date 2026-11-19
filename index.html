@@ -377,5 +377,164 @@
     }
 
     .search-wrap {
-      max-width:
+      max-width:<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REQUIRED - Because Life Needs It</title>
+  <style>
+    :root {
+      --teal-dark: #124a5e;
+      --teal-mid: #1a6680;
+      --teal-accent: #7de2f7;
+      --green-btn: #16a34a;
+      --green-dark: #15803d;
+      --bg-page: #f3f6f8;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg-page); color: var(--text-main); padding-bottom: 90px; }
+    .brand-header { background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal-mid) 100%); color: #fff; padding: 18px 16px 16px; text-align: center; border-bottom: 4px solid var(--teal-accent); }
+    .brand-header h1 { font-size: 30px; letter-spacing: 3px; font-weight: 800; text-transform: uppercase; line-height: 1.1; }
+    .brand-header p { margin-top: 5px; font-size: 13px; color: #d6f5fc; font-style: italic; }
+    .delivery-pill { display: inline-block; margin-top: 8px; background: rgba(255,255,255,0.14); border: 1px solid rgba(125,226,247,0.45); color: #fff; font-size: 11px; padding: 4px 12px; border-radius: 999px; }
+    .sticky-bar { position: sticky; top: 0; z-index: 50; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); padding: 10px 12px; }
+    .search-wrap { max-width: 1100px; margin: 0 auto 10px; position: relative; }
+    .search-wrap input { width: 100%; padding: 10px 36px 10px 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; outline: none; background: #f8fafc; }
+    .search-wrap input:focus { border-color: var(--teal-mid); background: #fff; }
+    .clear-search { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: none; background: none; font-size: 16px; color: #64748b; cursor: pointer; display: none; }
+    .cat-scroll { max-width: 1100px; margin: 0 auto; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .cat-scroll::-webkit-scrollbar { display: none; }
+    .cat-btn { white-space: nowrap; border: 1px solid #cbd5e1; background: #f8fafc; color: #334155; padding: 6px 13px; border-radius: 999px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+    .cat-btn.active { background: var(--teal-dark); color: #fff; border-color: var(--teal-dark); }
+    .container { max-width: 1100px; margin: 14px auto; padding: 0 12px; }
+    .section-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+    .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; } }
+    @media (min-width: 960px) { .product-grid { grid-template-columns: repeat(5, 1fr); } }
+    .card { background: var(--card-bg); border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+    .discount-badge { position: absolute; top: 8px; left: 8px; background: #0284c7; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 5px; z-index: 2; }
+    .card-img { width: 100%; height: 118px; object-fit: cover; display: block; background: #f1f5f9; }
+    .card-body { padding: 9px 10px 10px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+    .card-cat { font-size: 10px; color: var(--teal-mid); font-weight: 700; text-transform: uppercase; margin-bottom: 2px; }
+    .card-title { font-size: 13px; font-weight: 700; color: var(--text-main); line-height: 1.25; margin-bottom: 3px; }
+    .card-unit { font-size: 11.5px; color: var(--text-muted); margin-bottom: 8px; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .price-now { font-size: 14.5px; font-weight: 800; color: #0f172a; display: block; }
+    .price-mrp { font-size: 11px; color: #94a3b8; text-decoration: line-through; }
+    .add-btn { border: 1.5px solid var(--green-btn); background: #f0fdf4; color: var(--green-dark); font-weight: 800; font-size: 12px; padding: 6px 14px; border-radius: 8px; cursor: pointer; }
+    .qty-box { display: flex; align-items: center; background: var(--green-btn); color: #fff; border-radius: 8px; overflow: hidden; }
+    .qty-box button { background: none; border: none; color: #fff; font-size: 15px; font-weight: 800; padding: 5px 9px; cursor: pointer; }
+    .qty-box span { font-size: 12.5px; font-weight: 700; padding: 0 4px; }
+    .floating-cart { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 600px; background: var(--green-btn); color: #fff; padding: 12px 16px; border-radius: 14px; display: none; align-items: center; justify-content: space-between; box-shadow: 0 8px 24px rgba(22,163,74,0.35); z-index: 90; cursor: pointer; }
+    .floating-cart.show { display: flex; }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 100; display: none; align-items: flex-end; justify-content: center; }
+    .modal-backdrop.open { display: flex; }
+    @media (min-width: 640px) { .modal-backdrop.open { align-items: center; } }
+    .modal-sheet { background: #fff; width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; border-radius: 18px 18px 0 0; padding: 16px; }
+    @media (min-width: 640px) { .modal-sheet { border-radius: 16px; } }
+    .modal-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 12px; }
+    .close-btn { background: #f1f5f9; border: none; width: 30px; height: 30px; border-radius: 50%; font-size: 16px; cursor: pointer; }
+    .free-bar { background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46; font-size: 12px; font-weight: 600; padding: 8px 10px; border-radius: 8px; margin-bottom: 12px; text-align: center; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
+    .bill-box { background: #f8fafc; padding: 10px 12px; border-radius: 10px; margin: 12px 0; font-size: 13px; }
+    .bill-row { display: flex; justify-content: space-between; margin-bottom: 5px; }
+    .bill-total { display: flex; justify-content: space-between; font-weight: 800; font-size: 15px; border-top: 1px solid #cbd5e1; padding-top: 6px; margin-top: 6px; }
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #334155; }
+    .form-group input, .form-group textarea { width: 100%; padding: 9px 11px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13.5px; }
+    .gps-btn { width: 100%; background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; padding: 8px; border-radius: 8px; font-size: 12.5px; font-weight: 700; cursor: pointer; margin-top: 5px; }
+    .pay-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .pay-opt { border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 9px; text-align: center; font-size: 12.5px; font-weight: 700; cursor: pointer; background: #fff; }
+    .pay-opt.active { border-color: var(--teal-dark); background: #f0f9ff; color: var(--teal-dark); }
+    .fampay-card { background: #fffbeb; border: 1.5px solid #fcd34d; border-radius: 10px; padding: 10px 12px; margin-bottom: 12px; font-size: 12.5px; }
+    .upi-row { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px dashed #f59e0b; padding: 7px 10px; border-radius: 7px; margin: 6px 0; font-weight: 800; color: #92400e; }
+    .copy-upi-btn { background: #f59e0b; color: #fff; border: none; padding: 4px 9px; border-radius: 5px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .upi-app-link { display: block; text-align: center; background: #1e293b; color: #fff; text-decoration: none; padding: 8px; border-radius: 8px; font-weight: 700; font-size: 12.5px; margin-top: 6px; }
+    .whatsapp-submit { width: 100%; background: #25d366; color: #fff; border: none; padding: 13px; border-radius: 11px; font-size: 15px; font-weight: 800; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <header class="brand-header">
+    <svg width="170" height="32" viewBox="0 0 220 45" style="display:block;margin:0 auto 4px;">
+      <path d="M10,18 L35,12 L52,32 C95,14 150,8 215,10 C150,15 95,24 48,44 L10,18 Z" fill="#8be9fd" />
+    </svg>
+    <h1>REQUIRED</h1>
+    <p>"Because Life Needs It"</p>
+    <div class="delivery-pill">⚡ Fast Home Delivery • Free Delivery on Orders ₹299+</div>
+  </header>
+
+  <div class="sticky-bar">
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="Search 100+ items (Atta, Dal, Oil, Milk, Maggi, Soap...)" />
+      <button class="clear-search" id="clearSearch">✕</button>
+    </div>
+    <div class="cat-scroll" id="categoryBar"></div>
+  </div>
+
+  <main class="container">
+    <div class="section-info">
+      <span id="resultCount">Showing 100 Products</span>
+      <span>FamPay UPI & COD Available</span>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </main>
+
+  <div class="floating-cart" id="floatingCart">
+    <div>
+      <div style="font-size:12px;opacity:0.9;" id="cartCountText">0 Items</div>
+      <div style="font-size:16px;font-weight:800;" id="cartTotalText">₹0</div>
+    </div>
+    <div style="font-weight:800;font-size:14px;">View Cart & Order →</div>
+  </div>
+
+  <div class="modal-backdrop" id="checkoutModal">
+    <div class="modal-sheet">
+      <div class="modal-top">
+        <h3>🛒 Aapka Cart & Checkout</h3>
+        <button class="close-btn" id="closeModal">✕</button>
+      </div>
+      <div class="free-bar" id="freeDeliveryMsg"></div>
+      <div id="cartItemsList"></div>
+      <div class="bill-box">
+        <div class="bill-row"><span>Items Total</span><span id="subTotalVal">₹0</span></div>
+        <div class="bill-row"><span>Delivery Charge</span><span id="delFeeVal">₹20</span></div>
+        <div class="bill-total"><span>Grand Total</span><span id="grandTotalVal">₹0</span></div>
+      </div>
+      <div class="form-group"><label>Customer Name *</label><input type="text" id="custName" placeholder="Apna naam likhein" /></div>
+      <div class="form-group"><label>Mobile Number *</label><input type="tel" id="custPhone" placeholder="10-digit mobile number" /></div>
+      <div class="form-group">
+        <label>Delivery Address *</label>
+        <textarea id="custAddress" rows="2" placeholder="Ghar ka pata, gali, landmark..."></textarea>
+        <button type="button" class="gps-btn" id="gpsBtn">📍 Current Live Location Lagayein (GPS)</button>
+        <div id="gpsStatus" style="font-size:11.5px;color:#15803d;margin-top:4px;font-weight:600;"></div>
+      </div>
+      <div class="form-group">
+        <label>Payment Mode Chunein</label>
+        <div class="pay-options">
+          <div class="pay-opt active" id="optFamPay" onclick="selectPayment('FamPay UPI')">⚡ FamPay / UPI</div>
+          <div class="pay-opt" id="optCOD" onclick="selectPayment('Cash on Delivery')">💵 Cash on Delivery</div>
+        </div>
+        <div class="fampay-card" id="fampayBox">
+          <div style="font-weight:700;color:#78350f;">FamPay / UPI ID par Pay Karein:</div>
+          <div class="upi-row"><span>9329736019@fam</span><button type="button" class="copy-upi-btn" onclick="copyUpi()">Copy ID</button></div>
+          <a id="upiDeepLink" class="upi-app-link" href="upi://pay?pa=9329736019@fam&pn=REQUIRED&cu=INR">📲 FamPay / UPI App se Pay Karein</a>
+        </div>
+      </div>
+      <button type="button" class="whatsapp-submit" onclick="sendWhatsAppOrder()">✅ WhatsApp par Order Confirm Karein</button>
+    </div>
+  </div>
+
+  <script>
+    const WHATSAPP_NUMBER = "919329736019";
+    const FAMPAY_UPI = "9329736019@fam";
+    const FREE_DELIVERY_MIN = 299;
+    const DELIVERY_CHARGE = 20;
+
+    const PRODUCTS = [
+
+      
 
