@@ -1,691 +1,2374 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REQUIRED — Because Life Needs It</title>
-  <style>
-    :root {
-      --primary: #16a34a;
-      --primary-dark: #15803d;
-      --bg: #f4f6f8;
-      --card: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --danger: #dc2626;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 90px; }
-    header {
-      background: linear-gradient(135deg, #15803d, #16a34a);
-      color: #fff;
-      padding: 14px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
-    }
-    .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
-    .brand h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: 0.5px; }
-    .brand p { font-size: 0.75rem; opacity: 0.9; }
-    .header-actions { display: flex; gap: 8px; }
-    .icon-btn {
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.3);
-      color: #fff;
-      padding: 6px 11px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .search-wrap { max-width: 1100px; margin: 10px auto 0; }
-    .search-wrap input {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: none;
-      font-size: 0.92rem;
-      outline: none;
-    }
-        .grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-      gap: 12px; padding: 4px 16px 20px; max-width: 1100px; margin: auto;
-    }
-    .card {
-      background: var(--card); border-radius: 12px; padding: 12px;
-      border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between;
-    }
-    .prod-emoji {
-      font-size: 34px; text-align: center; background: #f0fdf4;
-      border-radius: 10px; padding: 12px 0; margin-bottom: 8px;
-    }
-    .prod-cat { font-size: 10px; color: var(--primary); font-weight: 700; text-transform: uppercase; }
-    .prod-title { font-size: 14px; font-weight: 700; margin: 3px 0; line-height: 1.3; }
-    .prod-unit { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-    .card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-    .price { font-size: 15px; font-weight: 800; }
-    .add-btn {
-      background: #dcfce7; color: var(--primary-dark); border: 1px solid #86efac;
-      padding: 5px 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer;
-    }
-    .qty-box {
-      display: flex; align-items: center; gap: 8px; background: var(--primary);
-      color: #fff; border-radius: 8px; padding: 4px 8px; font-weight: 700; font-size: 13px;
-    }
-    .qty-box button { background: none; border: none; color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; }
-    .cart-bar {
-      position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%);
-      width: calc(100% - 28px); max-width: 600px; background: var(--primary-dark);
-      color: #fff; padding: 13px 18px; border-radius: 14px; display: none;
-      justify-content: space-between; align-items: center; z-index: 60;
-      box-shadow: 0 8px 24px rgba(21,128,61,0.35); cursor: pointer;
-    }
-    .modal {
-      position: fixed; inset: 0; background: rgba(15,23,42,0.55);
-      display: none; align-items: flex-end; justify-content: center; z-index: 100;
-    }
-    .modal.open { display: flex; }
-    .modal-box {
-      background: #fff; width: 100%; max-width: 540px; max-height: 90vh;
-      overflow-y: auto; border-radius: 18px 18px 0 0; padding: 18px;
-    }
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .close-btn { background: #f1f5f9; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; cursor: pointer; }
-    .field { margin-bottom: 11px; }
-    .field label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; color: var(--muted); }
-    .field input, .field textarea, .field select {
-      width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px;
-    }
-    .pay-tabs { display: flex; gap: 8px; margin-bottom: 10px; }
-    .pay-tab {
-      flex: 1; padding: 9px; border: 1px solid var(--border); border-radius: 8px;
-      text-align: center; font-weight: 700; font-size: 13px; cursor: pointer; background: #f8fafc;
-    }
-    .pay-tab.active { border-color: var(--primary); background: #dcfce7; color: var(--primary-dark); }
-    .upi-box { background: #f0fdf4; border: 1px dashed var(--primary); padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
-    .wa-submit-btn {
-      width: 100%; background: var(--primary); color: #fff; border: none;
-      padding: 13px; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; margin-top: 6px;
-    }
-    .wa-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
-    .toast {
-      position: fixed; top: 72px; left: 50%; transform: translateX(-50%);
-      background: #0f172a; color: #fff; padding: 10px 16px; border-radius: 10px;
-      font-size: 13px; font-weight: 600; z-index: 200; display: none;
-    }
-    .admin-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 6px; }
-    .sm-btn { padding: 5px 8px; border-radius: 6px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Blinkit — Everything delivered in 12 minutes</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <header>
-    <div class="brand">
-      <h1>🛒 REQUIRED</h1>
-      <p>Because Life Needs It • Fast Home Delivery</p>
-    </div>
-    <div class="header-btns">
-      <button class="icon-btn" onclick="openOrdersModal()">📦 Orders</button>
-      <button class="icon-btn" onclick="openAdminPrompt()">⚙️ Admin</button>
-    </div>
-  </header>
 
-  <div class="search-wrap">
-    <input type="text" id="searchInput" placeholder="Search atta, dal, oil, snacks, soap..." oninput="renderProducts()" />
-  </div>
+  <!-- LOGIN / OTP MODAL -->
+  <div id="authModal" class="modal-overlay hidden">
+    <div class="auth-card">
+      <div class="auth-logo">blink<span>it</span></div>
+      <h2>India's last minute app</h2>
+      <p class="auth-sub">Log in or Sign up to get 12-minute delivery</p>
 
-  <div class="cats" id="categoryBar"></div>
-  <div class="grid" id="productGrid"></div>
-
-  <div class="cart-bar" id="cartBar" onclick="openCheckout()">
-    <div>
-      <strong id="cartCountText">0 Items</strong> • <span id="cartTotalText">₹0</span>
-    </div>
-    <strong>Proceed to Checkout →</strong>
-  </div>
-
-  <div class="toast" id="toast"></div>
-    <!-- Checkout Modal -->
-  <div class="modal" id="checkoutModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>🛍️ Your Cart & Checkout</h3>
-        <button class="close-btn" onclick="closeModal('checkoutModal')">✕</button>
-      </div>
-      <div id="cartItemsView" style="margin-bottom:12px;"></div>
-      <div id="billSummary" style="background:#f8fafc;padding:10px;border-radius:8px;font-size:13px;margin-bottom:12px;"></div>
-
-      <div class="field">
-        <label>Full Name *</label>
-        <input type="text" id="custName" placeholder="Apna naam likhein" />
-      </div>
-      <div class="field">
-        <label>Mobile Number (10 digits) *</label>
-        <input type="tel" id="custPhone" maxlength="10" placeholder="9876543210" />
-      </div>
-      <div class="field">
-        <label>Delivery Address *</label>
-        <textarea id="custAddress" rows="2" placeholder="House no, Gali, Landmark, Area"></textarea>
-        <button type="button" class="sm-btn" style="margin-top:5px;background:#e0f2fe;color:#0369a1;" onclick="captureLocation()">📍 Add Live GPS Location</button>
-        <span id="gpsStatus" style="font-size:11px;color:#15803d;margin-left:6px;"></span>
-      </div>
-
-      <label style="display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:var(--muted);">Payment Method</label>
-      <div class="pay-tabs">
-        <div class="pay-tab active" id="tabCOD" onclick="setPayment('COD')">💵 Cash on Delivery</div>
-        <div class="pay-tab" id="tabUPI" onclick="setPayment('UPI')">📲 Pay via UPI</div>
-      </div>
-
-      <div class="upi-box" id="upiSection" style="display:none;">
-        <div>UPI ID: <strong id="displayUpiId">fazalrab56@oksbi</strong>
-          <button type="button" class="sm-btn" style="background:#16a34a;color:#fff;margin-left:6px;" onclick="copyUpi()">Copy</button>
+      <div id="authStepPhone">
+        <div class="input-group">
+          <span class="prefix">+91</span>
+          <input type="tel" id="loginPhoneInput" maxlength="10" placeholder="Enter mobile number" value="9329736019" />
         </div>
-        <div class="field" style="margin-top:8px;margin-bottom:0;">
-          <input type="text" id="upiRefInput" placeholder="Payment ke baad 12-digit UTR / Ref ID daalein" />
+        <input type="text" id="loginNameInput" class="text-input" placeholder="Your Name (e.g. Rizwan Khan)" value="Rizwan Khan" />
+        <input type="text" id="loginAddressInput" class="text-input" placeholder="Delivery Area (e.g. HOME - pratappur)" value="HOME - pratappur" />
+        <button class="btn-primary full-width" onclick="Auth.sendOtp()">Continue</button>
+        <button class="btn-ghost full-width" onclick="Auth.continueAsGuest()">Continue as Guest</button>
+      </div>
+
+      <div id="authStepOtp" class="hidden">
+        <p class="otp-info">OTP sent to <strong id="otpPhoneDisplay">+91 9329736019</strong> <br><small>(Demo OTP: <b>1234</b>)</small></p>
+        <div class="otp-boxes">
+          <input type="text" maxlength="1" class="otp-digit" value="1" />
+          <input type="text" maxlength="1" class="otp-digit" value="2" />
+          <input type="text" maxlength="1" class="otp-digit" value="3" />
+          <input type="text" maxlength="1" class="otp-digit" value="4" />
         </div>
+        <button class="btn-primary full-width" onclick="Auth.verifyOtp()">Verify & Login</button>
+        <button class="btn-ghost full-width" onclick="Auth.backToPhone()">Change Number</button>
       </div>
-
-      <button type="button" class="wa-submit-btn" onclick="placeWhatsAppOrder()">✅ Place Order</button>
-    </div>
-  </div>
-    <!-- Orders Modal -->
-  <div class="modal" id="ordersModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>📦 My Recent Orders</h3>
-        <button class="close-btn" onclick="closeModal('ordersModal')">✕</button>
-      </div>
-      <div id="myOrdersList"></div>
     </div>
   </div>
 
-  <!-- Admin Modal -->
-  <div class="modal" id="adminModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>⚙️ Admin Panel</h3>
-        <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
-      </div>
-      <div class="field"><label>Store WhatsApp Number</label><input type="text" id="adminWaInput" /></div>
-      <div class="field"><label>Store UPI ID</label><input type="text" id="adminUpiInput" /></div>
-      <div class="field"><label>Delivery Charge (₹)</label><input type="number" id="adminDelFeeInput" /></div>
-      <button class="wa-submit-btn" style="margin-bottom:14px;" onclick="saveStoreSettings()">💾 Save Store Settings</button>
-
-      <h4 style="margin-bottom:8px;">➕ Add New Item</h4>
-      <div class="field"><input type="text" id="newProdName" placeholder="Item Name" /></div>
-      <div class="field">
-        <select id="newProdCat">
-          <option>Atta & Rice</option><option>Dal & Pulses</option><option>Oil & Ghee</option>
-          <option>Spices & Masala</option><option>Dairy & Bakery</option><option>Snacks & Drinks</option>
-          <option>Personal Care</option><option>Household</option>
-        </select>
-      </div>
-      <div class="field"><input type="text" id="newProdUnit" placeholder="Unit (e.g. 1 kg, 500 ml, 1 pc)" /></div>
-      <div class="field"><input type="number" id="newProdPrice" placeholder="Price (₹)" /></div>
-      <div class="field"><input type="text" id="newProdImg" placeholder="Emoji Icon (e.g. 🌾)" value="🛒" /></div>
-      <button class="wa-submit-btn" style="background:#0284c7;margin-bottom:14px;" onclick="adminAddProduct()">Add Product</button>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <h4>📋 Manage Catalog</h4>
-        <button class="sm-btn" style="background:#fee2e2;color:#b91c1c;" onclick="resetCatalog()">Reset 100 Items</button>
-      </div>
-      <div id="adminProdList" style="max-height:220px;overflow-y:auto;margin-bottom:14px;"></div>
-
-      <h4 style="margin-bottom:8px;">🧾 All Customer Orders</h4>
-      <div id="adminOrdersList" style="max-height:220px;overflow-y:auto;"></div>
-    </div>
-  </div>
-    <!-- Orders Modal -->
-  <div class="modal" id="ordersModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>📦 My Recent Orders</h3>
-        <button class="close-btn" onclick="closeModal('ordersModal')">✕</button>
-      </div>
-      <div id="myOrdersList"></div>
-    </div>
-  </div>
-
-  <!-- Admin Modal -->
-  <div class="modal" id="adminModal">
-    <div class="modal-box">
-      <div class="modal-head">
-        <h3>⚙️ Admin Panel</h3>
-        <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
-      </div>
-      <div class="field"><label>Store WhatsApp Number</label><input type="text" id="adminWaInput" /></div>
-      <div class="field"><label>Store UPI ID</label><input type="text" id="adminUpiInput" /></div>
-      <div class="field"><label>Delivery Charge (₹)</label><input type="number" id="adminDelFeeInput" /></div>
-      <button class="wa-submit-btn" style="margin-bottom:14px;" onclick="saveStoreSettings()">💾 Save Store Settings</button>
-
-      <h4 style="margin-bottom:8px;">➕ Add New Item</h4>
-      <div class="field"><input type="text" id="newProdName" placeholder="Item Name" /></div>
-      <div class="field">
-        <select id="newProdCat">
-          <option>Atta & Rice</option><option>Dal & Pulses</option><option>Oil & Ghee</option>
-          <option>Spices & Masala</option><option>Dairy & Bakery</option><option>Snacks & Drinks</option>
-          <option>Personal Care</option><option>Household</option>
-        </select>
-      </div>
-      <div class="field"><input type="text" id="newProdUnit" placeholder="Unit (e.g. 1 kg, 500 ml, 1 pc)" /></div>
-      <div class="field"><input type="number" id="newProdPrice" placeholder="Price (₹)" /></div>
-      <div class="field"><input type="text" id="newProdImg" placeholder="Emoji Icon (e.g. 🌾)" value="🛒" /></div>
-      <button class="wa-submit-btn" style="background:#0284c7;margin-bottom:14px;" onclick="adminAddProduct()">Add Product</button>
-
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <h4>📋 Manage Catalog</h4>
-        <button class="sm-btn" style="background:#fee2e2;color:#b91c1c;" onclick="resetCatalog()">Reset 100 Items</button>
-      </div>
-      <div id="adminProdList" style="max-height:220px;overflow-y:auto;margin-bottom:14px;"></div>
-
-      <h4 style="margin-bottom:8px;">🧾 All Customer Orders</h4>
-      <div id="adminOrdersList" style="max-height:220px;overflow-y:auto;"></div>
-    </div>
-  </div>
-    <script>
-    const ADMIN_PIN = "2411";
-    const WEB3FORMS_KEY = "1380f4ad-246d-4617-a192-2f5063a2028e";
-    const STORAGE_KEYS = {
-      PRODUCTS: "req_products_v1",
-      CART: "req_cart_v1",
-      ORDERS: "req_orders_v1",
-      CONFIG: "req_config_v1"
-    };
-
-    const DEFAULT_PRODUCTS = [
-      { id: 1, name: "Aashirvaad Shudh Chakki Atta", cat: "Atta & Rice", unit: "5 kg", price: 245, img: "🌾" },
-      { id: 2, name: "Fortune Chakki Fresh Atta", cat: "Atta & Rice", unit: "5 kg", price: 230, img: "🌾" },
-      { id: 3, name: "India Gate Basmati Rice", cat: "Atta & Rice", unit: "1 kg", price: 115, img: "🍚" },
-      { id: 4, name: "Daawat Rozana Basmati Rice", cat: "Atta & Rice", unit: "5 kg", price: 360, img: "🍚" },
-      { id: 5, name: "Kolam Steam Rice", cat: "Atta & Rice", unit: "5 kg", price: 290, img: "🍚" },
-      { id: 6, name: "Poha (Thick Flattened Rice)", cat: "Atta & Rice", unit: "1 kg", price: 58, img: "🥣" },
-      { id: 7, name: "Sooji / Rava", cat: "Atta & Rice", unit: "500 g", price: 32, img: "🥣" },
-      { id: 8, name: "Besan (Chana Flour)", cat: "Atta & Rice", unit: "1 kg", price: 92, img: "🟡" },
-      { id: 9, name: "Maida (Refined Flour)", cat: "Atta & Rice", unit: "1 kg", price: 46, img: "⚪" },
-      { id: 10, name: "Daliya (Broken Wheat)", cat: "Atta & Rice", unit: "500 g", price: 38, img: "🌾" },
-      { id: 11, name: "Sabudana (Sago)", cat: "Atta & Rice", unit: "500 g", price: 48, img: "⚪" },
-      { id: 12, name: "Rolled Oats", cat: "Atta & Rice", unit: "1 kg", price: 165, img: "🥣" },
-      { id: 13, name: "Arhar / Toor Dal", cat: "Dal & Pulses", unit: "1 kg", price: 168, img: "🫘" },
-      { id: 14, name: "Moong Dal Yellow", cat: "Dal & Pulses", unit: "1 kg", price: 135, img: "🫘" },
-      { id: 15, name: "Moong Sabut Green", cat: "Dal & Pulses", unit: "1 kg", price: 128, img: "🟢" },
-      { id: 16, name: "Chana Dal", cat: "Dal & Pulses", unit: "1 kg", price: 96, img: "🟡" },
-      { id: 17, name: "Masoor Dal Red", cat: "Dal & Pulses", unit: "1 kg", price: 105, img: "🟠" },
-      { id: 18, name: "Urad Dal White Split", cat: "Dal & Pulses", unit: "1 kg", price: 145, img: "⚪" },
-      { id: 19, name: "Urad Sabut Black", cat: "Dal & Pulses", unit: "1 kg", price: 140, img: "⚫" },
-      { id: 20, name: "Kabuli Chana (White)", cat: "Dal & Pulses", unit: "1 kg", price: 142, img: "🫘" },
-      { id: 21, name: "Kala Chana (Desi)", cat: "Dal & Pulses", unit: "1 kg", price: 88, img: "🟤" },
-      { id: 22, name: "Rajma Chitra", cat: "Dal & Pulses", unit: "1 kg", price: 148, img: "🫘" },
-      { id: 23, name: "Rajma Red Jammu", cat: "Dal & Pulses", unit: "1 kg", price: 158, img: "🫘" },
-      { id: 24, name: "Matar White (Safed)", cat: "Dal & Pulses", unit: "1 kg", price: 84, img: "⚪" },
-      { id: 25, name: "Soyabean Chunks", cat: "Dal & Pulses", unit: "500 g", price: 65, img: "🧆" },
-      { id: 26, name: "Raw Peanuts (Moongfali)", cat: "Dal & Pulses", unit: "500 g", price: 78, img: "🥜" },
-      { id: 27, name: "Fortune Sunlite Refined Oil", cat: "Oil & Ghee", unit: "1 L", price: 138, img: "🌻" },
-      { id: 28, name: "Fortune Kachi Ghani Mustard Oil", cat: "Oil & Ghee", unit: "1 L", price: 155, img: "🧴" },
-      { id: 29, name: "Saffola Gold Cooking Oil", cat: "Oil & Ghee", unit: "1 L", price: 175, img: "💛" },
-      { id: 30, name: "Amul Pure Desi Ghee", cat: "Oil & Ghee", unit: "500 ml", price: 325, img: "🧈" },
-      { id: 31, name: "Patanjali Cow Ghee", cat: "Oil & Ghee", unit: "500 ml", price: 340, img: "🧈" },
-      { id: 32, name: "Groundnut Filtered Oil", cat: "Oil & Ghee", unit: "1 L", price: 185, img: "🥜" },
-      { id: 33, name: "Coconut Cooking Oil", cat: "Oil & Ghee", unit: "500 ml", price: 125, img: "🥥" },
-      { id: 34, name: "Vanaspati Ghee", cat: "Oil & Ghee", unit: "500 g", price: 76, img: "🥫" },
-      { id: 35, name: "Tata Salt Iodized", cat: "Spices & Masala", unit: "1 kg", price: 28, img: "🧂" },
-      { id: 36, name: "Sendha Namak (Rock Salt)", cat: "Spices & Masala", unit: "500 g", price: 35, img: "🧂" },
-      { id: 37, name: "Refined White Sugar", cat: "Spices & Masala", unit: "1 kg", price: 46, img: "🍬" },
-      { id: 38, name: "Desi Gud (Jaggery)", cat: "Spices & Masala", unit: "1 kg", price: 62, img: "🟫" },
-      { id: 39, name: "Haldi Powder (Turmeric)", cat: "Spices & Masala", unit: "200 g", price: 58, img: "🟡" },
-      { id: 40, name: "Lal Mirch Powder", cat: "Spices & Masala", unit: "200 g", price: 74, img: "🌶️" },
-      { id: 41, name: "Dhaniya Powder", cat: "Spices & Masala", unit: "200 g", price: 52, img: "🌿" },
-      { id: 42, name: "Everest Garam Masala", cat: "Spices & Masala", unit: "100 g", price: 86, img: "🍲" },
-      { id: 43, name: "MDH Kitchen King Masala", cat: "Spices & Masala", unit: "100 g", price: 82, img: "🍲" },
-      { id: 44, name: "MDH Chana Masala", cat: "Spices & Masala", unit: "100 g", price: 78, img: "🍲" },
-      { id: 45, name: "Jeera Whole (Cumin)", cat: "Spices & Masala", unit: "200 g", price: 95, img: "🌿" },
-      { id: 46, name: "Rai / Mustard Seeds", cat: "Spices & Masala", unit: "200 g", price: 34, img: "⚫" },
-      { id: 47, name: "Kali Mirch (Black Pepper)", cat: "Spices & Masala", unit: "100 g", price: 98, img: "⚫" },
-      { id: 48, name: "Hari Elaichi (Cardamom)", cat: "Spices & Masala", unit: "50 g", price: 135, img: "🟢" },
-      { id: 49, name: "Kasuri Methi", cat: "Spices & Masala", unit: "50 g", price: 32, img: "🍃" },
-      { id: 50, name: "Maggi Masala-ae-Magic", cat: "Spices & Masala", unit: "12 pack", price: 60, img: "✨" },
-            { id: 51, name: "Amul Taaza Toned Milk", cat: "Dairy & Bakery", unit: "1 L", price: 72, img: "🥛" },
-      { id: 52, name: "Amul Gold Full Cream Milk", cat: "Dairy & Bakery", unit: "500 ml", price: 34, img: "🥛" },
-      { id: 53, name: "Amul Pasteurised Butter", cat: "Dairy & Bakery", unit: "100 g", price: 58, img: "🧈" },
-      { id: 54, name: "Amul Fresh Paneer", cat: "Dairy & Bakery", unit: "200 g", price: 92, img: "🧀" },
-      { id: 55, name: "Amul Cheese Slices", cat: "Dairy & Bakery", unit: "100 g", price: 85, img: "🧀" },
-      { id: 56, name: "Fresh Dahi (Curd Cup)", cat: "Dairy & Bakery", unit: "400 g", price: 42, img: "🥣" },
-      { id: 57, name: "White Sandwich Bread", cat: "Dairy & Bakery", unit: "400 g", price: 40, img: "🍞" },
-      { id: 58, name: "Whole Wheat Brown Bread", cat: "Dairy & Bakery", unit: "400 g", price: 48, img: "🍞" },
-      { id: 59, name: "Pav Buns Pack", cat: "Dairy & Bakery", unit: "6 pcs", price: 30, img: "🍔" },
-      { id: 60, name: "Britannia Suji Rusk", cat: "Dairy & Bakery", unit: "300 g", price: 55, img: "🥖" },
-      { id: 61, name: "Tata Tea Premium", cat: "Snacks & Drinks", unit: "500 g", price: 245, img: "🍵" },
-      { id: 62, name: "Red Label Natural Care Tea", cat: "Snacks & Drinks", unit: "250 g", price: 140, img: "🍵" },
-      { id: 63, name: "Nescafe Classic Coffee", cat: "Snacks & Drinks", unit: "50 g", price: 165, img: "☕" },
-      { id: 64, name: "Bru Instant Coffee", cat: "Snacks & Drinks", unit: "50 g", price: 115, img: "☕" },
-      { id: 65, name: "Maggi 2-Minute Noodles", cat: "Snacks & Drinks", unit: "4 pack", price: 56, img: "🍜" },
-      { id: 66, name: "Yippee Magic Masala Noodles", cat: "Snacks & Drinks", unit: "4 pack", price: 54, img: "🍜" },
-      { id: 67, name: "Parle-G Gold Biscuits", cat: "Snacks & Drinks", unit: "250 g", price: 30, img: "🍪" },
-      { id: 68, name: "Britannia Good Day Cashew", cat: "Snacks & Drinks", unit: "200 g", price: 40, img: "🍪" },
-      { id: 69, name: "Oreo Chocolate Cream", cat: "Snacks & Drinks", unit: "120 g", price: 35, img: "🍪" },
-      { id: 70, name: "Haldiram Aloo Bhujia", cat: "Snacks & Drinks", unit: "400 g", price: 98, img: "🥨" },
-      { id: 71, name: "Haldiram Khatta Meetha", cat: "Snacks & Drinks", unit: "400 g", price: 92, img: "🥨" },
-      { id: 72, name: "Lays Classic Salted Chips", cat: "Snacks & Drinks", unit: "50 g", price: 20, img: "🥔" },
-      { id: 73, name: "Kissan Fresh Tomato Ketchup", cat: "Snacks & Drinks", unit: "500 g", price: 88, img: "🍅" },
-      { id: 74, name: "Real Mixed Fruit Juice", cat: "Snacks & Drinks", unit: "1 L", price: 120, img: "🧃" },
-      { id: 75, name: "Coca-Cola Soft Drink", cat: "Snacks & Drinks", unit: "750 ml", price: 45, img: "🥤" },
-      { id: 76, name: "Rooh Afza Sharbat", cat: "Snacks & Drinks", unit: "750 ml", price: 175, img: "🍷" },
-      { id: 77, name: "Dettol Original Bath Soap", cat: "Personal Care", unit: "4 x 75 g", price: 148, img: "🧼" },
-      { id: 78, name: "Dove Cream Beauty Bar", cat: "Personal Care", unit: "3 x 100 g", price: 185, img: "🧼" },
-      { id: 79, name: "Lifebuoy Total 10 Soap", cat: "Personal Care", unit: "4 x 125 g", price: 136, img: "🧼" },
-      { id: 80, name: "Colgate Strong Teeth Paste", cat: "Personal Care", unit: "200 g", price: 112, img: "🪥" },
-      { id: 81, name: "Sensodyne Fresh Mint", cat: "Personal Care", unit: "80 g", price: 145, img: "🪥" },
-      { id: 82, name: "Oral-B Medium Toothbrush", cat: "Personal Care", unit: "Pack of 2", price: 50, img: "🪥" },
-      { id: 83, name: "Clinic Plus Strong Shampoo", cat: "Personal Care", unit: "340 ml", price: 195, img: "🧴" },
-      { id: 84, name: "Head & Shoulders Anti-Dandruff", cat: "Personal Care", unit: "180 ml", price: 175, img: "🧴" },
-      { id: 85, name: "Parachute 100% Coconut Hair Oil", cat: "Personal Care", unit: "300 ml", price: 132, img: "🥥" },
-      { id: 86, name: "Dettol Liquid Handwash", cat: "Personal Care", unit: "200 ml", price: 99, img: "🧴" },
-      { id: 87, name: "Nivea Soft Light Moisturizer", cat: "Personal Care", unit: "100 ml", price: 170, img: "🫙" },
-      { id: 88, name: "Whisper Ultra Clean Pads", cat: "Personal Care", unit: "15 pads", price: 165, img: "🩹" },
-      { id: 89, name: "Surf Excel Easy Wash Powder", cat: "Household", unit: "1 kg", price: 142, img: "🧺" },
-      { id: 90, name: "Tide Plus Double Power", cat: "Household", unit: "1 kg", price: 128, img: "🧺" },
-      { id: 91, name: "Rin Detergent Bar", cat: "Household", unit: "250 g", price: 25, img: "🧼" },
-      { id: 92, name: "Vim Dishwash Lemon Gel", cat: "Household", unit: "500 ml", price: 108, img: "🍽️" },
-      { id: 93, name: "Vim Dishwash Bar", cat: "Household", unit: "300 g", price: 32, img: "🧼" },
-      { id: 94, name: "Scotch-Brite Scrub Pad", cat: "Household", unit: "Pack of 3", price: 45, img: "🧽" },
-      { id: 95, name: "Harpic Power Plus Toilet Cleaner", cat: "Household", unit: "500 ml", price: 98, img: "🚽" },
-      { id: 96, name: "Lizol Disinfectant Floor Cleaner", cat: "Household", unit: "500 ml", price: 112, img: "🧹" },
-      { id: 97, name: "Good Knight Gold Flash Refill", cat: "Household", unit: "45 ml", price: 82, img: "🦟" },
-      { id: 98, name: "Garbage Bags Medium Roll", cat: "Household", unit: "30 bags", price: 65, img: "🗑️" },
-      { id: 99, name: "Aluminium Foil Roll", cat: "Household", unit: "9 meter", price: 75, img: "🧻" },
-      { id: 100, name: "Kitchen Tissue Paper Roll", cat: "Household", unit: "2 rolls", price: 90, img: "🧻" }
-    ];
-          let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS)) || JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
-    let cart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART)) || {};
-    let storeConfig = JSON.parse(localStorage.getItem(STORAGE_KEYS.CONFIG)) || {
-      whatsappNumber: "919999999999",
-      upiId: "fazalrab56@oksbi",
-      deliveryFee: 20
-    };
-    let activeCat = "All";
-    let paymentMethod = "COD";
-    let capturedGPS = "";
-
-    function showToast(msg) {
-      const t = document.getElementById("toast");
-      t.textContent = msg;
-      t.style.display = "block";
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => { t.style.display = "none"; }, 2600);
-    }
-
-    function openModal(id) { document.getElementById(id).classList.add("open"); }
-    function closeModal(id) { document.getElementById(id).classList.remove("open"); }
-
-    function renderCategories() {
-      const cats = ["All", ...new Set(products.map(p => p.cat))];
-      document.getElementById("categoryBar").innerHTML = cats.map(c =>
-        `<button class="cat-pill ${c === activeCat ? "active" : ""}" onclick="selectCat('${c}')">${c}</button>`
-      ).join("");
-    }
-
-    function selectCat(cat) {
-      activeCat = cat;
-      renderCategories();
-      renderProducts();
-    }
-
-    function renderProducts() {
-      const q = document.getElementById("searchInput").value.trim().toLowerCase();
-      const filtered = products.filter(p =>
-        (activeCat === "All" || p.cat === activeCat) &&
-        (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q))
-      );
-      document.getElementById("productGrid").innerHTML = filtered.map(p => {
-        const qty = cart[p.id] || 0;
-        return `
-          <div class="card">
-            <div>
-              <div class="prod-emoji">${p.img || "🛒"}</div>
-              <div class="prod-cat">${p.cat}</div>
-              <div class="prod-title">${p.name}</div>
-              <div class="prod-unit">${p.unit}</div>
-            </div>
-            <div class="card-foot">
-              <span class="price">₹${p.price}</span>
-              ${qty === 0
-                ? `<button class="add-btn" onclick="changeQty(${p.id}, 1)">+ Add</button>`
-                : `<div class="qty-box">
-                     <button onclick="changeQty(${p.id}, -1)">−</button>
-                     <span>${qty}</span>
-                     <button onclick="changeQty(${p.id}, 1)">+</button>
-                   </div>`
-              }
-            </div>
-          </div>`;
-      }).join("");
-    }
-          function saveCart() { localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart)); }
-
-    function changeQty(id, delta) {
-      const next = (cart[id] || 0) + delta;
-      if (next <= 0) delete cart[id];
-      else cart[id] = next;
-      saveCart();
-      renderProducts();
-      updateCartUI();
-    }
-
-    function getCartTotals() {
-      const itemsList = [];
-      let subtotal = 0;
-      for (const [idStr, qty] of Object.entries(cart)) {
-        const p = products.find(x => x.id === Number(idStr));
-        if (p && qty > 0) {
-          const lineTotal = p.price * qty;
-          subtotal += lineTotal;
-          itemsList.push({ ...p, qty, lineTotal });
-        }
-      }
-      const delivery = subtotal > 0 ? Number(storeConfig.deliveryFee || 0) : 0;
-      return { itemsList, subtotal, delivery, grandTotal: subtotal + delivery };
-    }
-
-    function updateCartUI() {
-      const { itemsList, grandTotal } = getCartTotals();
-      const count = itemsList.reduce((sum, i) => sum + i.qty, 0);
-      const bar = document.getElementById("cartBar");
-      if (count > 0) {
-        bar.style.display = "flex";
-        document.getElementById("cartCountText").textContent = `${count} Item${count > 1 ? "s" : ""}`;
-        document.getElementById("cartTotalText").textContent = `₹${grandTotal}`;
-      } else {
-        bar.style.display = "none";
-      }
-    }
-
-    function openCheckout() {
-      const { itemsList, subtotal, delivery, grandTotal } = getCartTotals();
-      if (!itemsList.length) return showToast("Cart khaali hai!");
-      document.getElementById("displayUpiId").textContent = storeConfig.upiId || "fazalrab56@oksbi";
-      document.getElementById("cartItemsView").innerHTML = itemsList.map(i => `
-        <div class="admin-row">
-          <span><strong>${i.name}</strong> (${i.unit}) × ${i.qty}</span>
-          <span>₹${i.lineTotal}</span>
-        </div>`).join("");
-      document.getElementById("billSummary").innerHTML = `
-        <div>Items Total: <strong>₹${subtotal}</strong></div>
-        <div>Delivery Charge: <strong>₹${delivery}</strong></div>
-        <div style="font-size:15px;margin-top:4px;color:#15803d;">Grand Total: <strong>₹${grandTotal}</strong></div>`;
-      openModal("checkoutModal");
-    }
-
-    function setPayment(method) {
-      paymentMethod = method;
-      document.getElementById("tabCOD").classList.toggle("active", method === "COD");
-      document.getElementById("tabUPI").classList.toggle("active", method === "UPI");
-      document.getElementById("upiSection").style.display = method === "UPI" ? "block" : "none";
-    }
-
-    function copyUpi() {
-      const upi = storeConfig.upiId || "fazalrab56@oksbi";
-      if (navigator.clipboard) navigator.clipboard.writeText(upi);
-      showToast(`UPI ID copied: ${upi}`);
-    }
-
-    function captureLocation() {
-      if (!navigator.geolocation) return showToast("GPS supported nahi hai");
-      document.getElementById("gpsStatus").textContent = "Fetching GPS...";
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          capturedGPS = `https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
-          document.getElementById("gpsStatus").textContent = "✅ GPS Attached";
-        },
-        () => { document.getElementById("gpsStatus").textContent = "❌ GPS denied"; }
-      );
-    }
-          async function placeWhatsAppOrder() {
-      const name = document.getElementById("custName").value.trim();
-      const phone = document.getElementById("custPhone").value.trim();
-      const address = document.getElementById("custAddress").value.trim();
-      const utr = document.getElementById("upiRefInput").value.trim();
-      const { itemsList, subtotal, delivery, grandTotal } = getCartTotals();
-
-      if (!name || phone.length < 10 || !address) return showToast("Name, 10-digit phone aur address bharein!");
-      if (!itemsList.length) return showToast("Cart khaali hai!");
-      if (paymentMethod === "UPI" && !utr) return showToast("UPI payment ka UTR / Ref ID daalein!");
-
-      const btn = document.querySelector(".wa-submit-btn");
-      btn.disabled = true;
-      btn.textContent = "⏳ Order place ho raha hai...";
-
-      const orderId = String(Date.now()).slice(-6);
-      const orderDate = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
-      const payText = paymentMethod === "UPI" ? `UPI (UTR: ${utr})` : "Cash on Delivery";
-      const itemsText = itemsList.map((i, idx) => `${idx + 1}. ${i.name} (${i.unit}) x${i.qty} = Rs.${i.lineTotal}`).join("\n");
-
-      try {
-        const res = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject: `New Order #${orderId} - Rs.${grandTotal}`,
-            from_name: "REQUIRED Store",
-            Customer: `${name} | ${phone}`,
-            Address: `${address} | GPS: ${capturedGPS || "N/A"}`,
-            Items: itemsText,
-            Total: `Sub Rs.${subtotal} + Del Rs.${delivery} = Rs.${grandTotal}`,
-            Payment: payText,
-            Date: orderDate
-          })
-        });
-        const data = await res.json();
-        if (!data.success) throw new Error(data.message || "Email failed");
-
-        const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
-        allOrders.unshift({ id: orderId, date: orderDate, name, phone, address, itemsText, grandTotal, payText });
-        localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(allOrders));
-
-        cart = {}; saveCart(); renderProducts(); updateCartUI();
-        closeModal("checkoutModal");
-        alert(`✅ Order Placed! Order ID: #${orderId}\nTotal: ₹${grandTotal}`);
-      } catch (e) {
-        showToast("Network error! Dobara try karein.");
-      } finally {
-        btn.disabled = false;
-        btn.textContent = "✅ Place Order";
-      }
-    }
-
-    function openOrdersModal() {
-      const orders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
-      document.getElementById("myOrdersList").innerHTML = orders.length
-        ? orders.map(o => `
-            <div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;font-size:13px;">
-              <div><strong>Order #${o.id}</strong> • ₹${o.grandTotal} (${o.payText})</div>
-              <div style="color:var(--muted);font-size:11px;margin:2px 0;">${o.date}</div>
-              <pre style="white-space:pre-wrap;font-size:12px;margin-top:4px;">${o.itemsText}</pre>
-            </div>`).join("")
-        : "<p style='color:var(--muted);font-size:13px;'>Abhi tak koi order nahi hai.</p>";
-      openModal("ordersModal");
-    }
-
-    function openAdminPrompt() {
-      const pin = prompt("Enter Admin PIN:");
-      if (pin !== ADMIN_PIN) return showToast("Galat PIN!");
-      document.getElementById("adminWaInput").value = storeConfig.whatsappNumber || "";
-      document.getElementById("adminUpiInput").value = storeConfig.upiId || "";
-      document.getElementById("adminDelFeeInput").value = storeConfig.deliveryFee ?? 20;
-      renderAdminProducts();
-      renderAdminOrders();
-      openModal("adminModal");
-    }
-
-    function saveStoreSettings() {
-      storeConfig.whatsappNumber = document.getElementById("adminWaInput").value.trim();
-      storeConfig.upiId = document.getElementById("adminUpiInput").value.trim();
-      storeConfig.deliveryFee = Number(document.getElementById("adminDelFeeInput").value || 0);
-      localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(storeConfig));
-      showToast("Store settings saved!");
-    }
-
-    function adminAddProduct() {
-      const name = document.getElementById("newProdName").value.trim();
-      const cat = document.getElementById("newProdCat").value;
-      const unit = document.getElementById("newProdUnit").value.trim() || "1 pc";
-      const price = Number(document.getElementById("newProdPrice").value);
-      const img = document.getElementById("newProdImg").value.trim() || "🛒";
-      if (!name || !price) return showToast("Name aur price bharein!");
-      products.unshift({ id: Date.now(), name, cat, unit, price, img });
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-      renderProducts(); renderAdminProducts();
-      showToast("Item added!");
-    }
-
-    function editPrice(id) {
-      const p = products.find(x => x.id === id);
-      if (!p) return;
-      const np = prompt(`New price for ${p.name}:`, p.price);
-      if (np !== null && !isNaN(Number(np)) && Number(np) > 0) {
-        p.price = Number(np);
-        localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-        renderProducts(); renderAdminProducts();
-        showToast("Price updated!");
-      }
-    }
-
-    function deleteProd(id) {
-      products = products.filter(p => p.id !== id);
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-      renderProducts(); renderAdminProducts();
-      showToast("Item deleted");
-    }
-
-    function resetCatalog() {
-      if (!confirm("Kya aap saare 100 default items reset karna chahte hain?")) return;
-      products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
-      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
-      renderCategories(); renderProducts(); renderAdminProducts();
-      showToast("100 items reset!");
-    }
-
-    function renderAdminProducts() {
-      document.getElementById("adminProdList").innerHTML = products.map(p => `
-        <div class="admin-row">
-          <span>${p.name} (₹${p.price})</span>
-          <div>
-            <button class="sm-btn" style="background:#fef3c7;color:#92400e;" onclick="editPrice(${p.id})">Edit</button>
-            <button class="sm-btn" style="background:#fee2e2;color:#b91c1c;" onclick="deleteProd(${p.id})">Del</button>
+  <!-- MAIN APP SHELL -->
+  <div id="appShell" class="app-shell">
+    <header id="mainHeader" class="top-header">
+      <div class="header-top-row">
+        <div class="delivery-info" onclick="App.openAddressModal()">
+          <span class="eta-label">Blinkit in</span>
+          <div class="eta-time">12 minutes</div>
+          <div class="address-line">
+            <span id="headerAddressText">HOME - pratappur</span> ▾
           </div>
-        </div>`).join("");
-    }
+        </div>
+        <div class="header-actions">
+          <button class="wallet-pill" onclick="App.openWalletModal()">
+            <span class="wallet-icon">₹</span>
+            <span id="headerWalletBalance">0</span>
+          </button>
+          <button class="profile-btn" onclick="App.switchView('profileView')" title="Profile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
 
-    function renderAdminOrders() {
-      const orders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
-      document.getElementById("adminOrdersList").innerHTML = orders.length
-        ? orders.map(o => `<div class="admin-row"><span>#${o.id} • ${o.name} (${o.phone})</span><strong>₹${o.grandTotal}</strong></div>`).join("")
-        : "<p style='color:var(--muted);font-size:12px;'>No orders yet.</p>";
-    }
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="globalSearchInput" placeholder='Search "healthy snacks"' oninput="App.handleSearch(this.value)" />
+          <button id="clearSearchBtn" class="clear-btn hidden" onclick="App.clearSearch()">✕</button>
+          <span class="mic-icon" onclick="App.voiceSearchDemo()">🎤</span>
+        </div>
+      </div>
 
-    renderCategories();
-    renderProducts();
-    updateCartUI();
-  </script>
+      <nav class="top-tabs" id="topCategoryTabs">
+        <button class="tab-item active" data-tab="All" onclick="App.selectTopTab('All', this)">
+          <span class="tab-icon">🛍️</span><span>All</span>
+        </button>
+        <button class="tab-item" data-tab="Winter" onclick="App.selectTopTab('Winter', this)">
+          <span class="new-badge">New</span><span class="tab-icon">❄️</span><span>Winter</span>
+        </button>
+        <button class="tab-item" data-tab="Electronics" onclick="App.selectTopTab('Electronics', this)">
+          <span class="tab-icon">🎧</span><span>Electronics</span>
+        </button>
+        <button class="tab-item" data-tab="Beauty" onclick="App.selectTopTab('Beauty', this)">
+          <span class="tab-icon">💄</span><span>Beauty</span>
+        </button>
+        <button class="tab-item" data-tab="Gifting" onclick="App.selectTopTab('Gifting', this)">
+          <span class="tab-icon">🎁</span><span>Gifting</span>
+        </button>
+        <button class="tab-item" data-tab="Decor" onclick="App.selectTopTab('Decor', this)">
+          <span class="tab-icon">🪔</span><span>Decor</span>
+        </button>
+        <button class="tab-item" data-tab="Kids" onclick="App.selectTopTab('Kids', this)">
+          <span class="tab-icon">🧸</span><span>Kids</span>
+        </button>
+      </nav>
+    </header>
+        <!-- SEARCH RESULTS OVERLAY -->
+    <section id="searchResultsView" class="view-section hidden">
+      <div class="section-header-bar">
+        <h3 id="searchResultCount">Showing results</h3>
+        <button class="text-link" onclick="App.clearSearch()">Back to Home</button>
+      </div>
+      <div id="searchProductGrid" class="product-grid-2col"></div>
+    </section>
+
+    <!-- HOME FEED VIEW -->
+    <main id="homeView" class="view-section active">
+      <div class="hero-carousel" id="heroCarousel">
+        <div class="hero-slide" style="background: linear-gradient(135deg, #FCE7EB 0%, #F9D5DC 100%);">
+          <div class="hero-content">
+            <span class="hero-tag">Minimalist</span>
+            <h2>BARRIER RESCUE</h2>
+            <p>Dermatologist-backed winter skincare essentials</p>
+            <button class="hero-cta" onclick="App.openCategory('Beauty & Personal Care')">Shop now</button>
+          </div>
+          <div class="hero-art">🧴✨</div>
+        </div>
+        <div class="hero-slide" style="background: linear-gradient(135deg, #FFF3CD 0%, #FFE082 100%);">
+          <div class="hero-content">
+            <span class="hero-tag">MEGA CARNIVAL</span>
+            <h2>GET EXCITING REWARDS</h2>
+            <p>Shop above ₹299 & unlock instant cashback</p>
+            <button class="hero-cta" onclick="App.openCategory('Snacks & Drinks')">Take the challenge</button>
+          </div>
+          <div class="hero-art">🎁🏆</div>
+        </div>
+        <div class="hero-slide" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);">
+          <div class="hero-content">
+            <span class="hero-tag">CELEBRATE</span>
+            <h2>MEN'S DAY SPECIAL</h2>
+            <p>Perfumes, grooming & electronics in 12 mins</p>
+            <button class="hero-cta" onclick="App.openCategory('Household Essentials')">Explore now</button>
+          </div>
+          <div class="hero-art">⌚🕶️</div>
+        </div>
+      </div>
+
+      <section class="home-section">
+        <h2 class="section-title">Bestsellers</h2>
+        <div class="bestsellers-grid" id="bestsellersGrid"></div>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Bank offers</h2>
+        <div class="bank-offers-row">
+          <div class="bank-card" onclick="App.copyCoupon('AMEX750')">
+            <div class="bank-badge amex">AMEX</div>
+            <div><strong>Up to ₹750 OFF</strong><p>With eligible American Express Cards • Tap to copy</p></div>
+          </div>
+          <div class="bank-card" onclick="App.copyCoupon('AXIS150')">
+            <div class="bank-badge axis">AXIS</div>
+            <div><strong>Flat ₹150 OFF on orders</strong><p>Above ₹1799 with Axis Bank Cards • Tap to copy</p></div>
+          </div>
+          <div class="bank-card" onclick="App.copyCoupon('MEGA49')">
+            <div class="bank-badge upi">UPI</div>
+            <div><strong>Flat ₹49 OFF</strong><p>On orders above ₹149 • Code: MEGA49</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Grocery & Kitchen</h2>
+        <div class="category-grid-4" id="groceryGrid"></div>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Snacks & Drinks</h2>
+        <div class="category-grid-4" id="snacksGrid"></div>
+      </section>
+
+      <section class="home-section">
+        <div class="section-row-head">
+          <div>
+            <h2 class="section-title">For your healthy munching plans</h2>
+            <p class="section-sub">Because you love guilt-free snacking</p>
+          </div>
+        </div>
+        <div class="horizontal-products" id="healthyCarousel"></div>
+        <button class="see-all-pill" onclick="App.openCategory('Snacks & Drinks', 'Biscuits & Cookies')">See all products ▸</button>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Beauty & Personal Care</h2>
+        <div class="category-grid-4" id="beautyGrid"></div>
+      </section>
+
+      <section class="home-section">
+        <div class="section-row-head"><h2 class="section-title">Serums for every skin type</h2></div>
+        <div class="horizontal-products" id="serumsCarousel"></div>
+        <button class="see-all-pill" onclick="App.openCategory('Beauty & Personal Care', 'Skin & Face')">See all products ▸</button>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Stores in spotlight</h2>
+        <div class="category-grid-4" id="spotlightGrid"></div>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Picks for your lifestyle</h2>
+        <div class="category-grid-4" id="lifestyleGrid"></div>
+      </section>
+
+      <section class="home-section">
+        <div class="section-row-head"><h2 class="section-title">Perfumes & Fragrances</h2></div>
+        <div class="horizontal-products" id="perfumesCarousel"></div>
+        <button class="see-all-pill" onclick="App.openCategory('Beauty & Personal Care', 'Fragrances')">See all products ▸</button>
+      </section>
+
+      <section class="home-section">
+        <h2 class="section-title">Household Essentials</h2>
+        <div class="category-grid-4" id="householdGrid"></div>
+      </section>
+
+      <div class="footer-tagline">
+        <h1>India's last minute app ❤️</h1>
+        <p>500+ Daily Essentials • Delivered in 12 Minutes</p>
+      </div>
+    </main>
+        <!-- CATEGORY DRILL-DOWN VIEW (SPLIT SIDEBAR) -->
+    <section id="categoryView" class="view-section hidden">
+      <div class="cat-top-bar">
+        <button class="icon-btn" onclick="App.switchView('homeView')">←</button>
+        <div class="cat-title-wrap">
+          <h3 id="catViewTitle">Vegetables & Fruits</h3>
+          <small id="catViewSub">Delivering to HOME - pratappur</small>
+        </div>
+        <button class="icon-btn" onclick="App.focusSearch()">🔍</button>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-chip" onclick="App.openFilterModal()">⚙️ Filters</button>
+        <select id="sortSelect" class="filter-chip" onchange="App.applyCategoryFilters()">
+          <option value="relevance">Sort: Relevance</option>
+          <option value="priceLow">Price: Low to High</option>
+          <option value="priceHigh">Price: High to Low</option>
+          <option value="discount">Highest Discount</option>
+        </select>
+        <button class="filter-chip" id="bestsellerFilterBtn" onclick="App.toggleBestsellerFilter()">⭐ Bestsellers</button>
+        <button class="filter-chip" id="under100FilterBtn" onclick="App.toggleUnder100Filter()">Under ₹100</button>
+      </div>
+
+      <div class="split-cat-layout">
+        <aside id="subcatSidebar" class="subcat-sidebar"></aside>
+        <div class="cat-products-area">
+          <div class="cat-count-banner" id="catItemCount">Showing products</div>
+          <div id="categoryProductGrid" class="product-grid-2col"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDER AGAIN VIEW -->
+    <section id="orderAgainView" class="view-section hidden">
+      <div class="cat-top-bar">
+        <button class="icon-btn" onclick="App.switchView('homeView')">←</button>
+        <div class="cat-title-wrap"><h3>Order Again</h3><small>Quickly re-order your frequent items</small></div>
+      </div>
+      <div id="orderAgainContent" class="padded-section"></div>
+    </section>
+
+    <!-- ALL CATEGORIES DIRECTORY VIEW -->
+    <section id="allCategoriesView" class="view-section hidden">
+      <div class="cat-top-bar">
+        <button class="icon-btn" onclick="App.switchView('homeView')">←</button>
+        <div class="cat-title-wrap"><h3>All Categories (500 Products)</h3><small>Tap any category to explore</small></div>
+      </div>
+      <div id="allCategoriesContainer" class="padded-section"></div>
+    </section>
+
+    <!-- PRINT STORE VIEW -->
+    <section id="printView" class="view-section hidden">
+      <div class="cat-top-bar">
+        <button class="icon-btn" onclick="App.switchView('homeView')">←</button>
+        <div class="cat-title-wrap"><h3>Blinkit Print Store</h3><small>Documents delivered in 12 minutes</small></div>
+      </div>
+      <div class="print-card">
+        <div class="print-hero">🖨️ Instant Document Printing</div>
+        <p>Upload PDF, Resume, Notes, or ID Card for doorstep printout delivery.</p>
+        <label class="upload-box">
+          <input type="file" id="printFileInput" onchange="App.handlePrintFile(this)" />
+          <span id="printFileName">📄 Tap to select PDF / Image file</span>
+        </label>
+        <div class="print-options">
+          <label>Number of Pages: <input type="number" id="printPages" min="1" max="200" value="5" oninput="App.updatePrintPrice()" /></label>
+          <label>Copies: <input type="number" id="printCopies" min="1" max="50" value="1" oninput="App.updatePrintPrice()" /></label>
+          <label>Print Color:
+            <select id="printColor" onchange="App.updatePrintPrice()">
+              <option value="bw">Black & White (₹3 / page)</option>
+              <option value="color">Full Color (₹10 / page)</option>
+            </select>
+          </label>
+        </div>
+        <div class="print-total-row"><span>Total Print Cost:</span><strong id="printTotalPrice">₹15</strong></div>
+        <button class="btn-primary full-width" onclick="App.addPrintToCart()">Add Printout to Cart</button>
+      </div>
+    </section>
+
+    <!-- PROFILE / YOUR ACCOUNT VIEW -->
+    <section id="profileView" class="view-section hidden">
+      <div class="profile-header-bg">
+        <button class="profile-back" onclick="App.switchView('homeView')">← Profile</button>
+        <div class="profile-avatar">👤</div>
+        <h2 id="profileUserName">Your account</h2>
+        <p id="profileUserPhone">9329736019</p>
+      </div>
+
+      <div class="profile-body">
+        <div class="profile-quick-3">
+          <div class="p-quick-card" onclick="App.openOrdersModal()"><span>🛍️</span><strong>Your orders</strong></div>
+          <div class="p-quick-card" onclick="App.openWalletModal()"><span>💳</span><strong>Blinkit Money</strong></div>
+          <div class="p-quick-card" onclick="App.openHelpModal()"><span>💬</span><strong>Need help?</strong></div>
+        </div>
+
+        <div class="profile-list-card">
+          <div class="p-row" onclick="App.toggleTheme()">
+            <span>☀️ Appearance</span><span class="theme-pill" id="themeStatusLabel">LIGHT ▾</span>
+          </div>
+        </div>
+
+        <h4 class="p-group-title">Your information</h4>
+        <div class="profile-list-card">
+          <div class="p-row" onclick="App.openAddressModal()"><span>📍 Address book</span><span>›</span></div>
+          <div class="p-row" onclick="App.openWishlistModal()"><span>❤️ Your wishlist (<b id="wishlistCountBadge">0</b>)</span><span>›</span></div>
+          <div class="p-row" onclick="App.openSimpleInfo('Bookmarked Recipes', 'Paneer Tikka Masala, Cold Coffee, Healthy Oats Chilla & 25+ recipes saved.')"><span>📖 Bookmarked recipes</span><span>›</span></div>
+          <div class="p-row" onclick="App.openSimpleInfo('GST Details', 'Add your GSTIN during checkout to claim business tax invoice.')"><span>🧾 GST details</span><span>›</span></div>
+          <div class="p-row" onclick="App.openGiftCardModal()"><span>🎁 E-gift cards & Claim Gift card</span><span>›</span></div>
+        </div>
+
+        <h4 class="p-group-title">Payment and coupons</h4>
+        <div class="profile-list-card">
+          <div class="p-row" onclick="App.openWalletModal()"><span>💰 Blinkit Money Balance</span><span id="profileWalletText">₹0 ›</span></div>
+          <div class="p-row" onclick="App.openGiftCardModal()"><span>🎟️ Claim Gift card (Try: BLINKIT100)</span><span>›</span></div>
+          <div class="p-row" onclick="App.openSimpleInfo('Collected Rewards', 'Active Coupons: AMEX750, AXIS150, MEGA49')"><span>🏆 Your collected rewards</span><span>›</span></div>
+        </div>
+
+        <h4 class="p-group-title">Other Information</h4>
+        <div class="profile-list-card">
+          <div class="p-row" onclick="App.openSimpleInfo('Feeding India Impact', 'Every order supports nutritious meals for communities across India.')"><span>🤝 Feeding India impact</span><span>›</span></div>
+          <div class="p-row" onclick="App.openSimpleInfo('About Blinkit Clone', 'Full-stack Vanilla JS Quick Commerce Store with 500 functional products.')"><span>ℹ️ About us</span><span>›</span></div>
+          <div class="p-row logout-row" onclick="Auth.logout()"><span>🚪 Log out</span><span>›</span></div>
+        </div>
+
+        <div class="app-version-foot">blinkit<br><small>v18.39.1</small></div>
+      </div>
+    </section>
+        <!-- FLOATING GREEN VIEW CART PILL -->
+    <div id="floatingCartBar" class="floating-cart-pill hidden" onclick="App.openCartDrawer()">
+      <div class="fc-left">
+        <div id="fcThumb" class="fc-thumb">🛒</div>
+        <div>
+          <div class="fc-title">View cart</div>
+          <div class="fc-sub"><span id="fcCount">1 item</span> • <strong id="fcTotal">₹0</strong></div>
+        </div>
+      </div>
+      <div class="fc-arrow">›</div>
+    </div>
+
+    <!-- FIXED 5-TAB BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+      <button class="bnav-item active" data-view="homeView" onclick="App.switchView('homeView')">
+        <span class="bnav-icon">🏠</span><span>Home</span>
+      </button>
+      <button class="bnav-item" data-view="orderAgainView" onclick="App.switchView('orderAgainView')">
+        <span class="bnav-icon">🛍️</span><span>Order Again</span>
+      </button>
+      <button class="bnav-item" data-view="allCategoriesView" onclick="App.switchView('allCategoriesView')">
+        <span class="bnav-icon">⊞</span><span>Categories</span>
+      </button>
+      <button class="bnav-item" data-view="printView" onclick="App.switchView('printView')">
+        <span class="bnav-icon">🖨️</span><span>Print</span>
+      </button>
+      <button class="bnav-zomato" onclick="App.openZomatoModal()">zomato</button>
+    </nav>
+  </div>
+
+  <!-- SLIDE-UP CART & CHECKOUT DRAWER -->
+  <div id="cartDrawer" class="drawer-overlay hidden">
+    <div class="drawer-sheet">
+      <div class="drawer-header">
+        <div><h3>Delivery in 12 minutes</h3><small id="cartItemCountLabel">Shipment of 1 item</small></div>
+        <button class="close-circle" onclick="App.closeCartDrawer()">✕</button>
+      </div>
+      <div class="drawer-body">
+        <div class="free-delivery-bar" id="freeDeliveryProgress">Add ₹99 more for FREE delivery</div>
+        <div id="cartItemsContainer" class="cart-items-list"></div>
+        <div class="coupon-box">
+          <input type="text" id="couponInput" placeholder="Enter coupon (AMEX750, AXIS150, MEGA49)" />
+          <button onclick="App.applyCoupon()">Apply</button>
+        </div>
+        <div class="bill-card">
+          <h4>Bill details</h4>
+          <div class="bill-row"><span>Items total</span><span id="billItemTotal">₹0</span></div>
+          <div class="bill-row"><span>Delivery charge</span><span id="billDelivery">₹25</span></div>
+          <div class="bill-row"><span>Handling charge</span><span>₹2</span></div>
+          <div class="bill-row discount-row hidden" id="billDiscountRow"><span>Coupon discount</span><span id="billDiscount">-₹0</span></div>
+          <div class="bill-row grand-total"><span>Grand total</span><span id="billGrandTotal">₹0</span></div>
+        </div>
+        <div class="payment-card">
+          <h4>Select Payment Method</h4>
+          <select id="paymentMethodSelect" class="text-input">
+            <option value="UPI">UPI (GPay / PhonePe / Paytm)</option>
+            <option value="WALLET">Blinkit Money Wallet</option>
+            <option value="CARD">Credit / Debit Card</option>
+            <option value="COD">Cash on Delivery</option>
+          </select>
+        </div>
+      </div>
+      <div class="drawer-footer">
+        <button class="place-order-btn" onclick="App.placeOrder()">
+          <div><strong id="checkoutBtnTotal">₹0</strong><small>TOTAL</small></div>
+          <span>Place Order ▸</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS & TOAST -->
+  <div id="variantModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="variantModalTitle">Select Pack Size</h3>
+        <button class="close-circle" onclick="App.closeModal('variantModal')">✕</button>
+      </div>
+      <div id="variantOptionsList" class="variant-list"></div>
+    </div>
+  </div>
+
+  <div id="genericModal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="genericModalTitle">Details</h3>
+        <button class="close-circle" onclick="App.closeModal('genericModal')">✕</button>
+      </div>
+      <div id="genericModalBody" class="modal-body-scroll"></div>
+    </div>
+  </div>
+
+  <div id="toastBanner" class="toast hidden"></div>
+
+  <script src="js/products.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
+:root {
+  --bg-main: #F4F6FB;
+  --bg-card: #FFFFFF;
+  --bg-soft: #F8F9FC;
+  --text-primary: #1C1C1C;
+  --text-secondary: #666666;
+  --border-color: #EAECEF;
+  --blinkit-yellow: #F8CB46;
+  --blinkit-yellow-grad: linear-gradient(180deg, #FFF3C4 0%, #FFFFFF 100%);
+  --blinkit-green: #0C831F;
+  --blinkit-green-light: #F7FFF9;
+  --zomato-red: #E23744;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] {
+  --bg-main: #121212;
+  --bg-card: #1E1E1E;
+  --bg-soft: #262626;
+  --text-primary: #F5F5F5;
+  --text-secondary: #AAAAAA;
+  --border-color: #333333;
+  --blinkit-yellow-grad: linear-gradient(180deg, #3A3010 0%, #1E1E1E 100%);
+  --blinkit-green-light: #132A18;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: #E5E8EF;
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-main);
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 130px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.1);
+}
+
+.hidden { display: none !important; }
+
+.top-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--blinkit-yellow-grad);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px 6px;
+}
+
+.eta-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; }
+.eta-time { font-size: 22px; font-weight: 900; line-height: 1.1; }
+.address-line { font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
+
+.wallet-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.wallet-icon {
+  background: var(--blinkit-yellow);
+  color: #000;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+}
+
+.profile-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+/* SEARCH BAR & TOP TABS */
+.search-wrapper { padding: 4px 14px 8px; }
+
+.search-bar {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.clear-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 14px; cursor: pointer; }
+
+.top-tabs {
+  display: flex;
+  overflow-x: auto;
+  padding: 4px 10px 0;
+  gap: 14px;
+  scrollbar-width: none;
+}
+.top-tabs::-webkit-scrollbar { display: none; }
+
+.tab-item {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab-item.active { color: var(--text-primary); border-bottom: 3px solid var(--text-primary); }
+.tab-icon { font-size: 18px; }
+
+.new-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #E23744;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 8px;
+}
+
+/* HERO CAROUSEL & HOME SECTIONS */
+.hero-carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 12px;
+  padding: 12px 14px;
+  scrollbar-width: none;
+}
+.hero-carousel::-webkit-scrollbar { display: none; }
+
+.hero-slide {
+  min-width: 100%;
+  scroll-snap-align: center;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #1C1C1C;
+}
+
+.hero-tag {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: rgba(255,255,255,0.75);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.hero-content h2 { font-size: 20px; font-weight: 900; margin: 6px 0 4px; }
+.hero-content p { font-size: 12px; opacity: 0.85; margin-bottom: 10px; }
+
+.hero-cta {
+  background: #D81B60;
+  color: #fff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hero-art { font-size: 46px; }
+
+.home-section { padding: 10px 14px; background: var(--bg-card); margin-bottom: 8px; }
+.section-title { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
+.section-sub { font-size: 12px; color: var(--text-secondary); margin-top: -6px; margin-bottom: 10px; }
+/* BESTSELLERS, BANK OFFERS & 4-COLUMN CATEGORY GRIDS */
+.bestsellers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
+.bestseller-card {
+  background: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.mini-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-bottom: 6px; }
+
+.mini-thumb {
+  background: var(--bg-card);
+  border-radius: 8px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.more-pill {
+  display: inline-block;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 2px 7px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
+
+.bestseller-title { font-size: 12px; font-weight: 700; line-height: 1.2; }
+
+.bank-offers-row { display: flex; overflow-x: auto; gap: 10px; scrollbar-width: none; }
+.bank-offers-row::-webkit-scrollbar { display: none; }
+
+.bank-card {
+  min-width: 240px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-soft);
+  cursor: pointer;
+}
+
+.bank-badge { padding: 8px 10px; border-radius: 8px; color: #fff; font-weight: 900; font-size: 11px; }
+.bank-badge.amex { background: #006FCF; }
+.bank-badge.axis { background: #97144D; }
+.bank-badge.upi { background: #0C831F; }
+.bank-card strong { font-size: 13px; display: block; }
+.bank-card p { font-size: 11px; color: var(--text-secondary); }
+
+.category-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.cat-tile { text-align: center; cursor: pointer; }
+
+.cat-tile-img {
+  background: #EAF4FF;
+  border-radius: 14px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  margin-bottom: 5px;
+}
+[data-theme="dark"] .cat-tile-img { background: #262E38; }
+.cat-tile span { font-size: 11px; font-weight: 700; line-height: 1.2; display: block; }
+
+/* PRODUCT CARDS & STEPPER */
+.horizontal-products { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 6px; scrollbar-width: none; }
+.horizontal-products::-webkit-scrollbar { display: none; }
+.horizontal-products .product-card { min-width: 155px; max-width: 155px; }
+
+.product-grid-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; }
+
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.p-img-box {
+  background: var(--bg-soft);
+  border-radius: 10px;
+  height: 105px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.wish-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: var(--bg-card);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+}
+
+.weight-pill {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: var(--bg-card);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+/* ADD BUTTON, PRODUCT META & CATEGORY DRILL-DOWN */
+.add-btn-wrap { position: absolute; bottom: -10px; right: 6px; }
+
+.btn-add {
+  background: var(--blinkit-green-light);
+  color: var(--blinkit-green);
+  border: 1px solid var(--blinkit-green);
+  border-radius: 8px;
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.qty-stepper {
+  background: var(--blinkit-green);
+  color: #fff;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.qty-stepper button { background: transparent; border: none; color: #fff; font-size: 15px; font-weight: 900; cursor: pointer; }
+
+.p-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.p-tag {
+  display: inline-block;
+  font-size: 10px;
+  background: #EEF6FF;
+  color: #1565C0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  width: fit-content;
+}
+
+.p-meta { font-size: 10.5px; color: var(--text-secondary); margin-bottom: 4px; }
+.stock-low { color: #E65100; font-weight: 700; }
+.p-price-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.p-price { font-size: 13.5px; font-weight: 800; }
+.p-mrp { font-size: 11px; color: var(--text-secondary); text-decoration: line-through; }
+.p-off { font-size: 10px; color: #1976D2; font-weight: 800; }
+
+.see-all-pill {
+  width: 100%;
+  margin-top: 8px;
+  padding: 9px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-soft);
+  color: var(--blinkit-green);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cat-top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 45;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cat-title-wrap { flex: 1; }
+.cat-title-wrap h3 { font-size: 15px; font-weight: 800; }
+.cat-title-wrap small { font-size: 11px; color: var(--text-secondary); }
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-soft);
+  color: var(--text-primary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 10px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.filter-chip {
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.filter-chip.active { border-color: var(--blinkit-green); background: var(--blinkit-green-light); color: var(--blinkit-green); }
+.split-cat-layout { display: flex; min-height: calc(100vh - 140px); }
+.subcat-sidebar { width: 78px; background: var(--bg-card); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
+.subcat-item { padding: 10px 4px; text-align: center; border-left: 3px solid transparent; cursor: pointer; font-size: 10.5px; font-weight: 600; color: var(--text-secondary); }
+.subcat-item.active { border-left-color: var(--blinkit-green); background: var(--blinkit-green-light); color: var(--blinkit-green); font-weight: 800; }
+.subcat-icon { font-size: 24px; display: block; margin-bottom: 3px; }
+.cat-products-area { flex: 1; }
+.cat-count-banne/* PROFILE VIEW, FLOATING CART & BOTTOM NAVIGATION */
+.profile-header-bg { background: var(--blinkit-yellow-grad); padding: 16px; text-align: center; }
+.profile-back { display: block; background: transparent; border: none; font-size: 15px; font-weight: 700; color: var(--text-primary); cursor: pointer; margin-bottom: 10px; }
+
+.profile-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.profile-body { padding: 12px; }
+.profile-quick-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+
+.p-quick-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px 6px;
+  text-align: center;
+  font-size: 12px;
+  cursor: pointer;
+}
+.p-quick-card span { display: block; font-size: 20px; margin-bottom: 4px; }
+
+.p-group-title { font-size: 12px; text-transform: uppercase; color: var(--text-secondary); margin: 14px 4px 6px; }
+.profile-list-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; }
+
+.p-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.p-row:last-child { border-bottom: none; }
+.logout-row { color: #D32F2F; }
+.theme-pill { background: var(--bg-soft); padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; }
+.app-version-foot { text-align: center; padding: 20px; color: var(--text-secondary); font-weight: 800; }
+
+.floating-cart-pill {
+  position: fixed;
+  bottom: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 28px);
+  max-width: 452px;
+  background: var(--blinkit-green);
+  color: #fff;
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+  z-index: 60;
+  cursor: pointer;
+}
+
+.fc-left { display: flex; align-items: center; gap: 10px; }
+.fc-thumb { width: 34px; height: 34px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+.fc-title { font-size: 14px; font-weight: 800; }
+.fc-sub { font-size: 12px; opacity: 0.95; }
+.fc-arrow { font-size: 22px; font-weight: 700; }
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  height: 58px;
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 55;
+  padding: 0 6px;
+}
+
+.bnav-item { background: transparent; border: none; color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; font-size: 10.5px; font-weight: 600; cursor: pointer; }
+.bnav-item.active { color: var(--text-primary); font-weight: 800; }
+.bnav-icon { font-size: 18px; }
+.bnav-zomato { background: var(--zomato-red); color: #fff; border: none; border-radius: 10px; padding: 8px 12px; font-weight: 900; font-style: italic; font-size: 13px; cursor: pointer; }
+r { padding: 8px 10px 0; font-size: 11px; color: var(--text-secondary); font-weight: 600; }
+/* DRAWERS, MODALS, ADMIN PANEL & PRINT STORE */
+.modal-overlay, .drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.58);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+}
+
+.drawer-overlay { align-items: flex-end; padding: 0; }
+
+.drawer-sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  background: var(--bg-main);
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.drawer-header, .modal-head {
+  background: var(--bg-card);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.drawer-body { padding: 12px; overflow-y: auto; flex: 1; }
+.drawer-footer { background: var(--bg-card); padding: 12px 16px; border-top: 1px solid var(--border-color); }
+.close-circle { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--bg-soft); color: var(--text-primary); cursor: pointer; }
+.free-delivery-bar { background: #E8F5E9; color: #1B5E20; font-size: 12px; font-weight: 700; padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; }
+
+.cart-items-list, .bill-card, .payment-card { background: var(--bg-card); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+.cart-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-color); }
+.cart-row:last-child { border-bottom: none; }
+
+.coupon-box { display: flex; gap: 8px; margin-bottom: 10px; }
+.coupon-box input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); }
+.coupon-box button { background: var(--blinkit-green); color: #fff; border: none; padding: 0 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
+
+.bill-row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
+.discount-row { color: var(--blinkit-green); font-weight: 700; }
+.grand-total { font-size: 15px; font-weight: 900; border-top: 1px dashed var(--border-color); padding-top: 8px; }
+
+.place-order-btn {
+  width: 100%;
+  background: var(--blinkit-green);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.place-order-btn small { display: block; font-size: 10px; opacity: 0.85; }
+
+.auth-card, .modal-card {
+  width: 100%;
+  max-width: 430px;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: var(--shadow-md);
+}
+.modal-body-scroll { overflow-y: auto; padding-top: 10px; }
+
+.auth-logo { font-size: 34px; font-weight: 900; color: #F8CB46; text-align: center; }
+.auth-logo span { color: var(--blinkit-green); }
+.auth-card h2 { text-align: center; font-size: 18px; margin-top: 6px; }
+.auth-sub { text-align: center; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; }
+
+.input-group { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 10px; padding: 0 12px; margin-bottom: 10px; }
+.prefix { font-weight: 700; margin-right: 8px; }
+.input-group input { border: none; outline: none; height: 42px; flex: 1; background: transparent; color: var(--text-primary); }
+.text-input { width: 100%; height: 42px; border: 1px solid var(--border-color); border-radius: 10px; padding: 0 12px; margin-bottom: 10px; background: var(--bg-card); color: var(--text-primary); }
+
+.btn-primary { background: var(--blinkit-green); color: #fff; border: none; height: 44px; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; }
+.btn-ghost { background: transparent; color: var(--text-secondary); border: none; height: 38px; margin-top: 6px; font-weight: 700; cursor: pointer; }
+.full-width { width: 100%; }
+
+.otp-boxes { display: flex; gap: 10px; justify-content: center; margin: 14px 0; }
+.otp-digit { width: 46px; height: 46px; text-align: center; font-size: 18px; font-weight: 800; border: 1px solid var(--border-color); border-radius: 10px; }
+
+/* ADMIN PANEL DASHBOARD STYLES */
+.admin-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+.admin-stat-box { background: var(--bg-soft); border: 1px solid var(--border-color); border-radius: 10px; padding: 8px; text-align: center; }
+.admin-stat-box strong { font-size: 16px; display: block; color: var(--blinkit-green); }
+.admin-stat-box small { font-size: 10.5px; color: var(--text-secondary); }
+
+.admin-order-card {
+  background: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+.admin-order-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.status-badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; background: #FFF3CD; color: #856404; }
+.status-badge.shipped { background: #CCE5FF; color: #004085; }
+.status-badge.delivered { background: #D4EDDA; color: #155724; }
+.admin-items-box { background: var(--bg-card); padding: 8px; border-radius: 8px; font-size: 12px; margin: 8px 0; border: 1px solid var(--border-color); }
+.admin-btn-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; }
+.admin-status-btn {
+  padding: 7px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.admin-status-btn.ship-btn { border-color: #006FCF; color: #006FCF; }
+.admin-status-btn.deliv-btn { background: var(--blinkit-green); color: #fff; border-color: var(--blinkit-green); }
+
+/* PRINT & MISC */
+.padded-section { padding: 12px; }
+.print-card { margin: 12px; background: var(--bg-card); padding: 16px; border-radius: 16px; }
+.print-hero { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
+.upload-box { display: block; border: 2px dashed var(--blinkit-green); border-radius: 12px; padding: 18px; text-align: center; margin: 12px 0; cursor: pointer; font-weight: 700; }
+.upload-box input { display: none; }
+.print-options label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; font-weight: 600; }
+.print-options input, .print-options select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color); }
+.print-total-row { display: flex; justify-content: space-between; font-size: 16px; padding: 10px 0; border-top: 1px solid var(--border-color); }
+
+.footer-tagline { padding: 28px 18px; color: var(--text-secondary); }
+.footer-tagline h1 { font-size: 28px; line-height: 1.15; opacity: 0.55; }
+.footer-tagline p { font-size: 12px; margin-top: 6px; }
+
+.toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1C1C1C;
+  color: #fff;
+  padding: 9px 16px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 700;
+  z-index: 200;
+  box-shadow: var(--shadow-md);
+}
+// Complete 500-Product Catalog Generator for Blinkit Clone
+const CATEGORY_CONFIG = [
+  {
+    name: "Grocery & Kitchen",
+    icon: "🥦",
+    subcategories: [
+      { name: "Vegetables & Fruits", icon: "🍊" },
+      { name: "Atta, Rice & Dal", icon: "🌾" },
+      { name: "Oil, Ghee & Masala", icon: "🫙" },
+      { name: "Dairy, Bread & Eggs", icon: "🥛" },
+      { name: "Bakery & Biscuits", icon: "🍪" },
+      { name: "Dry Fruits & Cereals", icon: "🥜" },
+      { name: "Chicken, Meat & Fish", icon: "🍗" },
+      { name: "Kitchenware & Appliances", icon: "🍳" }
+    ]
+  },
+  {
+    name: "Snacks & Drinks",
+    icon: "🍿",
+    subcategories: [
+      { name: "Chips & Namkeen", icon: "🥔" },
+      { name: "Sweets & Chocolates", icon: "🍫" },
+      { name: "Drinks & Juices", icon: "🥤" },
+      { name: "Tea, Coffee & Health Drinks", icon: "☕" },
+      { name: "Instant Food", icon: "🍜" },
+      { name: "Sauces & Spreads", icon: "🍯" },
+      { name: "Paan Corner", icon: "🌿" },
+      { name: "Ice Creams & More", icon: "🍨" }
+    ]
+  },
+  {
+    name: "Beauty & Personal Care",
+    icon: "🧴",
+    subcategories: [
+      { name: "Skin & Face", icon: "✨" },
+      { name: "Fragrances", icon: "🌸" },
+      { name: "Bath & Body", icon: "🧼" },
+      { name: "Hair", icon: "💇" },
+      { name: "Beauty & Cosmetics", icon: "💄" },
+      { name: "Feminine Hygiene", icon: "🩺" },
+      { name: "Baby Care", icon: "👶" },
+      { name: "Health & Pharma", icon: "💊" }
+    ]
+  },
+  {
+    name: "Household Essentials",
+    icon: "🏠",
+    subcategories: [
+      { name: "Home & Lifestyle", icon: "🛋️" },
+      { name: "Cleaners & Repellents", icon: "🧹" },
+      { name: "Electronics", icon: "🎧" },
+      { name: "Stationery & Games", icon: "📚" }
+    ]
+  }
+];
+
+const CURATED_BASE_ITEMS = [
+  { name: "Nagpur Orange", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "500 g", price: 59, mrp: 67, icon: "🍊", tag: "Vitamin C", stock: 4, isBestseller: true },
+  { name: "Apple Ber", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "250 g", price: 42, mrp: 49, icon: "🍏", tag: "Sweet & Crisp", stock: 3, isBestseller: true },
+  { name: "Custard Apple (Sitaphal)", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "300 g", price: 96, mrp: 111, icon: "🍈", tag: "2 pcs", stock: 6, isBestseller: true },
+  { name: "Pomegranate - 1 piece", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "175 g", price: 59, mrp: 69, icon: "🍎", tag: "Rich Iron", stock: 8, isBestseller: true },
+  { name: "Red Potato (Aloo)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "1 kg", price: 29, mrp: 35, icon: "🥔", tag: "30 recipes", stock: 15, isBestseller: true },
+  { name: "Fresh Lemon (Nimbu)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "250 g", price: 35, mrp: 45, icon: "🍋", tag: "Juicy", stock: 12, isBestseller: false },
+  { name: "Green Cucumber (Kheera)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "500 g", price: 27, mrp: 31, icon: "🥒", tag: "Hydrating", stock: 9, isBestseller: true },
+  { name: "Baby Onion (Sirka Pyaz)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "250 g", price: 17, mrp: 20, icon: "🧅", tag: "30 recipes", stock: 11, isBestseller: false },
+  { name: "Britannia NutriChoice Digestive Zero", brand: "Britannia", category: "Grocery & Kitchen", subCategory: "Bakery & Biscuits", weight: "100 g", price: 25, mrp: 30, icon: "🍪", tag: "No Maida", stock: 14, isBestseller: true },
+  { name: "Britannia NutriChoice Sugar Free Crackers", brand: "Britannia", category: "Grocery & Kitchen", subCategory: "Bakery & Biscuits", weight: "300 g", price: 85, mrp: 95, icon: "🍘", tag: "No Added Sugar", stock: 10, isBestseller: true },
+  { name: "Britannia NutriChoice Oats Milk Biscuits", brand: "Britannia", category: "Grocery & Kitchen", subCategory: "Bakery & Biscuits", weight: "150 g", price: 45, mrp: 50, icon: "🍪", tag: "No Maida", stock: 7, isBestseller: true },
+  { name: "The Derma Co 10% Niacinamide Face Serum", brand: "The Derma Co", category: "Beauty & Personal Care", subCategory: "Skin & Face", weight: "10 ml", price: 232, mrp: 249, icon: "🧴", tag: "Acne Control", stock: 4, isBestseller: true },
+  { name: "Pilgrim 10% Vitamin C Face Serum", brand: "Pilgrim", category: "Beauty & Personal Care", subCategory: "Skin & Face", weight: "10 ml", price: 229, mrp: 275, icon: "💧", tag: "Vitamin C", stock: 12, isBestseller: true },
+  { name: "Minimalist 10% Vitamin C Brightening Serum", brand: "Minimalist", category: "Beauty & Personal Care", subCategory: "Skin & Face", weight: "10 ml", price: 270, mrp: 299, icon: "🧪", tag: "Vitamin C", stock: 3, isBestseller: true },
+  { name: "Bella Vita Luxury Fruity Woody EDP", brand: "Bella Vita", category: "Beauty & Personal Care", subCategory: "Fragrances", weight: "100 ml", price: 499, mrp: 849, icon: "🌸", tag: "Long Lasting", stock: 5, isBestseller: true },
+  { name: "Ajmal Oud Spicy Woody Perfume", brand: "Ajmal", category: "Beauty & Personal Care", subCategory: "Fragrances", weight: "100 ml", price: 699, mrp: 999, icon: "🕌", tag: "Oud Edition", stock: 2, isBestseller: true },
+  { name: "CR7 Cristiano Ronaldo Oriental Fragrance", brand: "CR7", category: "Beauty & Personal Care", subCategory: "Fragrances", weight: "30 ml", price: 1199, mrp: 1499, icon: "🏆", tag: "Oriental", stock: 1, isBestseller: true }
+];
+const GENERATOR_TEMPLATES = [
+  { prefix: "Aashirvaad Shudh Chakki Atta", brand: "Aashirvaad", cat: "Grocery & Kitchen", sub: "Atta, Rice & Dal", icon: "🌾", basePrice: 245, tag: "100% Whole Wheat" },
+  { prefix: "India Gate Basmati Rice Classic", brand: "India Gate", cat: "Grocery & Kitchen", sub: "Atta, Rice & Dal", icon: "🍚", basePrice: 185, tag: "Aged Grain" },
+  { prefix: "Tata Sampann Unpolished Toor Dal", brand: "Tata Sampann", cat: "Grocery & Kitchen", sub: "Atta, Rice & Dal", icon: "🫘", basePrice: 165, tag: "High Protein" },
+  { prefix: "Fortune Sunlite Refined Sunflower Oil", brand: "Fortune", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icon: "🫙", basePrice: 142, tag: "Light & Healthy" },
+  { prefix: "Amul Pure Cow Ghee Pouch", brand: "Amul", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icon: "🧈", basePrice: 315, tag: "Pure Desi Ghee" },
+  { prefix: "Everest Kashmiri Lal Chilli Powder", brand: "Everest", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icon: "🌶️", basePrice: 88, tag: "Rich Color" },
+  { prefix: "Amul Taaza Toned Fresh Milk", brand: "Amul", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icon: "🥛", basePrice: 56, tag: "Fresh Daily" },
+  { prefix: "Harvest Gold 100% Whole Wheat Bread", brand: "Harvest Gold", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icon: "🍞", basePrice: 50, tag: "Zero Maida" },
+  { prefix: "Farm Fresh White Protein Eggs", brand: "Eggoz", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icon: "🥚", basePrice: 89, tag: "6 pcs Pack" },
+  { prefix: "Happilo Premium California Almonds", brand: "Happilo", cat: "Grocery & Kitchen", sub: "Dry Fruits & Cereals", icon: "🥜", basePrice: 249, tag: "Crunchy" },
+  { prefix: "Kellogg's Corn Flakes Original", brand: "Kellogg's", cat: "Grocery & Kitchen", sub: "Dry Fruits & Cereals", icon: "🥣", basePrice: 175, tag: "Iron & B Vitamins" },
+  { prefix: "Licious Fresh Chicken Curry Cut", brand: "Licious", cat: "Grocery & Kitchen", sub: "Chicken, Meat & Fish", icon: "🍗", basePrice: 215, tag: "Antibiotic Free" },
+  { prefix: "Prestige Non-Stick Fry Pan", brand: "Prestige", cat: "Grocery & Kitchen", sub: "Kitchenware & Appliances", icon: "🍳", basePrice: 649, tag: "Induction Base" },
+  { prefix: "Lay's India's Magic Masala Chips", brand: "Lay's", cat: "Snacks & Drinks", sub: "Chips & Namkeen", icon: "🥔", basePrice: 20, tag: "Bestseller" },
+  { prefix: "Haldiram's Aloo Bhujia Namkeen", brand: "Haldiram's", cat: "Snacks & Drinks", sub: "Chips & Namkeen", icon: "🥨", basePrice: 55, tag: "Crispy" },
+  { prefix: "Cadbury Dairy Milk Silk Chocolate", brand: "Cadbury", cat: "Snacks & Drinks", sub: "Sweets & Chocolates", icon: "🍫", basePrice: 85, tag: "Creamy" },
+  { prefix: "Coca-Cola Original Taste Soft Drink", brand: "Coca-Cola", cat: "Snacks & Drinks", sub: "Drinks & Juices", icon: "🥤", basePrice: 40, tag: "Chilled" },
+  { prefix: "Real Fruit Power Mixed Fruit Juice", brand: "Real", cat: "Snacks & Drinks", sub: "Drinks & Juices", icon: "🧃", basePrice: 115, tag: "No Preservatives" },
+  { prefix: "Tata Tea Gold Leaf Tea Pack", brand: "Tata Tea", cat: "Snacks & Drinks", sub: "Tea, Coffee & Health Drinks", icon: "☕", basePrice: 145, tag: "Rich Aroma" },
+  { prefix: "Maggi 2-Minute Masala Noodles", brand: "Nestle", cat: "Snacks & Drinks", sub: "Instant Food", icon: "🍜", basePrice: 56, tag: "4-Pack" },
+  { prefix: "Kissan Fresh Tomato Ketchup", brand: "Kissan", cat: "Snacks & Drinks", sub: "Sauces & Spreads", icon: "🍅", basePrice: 99, tag: "100% Real Tomatoes" },
+  { prefix: "Kwality Wall's Belgian Chocolate Tub", brand: "Kwality Wall's", cat: "Snacks & Drinks", sub: "Ice Creams & More", icon: "🍨", basePrice: 199, tag: "Frozen Treat" },
+  { prefix: "Dove Cream Beauty Bathing Bar", brand: "Dove", cat: "Beauty & Personal Care", sub: "Bath & Body", icon: "🧼", basePrice: 65, tag: "1/4 Moisturizing" },
+  { prefix: "L'Oreal Paris Total Repair 5 Shampoo", brand: "L'Oreal", cat: "Beauty & Personal Care", sub: "Hair", icon: "🧴", basePrice: 195, tag: "Keratin Smooth" },
+  { prefix: "boAt BassHeads Wired Earphones", brand: "boAt", cat: "Household Essentials", sub: "Electronics", icon: "🎧", basePrice: 399, tag: "1 Yr Warranty" },
+  { prefix: "Harpic Power Plus Disinfectant Cleaner", brand: "Harpic", cat: "Household Essentials", sub: "Cleaners & Repellents", icon: "🧹", basePrice: 105, tag: "Kills 99.9% Germs" },
+  { prefix: "Classmate Pulse Spiral Notebook", brand: "Classmate", cat: "Household Essentials", sub: "Stationery & Games", icon: "📓", basePrice: 75, tag: "300 Pages" }
+];
+
+const VARIANTS_PACK = ["100 g", "250 g", "500 g", "1 kg", "Pack of 2", "Family Pack", "Value Saver", "Combo Pack", "Mini Pack", "XL Pack", "Classic", "Masala", "Zero Sugar", "Premium", "Organic", "Fresh", "Gold Edition", "Daily Pack"];
+function build500Products() {
+  const list = [];
+  let idCounter = 1;
+
+  CURATED_BASE_ITEMS.forEach(item => {
+    const discountPct = Math.round(((item.mrp - item.price) / item.mrp) * 100);
+    list.push({
+      id: idCounter++,
+      name: item.name,
+      brand: item.brand,
+      category: item.category,
+      subCategory: item.subCategory,
+      weight: item.weight,
+      price: item.price,
+      mrp: item.mrp,
+      discountPct,
+      icon: item.icon,
+      tag: item.tag,
+      rating: (4.3 + (idCounter % 6) * 0.1).toFixed(1),
+      reviews: 120 + idCounter * 17,
+      eta: "12 mins",
+      stock: item.stock,
+      isBestseller: item.isBestseller,
+      variants: [
+        { label: item.weight, price: item.price, mrp: item.mrp },
+        { label: "2x Value Pack", price: Math.round(item.price * 1.85), mrp: item.mrp * 2 }
+      ]
+    });
+  });
+
+  let idx = 0;
+  while (list.length < 500) {
+    const tpl = GENERATOR_TEMPLATES[idx % GENERATOR_TEMPLATES.length];
+    const variantLabel = VARIANTS_PACK[Math.floor(idx / GENERATOR_TEMPLATES.length) % VARIANTS_PACK.length];
+    const priceMultiplier = 1 + ((idx % 4) * 0.25);
+    const price = Math.round(tpl.basePrice * priceMultiplier);
+    const mrp = Math.round(price * 1.18);
+    const discountPct = Math.round(((mrp - price) / mrp) * 100);
+
+    list.push({
+      id: idCounter++,
+      name: `${tpl.prefix} (${variantLabel})`,
+      brand: tpl.brand,
+      category: tpl.cat,
+      subCategory: tpl.sub,
+      weight: variantLabel,
+      price,
+      mrp,
+      discountPct,
+      icon: tpl.icon,
+      tag: tpl.tag,
+      rating: (4.1 + (idx % 8) * 0.1).toFixed(1),
+      reviews: 45 + (idx * 13) % 900,
+      eta: "12 mins",
+      stock: (idx % 12) + 2,
+      isBestseller: idx % 3 === 0,
+      variants: [
+        { label: variantLabel, price, mrp },
+        { label: "Double Saver Pack", price: Math.round(price * 1.8), mrp: mrp * 2 }
+      ]
+    });
+    idx++;
+  }
+
+  return list;
+}
+
+window.PRODUCTS_DB = build500Products();
+    const Auth = {
+  STORAGE_KEY: "blinkit_clone_user_v1",
+  GLOBAL_ORDERS_KEY: "blinkit_all_orders_admin_v1",
+
+  getDefaultUser() {
+    return {
+      isLoggedIn: true,
+      name: "Rizwan Khan",
+      phone: "9329736019",
+      activeAddress: "HOME - pratappur",
+      addresses: [
+        "HOME - pratappur",
+        "OFFICE - Korba Main Market, Chhattisgarh"
+      ],
+      walletBalance: 0,
+      wishlist: [1, 12, 15],
+      orders: [],
+      claimedGiftCodes: []
+    };
+  },
+
+  getUser() {
+    const raw = localStorage.getItem(this.STORAGE_KEY);
+    if (!raw) {
+      const def = this.getDefaultUser();
+      this.saveUser(def);
+      return def;
+    }
+    return JSON.parse(raw);
+  },
+
+  saveUser(userObj) {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(userObj));
+    this.syncUI();
+  },
+
+  getAllGlobalOrders() {
+    const raw = localStorage.getItem(this.GLOBAL_ORDERS_KEY);
+    if (!raw) {
+      const sampleOrder = [{
+        id: "BLK849210",
+        customerName: "Aman Verma",
+        customerPhone: "9826100421",
+        address: "Ward 4 - Pratappur Main Road",
+        date: new Date().toLocaleString(),
+        items: [
+          { id: 1, name: "Nagpur Orange", weight: "500 g", price: 59, qty: 2, icon: "🍊" },
+          { id: 12, name: "The Derma Co 10% Niacinamide Face Serum", weight: "10 ml", price: 232, qty: 1, icon: "🧴" }
+        ],
+        total: 352,
+        payment: "UPI",
+        status: "Order Placed"
+      }];
+      localStorage.setItem(this.GLOBAL_ORDERS_KEY, JSON.stringify(sampleOrder));
+      return sampleOrder;
+    }
+    return JSON.parse(raw);
+  },
+
+  saveAllGlobalOrders(ordersList) {
+    localStorage.setItem(this.GLOBAL_ORDERS_KEY, JSON.stringify(ordersList));
+  },
+
+  sendOtp() {
+    const phone = document.getElementById("loginPhoneInput").value.trim();
+    if (phone.length < 10) {
+      App.showToast("Please enter a valid 10-digit mobile number");
+      return;
+    }
+    document.getElementById("otpPhoneDisplay").textContent = `+91 ${phone}`;
+    document.getElementById("authStepPhone").classList.add("hidden");
+    document.getElementById("authStepOtp").classList.remove("hidden");
+    App.showToast("OTP sent! Demo OTP is 1234");
+  },
+
+  backToPhone() {
+    document.getElementById("authStepOtp").classList.add("hidden");
+    document.getElementById("authStepPhone").classList.remove("hidden");
+  },
+
+  verifyOtp() {
+    const phone = document.getElementById("loginPhoneInput").value.trim() || "9329736019";
+    const name = document.getElementById("loginNameInput").value.trim() || "Rizwan Khan";
+    const addr = document.getElementById("loginAddressInput").value.trim() || "HOME - pratappur";
+
+    const user = this.getUser();
+    user.isLoggedIn = true;
+    user.phone = phone;
+    user.name = name;
+    user.activeAddress = addr;
+    if (!user.addresses.includes(addr)) user.addresses.unshift(addr);
+
+    this.saveUser(user);
+    document.getElementById("authModal").classList.add("hidden");
+    App.showToast(`Welcome back, ${name}!`);
+  },
+
+  continueAsGuest() {
+    const user = this.getUser();
+    user.isLoggedIn = true;
+    this.saveUser(user);
+    document.getElementById("authModal").classList.add("hidden");
+    App.showToast("Browsing in Guest Mode");
+  },
+
+  logout() {
+    const user = this.getUser();
+    user.isLoggedIn = false;
+    this.saveUser(user);
+    document.getElementById("authStepPhone").classList.remove("hidden");
+    document.getElementById("authStepOtp").classList.add("hidden");
+    document.getElementById("authModal").classList.remove("hidden");
+    App.showToast("Logged out successfully");
+  },
+
+  syncUI() {
+    const user = this.getUser();
+    const addrEl = document.getElementById("headerAddressText");
+    const catSubEl = document.getElementById("catViewSub");
+    const walletEl = document.getElementById("headerWalletBalance");
+    const pNameEl = document.getElementById("profileUserName");
+    const pPhoneEl = document.getElementById("profileUserPhone");
+    const pWalletEl = document.getElementById("profileWalletText");
+    const wishBadge = document.getElementById("wishlistCountBadge");
+
+    if (addrEl) addrEl.textContent = user.activeAddress;
+    if (catSubEl) catSubEl.textContent = `Delivering to ${user.activeAddress}`;
+    if (walletEl) walletEl.textContent = user.walletBalance;
+    if (pNameEl) pNameEl.textContent = user.name || "Your account";
+    if (pPhoneEl) pPhoneEl.textContent = user.phone;
+    if (pWalletEl) pWalletEl.textContent = `₹${user.walletBalance} ›`;
+    if (wishBadge) wishBadge.textContent = user.wishlist.length;
+  }
+};
+      const App = {
+  cart: JSON.parse(localStorage.getItem("blinkit_cart_v1") || "{}"),
+  appliedCoupon: null,
+  currentCategory: "Grocery & Kitchen",
+  currentSubCategory: "All",
+  filterBestsellerOnly: false,
+  filterUnder100Only: false,
+  placeholderIndex: 0,
+  ADMIN_SECRET_KEY: "2411",
+
+  init() {
+    const user = Auth.getUser();
+    if (!user.isLoggedIn) {
+      document.getElementById("authModal").classList.remove("hidden");
+    }
+    this.injectSettingsAdminRow();
+    Auth.syncUI();
+    this.renderHomeSections();
+    this.updateCartUI();
+    this.startRotatingSearchPlaceholder();
+  },
+
+  // Automatically adds "Settings & Admin Panel" inside Profile -> Other Information
+  injectSettingsAdminRow() {
+    const profileLists = document.querySelectorAll("#profileView .profile-list-card");
+    const lastCard = profileLists[profileLists.length - 1];
+    if (lastCard && !document.getElementById("adminSettingsRow")) {
+      const row = document.createElement("div");
+      row.id = "adminSettingsRow";
+      row.className = "p-row";
+      row.style.color = "#0C831F";
+      row.onclick = () => App.openAdminKeyPrompt();
+      row.innerHTML = `<span>⚙️ Settings & Admin Panel</span><span>🔐 ›</span>`;
+      lastCard.insertBefore(row, lastCard.lastElementChild);
+    }
+  },
+
+  startRotatingSearchPlaceholder() {
+    const prompts = [
+      'Search "healthy snacks"',
+      'Search "atta, dal, coke..."',
+      'Search "nagpur orange"',
+      'Search "vitamin c serum"',
+      'Search "perfumes & oud"'
+    ];
+    setInterval(() => {
+      const input = document.getElementById("globalSearchInput");
+      if (input && document.activeElement !== input && !input.value) {
+        this.placeholderIndex = (this.placeholderIndex + 1) % prompts.length;
+        input.placeholder = prompts[this.placeholderIndex];
+      }
+    }, 2600);
+  },
+
+  renderHomeSections() {
+    const bestsellersData = [
+      { title: "Chips & Namkeen", count: "+315 more", cat: "Snacks & Drinks", sub: "Chips & Namkeen", icons: ["🥔", "🥨", "🍿", "🥜"] },
+      { title: "Bakery & Biscuits", count: "+124 more", cat: "Grocery & Kitchen", sub: "Bakery & Biscuits", icons: ["🍪", "🍘", "🍞", "🧁"] },
+      { title: "Vegetable & Fruits", count: "+104 more", cat: "Grocery & Kitchen", sub: "Vegetables & Fruits", icons: ["🍊", "🍏", "🥔", "🥒"] },
+      { title: "Oil, Ghee & Masala", count: "+123 more", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icons: ["🫙", "🧈", "🌶️", "🧂"] },
+      { title: "Dairy & Bread", count: "+13 more", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icons: ["🥛", "🍞", "🥚", "🧀"] },
+      { title: "Drinks & Juices", count: "+114 more", cat: "Snacks & Drinks", sub: "Drinks & Juices", icons: ["🥤", "🧃", "☕", "🧋"] }
+    ];
+
+    document.getElementById("bestsellersGrid").innerHTML = bestsellersData.map(b => `
+      <div class="bestseller-card" onclick="App.openCategory('${b.cat}', '${b.sub}')">
+        <div class="mini-2x2">
+          ${b.icons.map(ic => `<div class="mini-thumb">${ic}</div>`).join("")}
+        </div>
+        <span class="more-pill">${b.count}</span>
+        <div class="bestseller-title">${b.title}</div>
+      </div>
+    `).join("");
+
+    this.renderTileGrid("groceryGrid", CATEGORY_CONFIG[0].subcategories, "Grocery & Kitchen");
+    this.renderTileGrid("snacksGrid", CATEGORY_CONFIG[1].subcategories, "Snacks & Drinks");
+    this.renderTileGrid("beautyGrid", CATEGORY_CONFIG[2].subcategories, "Beauty & Personal Care");
+    this.renderTileGrid("householdGrid", CATEGORY_CONFIG[3].subcategories, "Household Essentials");
+
+    const spotlight = [
+      { name: "Winter Store", icon: "🧥", cat: "Beauty & Personal Care", sub: "Skin & Face" },
+      { name: "Travel Store", icon: "🧳", cat: "Household Essentials", sub: "Home & Lifestyle" },
+      { name: "Hobby Store", icon: "📷", cat: "Household Essentials", sub: "Electronics" },
+      { name: "Sports Store", icon: "🏀", cat: "Household Essentials", sub: "Stationery & Games" }
+    ];
+    document.getElementById("spotlightGrid").innerHTML = spotlight.map(s => `
+      <div class="cat-tile" onclick="App.openCategory('${s.cat}', '${s.sub}')">
+        <div class="cat-tile-img">${s.icon}</div>
+        <span>${s.name}</span>
+      </div>
+    `).join("");
+
+    const lifestyle = [
+      { name: "Spiritual Needs", icon: "🪔", cat: "Household Essentials", sub: "Home & Lifestyle" },
+      { name: "Pet Store", icon: "🐶", cat: "Grocery & Kitchen", sub: "Dry Fruits & Cereals" },
+      { name: "Fashion Basics", icon: "👕", cat: "Household Essentials", sub: "Home & Lifestyle" },
+      { name: "Toy Store", icon: "🧸", cat: "Household Essentials", sub: "Stationery & Games" },
+      { name: "Book Store", icon: "📚", cat: "Household Essentials", sub: "Stationery & Games" },
+      { name: "Pharma Store", icon: "🩺", cat: "Beauty & Personal Care", sub: "Health & Pharma" },
+      { name: "E-Gifts Store", icon: "🎁", cat: "Snacks & Drinks", sub: "Sweets & Chocolates" },
+      { name: "Jewellery Store", icon: "💍", cat: "Beauty & Personal Care", sub: "Beauty & Cosmetics" }
+    ];
+    document.getElementById("lifestyleGrid").innerHTML = lifestyle.map(s => `
+      <div class="cat-tile" onclick="App.openCategory('${s.cat}', '${s.sub}')">
+        <div class="cat-tile-img">${s.icon}</div>
+        <span>${s.name}</span>
+      </div>
+    `).join("");
+
+    const healthyItems = PRODUCTS_DB.filter(p => p.subCategory === "Bakery & Biscuits").slice(0, 8);
+    const serumItems = PRODUCTS_DB.filter(p => p.subCategory === "Skin & Face").slice(0, 8);
+    const perfumeItems = PRODUCTS_DB.filter(p => p.subCategory === "Fragrances").slice(0, 8);
+
+    document.getElementById("healthyCarousel").innerHTML = healthyItems.map(p => this.renderProductCard(p)).join("");
+    document.getElementById("serumsCarousel").innerHTML = serumItems.map(p => this.renderProductCard(p)).join("");
+    document.getElementById("perfumesCarousel").innerHTML = perfumeItems.map(p => this.renderProductCard(p)).join("");
+  },
+
+  renderTileGrid(elementId, subcats, parentCat) {
+    document.getElementById(elementId).innerHTML = subcats.map(s => `
+      <div class="cat-tile" onclick="App.openCategory('${parentCat}', '${s.name}')">
+        <div class="cat-tile-img">${s.icon}</div>
+        <span>${s.name}</span>
+      </div>
+    `).join("");
+  },
+        renderProductCard(p) {
+    const qty = this.cart[p.id] || 0;
+    const user = Auth.getUser();
+    const isWished = user.wishlist.includes(p.id);
+
+    const actionHtml = qty === 0
+      ? `<button class="btn-add" onclick="event.stopPropagation(); App.addToCart(${p.id})">ADD</button>`
+      : `<div class="qty-stepper" onclick="event.stopPropagation()">
+           <button onclick="App.updateQty(${p.id}, -1)">−</button>
+           <span>${qty}</span>
+           <button onclick="App.updateQty(${p.id}, 1)">+</button>
+         </div>`;
+
+    return `
+      <div class="product-card" onclick="App.openVariantModal(${p.id})">
+        <div>
+          <div class="p-img-box">
+            <span>${p.icon}</span>
+            <button class="wish-btn" onclick="event.stopPropagation(); App.toggleWishlist(${p.id})">
+              ${isWished ? "❤️" : "🤍"}
+            </button>
+            <span class="weight-pill">${p.weight}</span>
+            <div class="add-btn-wrap">${actionHtml}</div>
+          </div>
+          <div class="p-title">${p.name}</div>
+          ${p.tag ? `<div class="p-tag">${p.tag}</div>` : ""}
+          <div class="p-meta">
+            ⭐ ${p.rating} (${p.reviews}) • ⏱ ${p.eta}
+            ${p.stock <= 5 ? `<br><span class="stock-low">${p.stock} left</span>` : ""}
+          </div>
+        </div>
+        <div class="p-price-row">
+          <span class="p-price">₹${p.price}</span>
+          <span class="p-mrp">₹${p.mrp}</span>
+          <span class="p-off">${p.discountPct}% OFF</span>
+        </div>
+      </div>
+    `;
+  },
+
+  openCategory(categoryName, subCategoryName = "All") {
+    this.currentCategory = categoryName;
+    this.currentSubCategory = subCategoryName;
+    this.filterBestsellerOnly = false;
+    this.filterUnder100Only = false;
+
+    document.getElementById("catViewTitle").textContent = subCategoryName === "All" ? categoryName : subCategoryName;
+    this.switchView("categoryView");
+    this.renderCategorySidebar();
+    this.applyCategoryFilters();
+  },
+
+  renderCategorySidebar() {
+    const catObj = CATEGORY_CONFIG.find(c => c.name === this.currentCategory) || CATEGORY_CONFIG[0];
+    const items = [{ name: "All", icon: catObj.icon }, ...catObj.subcategories];
+
+    document.getElementById("subcatSidebar").innerHTML = items.map(s => `
+      <div class="subcat-item ${this.currentSubCategory === s.name ? "active" : ""}"
+           onclick="App.selectSubCategory('${s.name}')">
+        <span class="subcat-icon">${s.icon}</span>
+        <span>${s.name}</span>
+      </div>
+    `).join("");
+  },
+
+  selectSubCategory(subName) {
+    this.currentSubCategory = subName;
+    document.getElementById("catViewTitle").textContent = subName === "All" ? this.currentCategory : subName;
+    this.renderCategorySidebar();
+    this.applyCategoryFilters();
+  },
+
+  toggleBestsellerFilter() {
+    this.filterBestsellerOnly = !this.filterBestsellerOnly;
+    document.getElementById("bestsellerFilterBtn").classList.toggle("active", this.filterBestsellerOnly);
+    this.applyCategoryFilters();
+  },
+
+  toggleUnder100Filter() {
+    this.filterUnder100Only = !this.filterUnder100Only;
+    document.getElementById("under100FilterBtn").classList.toggle("active", this.filterUnder100Only);
+    this.applyCategoryFilters();
+  },
+
+  applyCategoryFilters() {
+    let filtered = PRODUCTS_DB.filter(p => p.category === this.currentCategory);
+    if (this.currentSubCategory !== "All") {
+      filtered = filtered.filter(p => p.subCategory === this.currentSubCategory);
+    }
+    if (this.filterBestsellerOnly) {
+      filtered = filtered.filter(p => p.isBestseller);
+    }
+    if (this.filterUnder100Only) {
+      filtered = filtered.filter(p => p.price < 100);
+    }
+
+    const sortVal = document.getElementById("sortSelect").value;
+    if (sortVal === "priceLow") filtered.sort((a, b) => a.price - b.price);
+    if (sortVal === "priceHigh") filtered.sort((a, b) => b.price - a.price);
+    if (sortVal === "discount") filtered.sort((a, b) => b.discountPct - a.discountPct);
+
+    document.getElementById("catItemCount").textContent = `Showing ${filtered.length} products`;
+    document.getElementById("categoryProductGrid").innerHTML = filtered.map(p => this.renderProductCard(p)).join("");
+  },
+
+  handleSearch(query) {
+    const q = query.trim().toLowerCase();
+    const clearBtn = document.getElementById("clearSearchBtn");
+
+    if (!q) {
+      clearBtn.classList.add("hidden");
+      document.getElementById("searchResultsView").classList.add("hidden");
+      document.getElementById("homeView").classList.remove("hidden");
+      return;
+    }
+
+    clearBtn.classList.remove("hidden");
+    document.querySelectorAll(".view-section").forEach(v => v.classList.add("hidden"));
+    document.getElementById("searchResultsView").classList.remove("hidden");
+
+    const matches = PRODUCTS_DB.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q) ||
+      p.subCategory.toLowerCase().includes(q) ||
+      p.brand.toLowerCase().includes(q)
+    );
+
+    document.getElementById("searchResultCount").textContent = `${matches.length} results for "${query}"`;
+    document.getElementById("searchProductGrid").innerHTML = matches.length
+      ? matches.slice(0, 60).map(p => this.renderProductCard(p)).join("")
+      : `<p style="padding:20px; grid-column:1/-1;">No matching products found.</p>`;
+  },
+
+  clearSearch() {
+    document.getElementById("globalSearchInput").value = "";
+    this.handleSearch("");
+  },
+
+  focusSearch() {
+    this.switchView("homeView");
+    document.getElementById("globalSearchInput").focus();
+  },
+
+  voiceSearchDemo() {
+    const sampleQueries = ["Orange", "Serum", "Atta", "Chips", "Perfume"];
+    const pick = sampleQueries[Math.floor(Math.random() * sampleQueries.length)];
+    document.getElementById("globalSearchInput").value = pick;
+    this.handleSearch(pick);
+    this.showToast(`Voice searched: "${pick}"`);
+  },
+
+  selectTopTab(tabName, btnEl) {
+    document.querySelectorAll(".tab-item").forEach(b => b.classList.remove("active"));
+    btnEl.classList.add("active");
+
+    if (tabName === "All") this.switchView("homeView");
+    else if (tabName === "Winter" || tabName === "Beauty") this.openCategory("Beauty & Personal Care", "Skin & Face");
+    else if (tabName === "Electronics") this.openCategory("Household Essentials", "Electronics");
+    else if (tabName === "Gifting") this.openCategory("Snacks & Drinks", "Sweets & Chocolates");
+    else this.openCategory("Household Essentials", "Home & Lifestyle");
+  },
+          addToCart(productId) {
+    this.cart[productId] = (this.cart[productId] || 0) + 1;
+    this.saveCart();
+    this.showToast("Added to cart");
+  },
+
+  updateQty(productId, delta) {
+    const next = (this.cart[productId] || 0) + delta;
+    if (next <= 0) delete this.cart[productId];
+    else this.cart[productId] = next;
+    this.saveCart();
+  },
+
+  saveCart() {
+    localStorage.setItem("blinkit_cart_v1", JSON.stringify(this.cart));
+    this.updateCartUI();
+    if (!document.getElementById("homeView").classList.contains("hidden")) {
+      this.renderHomeSections();
+    }
+    if (!document.getElementById("categoryView").classList.contains("hidden")) {
+      this.applyCategoryFilters();
+    }
+    const q = document.getElementById("globalSearchInput").value;
+    if (q) this.handleSearch(q);
+  },
+
+  getCartSummary() {
+    let count = 0;
+    let itemTotal = 0;
+    let firstIcon = "🛒";
+    const entries = [];
+
+    Object.keys(this.cart).forEach(idStr => {
+      const qty = this.cart[idStr];
+      if (idStr.startsWith("print_")) {
+        const printMeta = JSON.parse(localStorage.getItem(idStr) || "{}");
+        count += qty;
+        itemTotal += (printMeta.price || 15) * qty;
+        firstIcon = "🖨️";
+        entries.push({ id: idStr, name: printMeta.name || "Document Printout", weight: `${printMeta.pages || 5} pages`, price: printMeta.price || 15, icon: "🖨️", qty });
+      } else {
+        const prod = PRODUCTS_DB.find(p => p.id === Number(idStr));
+        if (prod) {
+          count += qty;
+          itemTotal += prod.price * qty;
+          if (firstIcon === "🛒") firstIcon = prod.icon;
+          entries.push({ ...prod, qty });
+        }
+      }
+    });
+
+    const delivery = itemTotal >= 199 || itemTotal === 0 ? 0 : 25;
+    const handling = itemTotal > 0 ? 2 : 0;
+    let discount = 0;
+
+    if (this.appliedCoupon === "MEGA49" && itemTotal >= 149) discount = 49;
+    if (this.appliedCoupon === "AXIS150" && itemTotal >= 1799) discount = 150;
+    if (this.appliedCoupon === "AMEX750" && itemTotal >= 2500) discount = 750;
+
+    const grandTotal = Math.max(0, itemTotal + delivery + handling - discount);
+    return { count, itemTotal, delivery, handling, discount, grandTotal, firstIcon, entries };
+  },
+
+  updateCartUI() {
+    const summary = this.getCartSummary();
+    const pill = document.getElementById("floatingCartBar");
+
+    if (summary.count === 0) {
+      pill.classList.add("hidden");
+    } else {
+      pill.classList.remove("hidden");
+      document.getElementById("fcThumb").textContent = summary.firstIcon;
+      document.getElementById("fcCount").textContent = `${summary.count} ${summary.count === 1 ? "item" : "items"}`;
+      document.getElementById("fcTotal").textContent = `₹${summary.grandTotal}`;
+    }
+
+    if (!document.getElementById("cartDrawer").classList.contains("hidden")) {
+      this.renderCartDrawer();
+    }
+  },
+
+  openCartDrawer() {
+    document.getElementById("cartDrawer").classList.remove("hidden");
+    this.renderCartDrawer();
+  },
+
+  closeCartDrawer() {
+    document.getElementById("cartDrawer").classList.add("hidden");
+  },
+
+  renderCartDrawer() {
+    const s = this.getCartSummary();
+    document.getElementById("cartItemCountLabel").textContent = `Shipment of ${s.count} items`;
+
+    const freeBar = document.getElementById("freeDeliveryProgress");
+    if (s.itemTotal >= 199) {
+      freeBar.textContent = "🎉 Yay! You unlocked FREE delivery on this order";
+    } else {
+      freeBar.textContent = `Add ₹${199 - s.itemTotal} more for FREE delivery`;
+    }
+
+    document.getElementById("cartItemsContainer").innerHTML = s.entries.length
+      ? s.entries.map(item => `
+          <div class="cart-row">
+            <div>
+              <strong>${item.icon} ${item.name}</strong><br>
+              <small>${item.weight} • ₹${item.price}</small>
+            </div>
+            <div class="qty-stepper">
+              <button onclick="App.updateQty('${item.id}', -1)">−</button>
+              <span>${item.qty}</span>
+              <button onclick="App.updateQty('${item.id}', 1)">+</button>
+            </div>
+          </div>
+        `).join("")
+      : `<p>Your cart is empty.</p>`;
+
+    document.getElementById("billItemTotal").textContent = `₹${s.itemTotal}`;
+    document.getElementById("billDelivery").textContent = s.delivery === 0 ? "FREE" : `₹${s.delivery}`;
+
+    const discRow = document.getElementById("billDiscountRow");
+    if (s.discount > 0) {
+      discRow.classList.remove("hidden");
+      document.getElementById("billDiscount").textContent = `-₹${s.discount}`;
+    } else {
+      discRow.classList.add("hidden");
+    }
+
+    document.getElementById("billGrandTotal").textContent = `₹${s.grandTotal}`;
+    document.getElementById("checkoutBtnTotal").textContent = `₹${s.grandTotal}`;
+  },
+
+  applyCoupon() {
+    const code = document.getElementById("couponInput").value.trim().toUpperCase();
+    const valid = ["MEGA49", "AXIS150", "AMEX750"];
+    if (!valid.includes(code)) {
+      this.showToast("Try MEGA49, AXIS150, or AMEX750");
+      return;
+    }
+    this.appliedCoupon = code;
+    this.renderCartDrawer();
+    this.updateCartUI();
+    this.showToast(`Coupon ${code} applied!`);
+  },
+
+  copyCoupon(code) {
+    navigator.clipboard?.writeText(code);
+    this.appliedCoupon = code;
+    this.showToast(`Coupon ${code} copied & ready at checkout!`);
+  },
+
+  placeOrder() {
+    const s = this.getCartSummary();
+    if (s.count === 0) return;
+
+    const method = document.getElementById("paymentMethodSelect").value;
+    const user = Auth.getUser();
+
+    if (method === "WALLET") {
+      if (user.walletBalance < s.grandTotal) {
+        this.showToast("Insufficient Blinkit Money balance!");
+        return;
+      }
+      user.walletBalance -= s.grandTotal;
+    }
+
+    const newOrder = {
+      id: "BLK" + Math.floor(100000 + Math.random() * 900000),
+      customerName: user.name || "Customer",
+      customerPhone: user.phone || "9329736019",
+      date: new Date().toLocaleString(),
+      items: s.entries,
+      total: s.grandTotal,
+      address: user.activeAddress,
+      payment: method,
+      status: "Order Placed"
+    };
+
+    user.orders.unshift(newOrder);
+    Auth.saveUser(user);
+
+    // Also push to Global Admin Orders list
+    const allOrders = Auth.getAllGlobalOrders();
+    allOrders.unshift(newOrder);
+    Auth.saveAllGlobalOrders(allOrders);
+
+    this.cart = {};
+    this.appliedCoupon = null;
+    this.saveCart();
+    this.closeCartDrawer();
+
+    this.openGenericModal(
+      "🎉 Order Placed Successfully!",
+      `<div style="text-align:center; padding:12px;">
+        <div style="font-size:48px;">🛵💨</div>
+        <h3>Order #${newOrder.id}</h3>
+        <p style="color:#0C831F; font-weight:800; margin:6px 0;">Status: Order Placed • Arriving in 12 mins</p>
+        <p style="font-size:13px;">Delivering to: <b>${newOrder.address}</b></p>
+        <p style="font-size:13px; margin-top:4px;">Paid ₹${newOrder.total} via ${newOrder.payment}</p>
+      </div>`
+    );
+  },
+          switchView(viewId) {
+    document.querySelectorAll(".view-section").forEach(sec => sec.classList.add("hidden"));
+    document.getElementById(viewId).classList.remove("hidden");
+
+    const header = document.getElementById("mainHeader");
+    if (viewId === "homeView") header.classList.remove("hidden");
+    else header.classList.add("hidden");
+
+    document.querySelectorAll(".bnav-item").forEach(b => {
+      b.classList.toggle("active", b.dataset.view === viewId);
+    });
+
+    if (viewId === "orderAgainView") this.renderOrderAgain();
+    if (viewId === "allCategoriesView") this.renderAllCategoriesDirectory();
+    if (viewId === "profileView") {
+      this.injectSettingsAdminRow();
+      Auth.syncUI();
+    }
+    window.scrollTo(0, 0);
+  },
+
+  renderOrderAgain() {
+    const user = Auth.getUser();
+    const container = document.getElementById("orderAgainContent");
+    if (!user.orders.length) {
+      const popular = PRODUCTS_DB.filter(p => p.isBestseller).slice(0, 10);
+      container.innerHTML = `<p style="margin-bottom:10px; font-size:13px;">No past orders yet. Popular re-orders near you:</p>
+        <div class="product-grid-2col">${popular.map(p => this.renderProductCard(p)).join("")}</div>`;
+      return;
+    }
+
+    const pastItems = [];
+    user.orders.forEach(o => o.items.forEach(it => {
+      if (typeof it.id === "number" && !pastItems.find(x => x.id === it.id)) pastItems.push(it);
+    }));
+    container.innerHTML = `<div class="product-grid-2col">${pastItems.map(p => this.renderProductCard(p)).join("")}</div>`;
+  },
+
+  renderAllCategoriesDirectory() {
+    document.getElementById("allCategoriesContainer").innerHTML = CATEGORY_CONFIG.map(cat => `
+      <div class="home-section" style="border-radius:14px;">
+        <h3 class="section-title">${cat.icon} ${cat.name}</h3>
+        <div class="category-grid-4">
+          ${cat.subcategories.map(s => `
+            <div class="cat-tile" onclick="App.openCategory('${cat.name}', '${s.name}')">
+              <div class="cat-tile-img">${s.icon}</div>
+              <span>${s.name}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+  },
+
+  handlePrintFile(input) {
+    if (input.files && input.files[0]) {
+      document.getElementById("printFileName").textContent = `✅ Selected: ${input.files[0].name}`;
+    }
+  },
+
+  updatePrintPrice() {
+    const pages = Math.max(1, Number(document.getElementById("printPages").value) || 1);
+    const copies = Math.max(1, Number(document.getElementById("printCopies").value) || 1);
+    const rate = document.getElementById("printColor").value === "color" ? 10 : 3;
+    document.getElementById("printTotalPrice").textContent = `₹${pages * copies * rate}`;
+  },
+
+  addPrintToCart() {
+    const pages = Math.max(1, Number(document.getElementById("printPages").value) || 1);
+    const copies = Math.max(1, Number(document.getElementById("printCopies").value) || 1);
+    const rate = document.getElementById("printColor").value === "color" ? 10 : 3;
+    const price = pages * copies * rate;
+    const key = "print_" + Date.now();
+    localStorage.setItem(key, JSON.stringify({ name: "Blinkit Document Printout", pages: pages * copies, price }));
+    this.cart[key] = 1;
+    this.saveCart();
+    this.showToast("Printout added to cart!");
+  },
+
+  toggleTheme() {
+    const html = document.documentElement;
+    const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", next);
+    document.getElementById("themeStatusLabel").textContent = `${next.toUpperCase()} ▾`;
+  },
+
+  toggleWishlist(productId) {
+    const user = Auth.getUser();
+    const idx = user.wishlist.indexOf(productId);
+    if (idx >= 0) {
+      user.wishlist.splice(idx, 1);
+      this.showToast("Removed from wishlist");
+    } else {
+      user.wishlist.push(productId);
+      this.showToast("Saved to wishlist ❤️");
+    }
+    Auth.saveUser(user);
+    this.saveCart();
+  },
+
+  openVariantModal(productId) {
+    const p = PRODUCTS_DB.find(item => item.id === productId);
+    if (!p) return;
+    document.getElementById("variantModalTitle").textContent = p.name;
+    document.getElementById("variantOptionsList").innerHTML = p.variants.map(v => `
+      <div class="cart-row">
+        <div>
+          <strong>${v.label}</strong><br>
+          <span>₹${v.price} <small style="text-decoration:line-through">₹${v.mrp}</small></span>
+        </div>
+        <button class="btn-add" onclick="App.addToCart(${p.id}); App.closeModal('variantModal')">ADD</button>
+      </div>
+    `).join("");
+    document.getElementById("variantModal").classList.remove("hidden");
+  },
+
+  openAddressModal() {
+    const user = Auth.getUser();
+    const html = `
+      <div>
+        ${user.addresses.map(addr => `
+          <div class="p-row" onclick="App.selectAddress('${addr.replace(/'/g, "\\'")}')">
+            <span>📍 ${addr}</span>
+            <span>${user.activeAddress === addr ? "✅" : "Select"}</span>
+          </div>
+        `).join("")}
+        <div style="margin-top:12px;">
+          <input type="text" id="newAddrInput" class="text-input" placeholder="Add new address (e.g. HOME - Korba)" />
+          <button class="btn-primary full-width" onclick="App.addNewAddress()">Save & Use Address</button>
+        </div>
+      </div>
+    `;
+    this.openGenericModal("Select Delivery Address", html);
+  },
+
+  selectAddress(addr) {
+    const user = Auth.getUser();
+    user.activeAddress = addr;
+    Auth.saveUser(user);
+    this.closeModal("genericModal");
+    this.showToast(`Delivering to ${addr}`);
+  },
+
+  addNewAddress() {
+    const val = document.getElementById("newAddrInput").value.trim();
+    if (!val) return;
+    const user = Auth.getUser();
+    user.addresses.unshift(val);
+    user.activeAddress = val;
+    Auth.saveUser(user);
+    this.closeModal("genericModal");
+    this.showToast("Address saved!");
+  },
+
+  openWalletModal() {
+    const user = Auth.getUser();
+    this.openGenericModal("Blinkit Money Wallet", `
+      <p style="font-size:14px; margin-bottom:10px;">Available Balance: <strong>₹${user.walletBalance}</strong></p>
+      <div style="display:flex; gap:8px;">
+        <button class="btn-add" onclick="App.addMoney(100)">+ ₹100</button>
+        <button class="btn-add" onclick="App.addMoney(250)">+ ₹250</button>
+        <button class="btn-add" onclick="App.addMoney(500)">+ ₹500</button>
+      </div>
+    `);
+  },
+
+  addMoney(amount) {
+    const user = Auth.getUser();
+    user.walletBalance += amount;
+    Auth.saveUser(user);
+    this.openWalletModal();
+    this.showToast(`₹${amount} added to Blinkit Money!`);
+  },
+
+  openGiftCardModal() {
+    this.openGenericModal("Claim E-Gift Card", `
+      <p style="font-size:13px; margin-bottom:8px;">Enter gift voucher code (Demo code: <b>BLINKIT100</b>)</p>
+      <input type="text" id="giftCodeInput" class="text-input" value="BLINKIT100" />
+      <button class="btn-primary full-width" onclick="App.claimGiftCard()">Claim ₹100 Wallet Cash</button>
+    `);
+  },
+
+  claimGiftCard() {
+    const code = document.getElementById("giftCodeInput").value.trim().toUpperCase();
+    const user = Auth.getUser();
+    if (code === "BLINKIT100" && !user.claimedGiftCodes.includes(code)) {
+      user.claimedGiftCodes.push(code);
+      user.walletBalance += 100;
+      Auth.saveUser(user);
+      this.closeModal("genericModal");
+      this.showToast("₹100 credited to Blinkit Money!");
+    } else {
+      this.showToast("Code invalid or already claimed");
+    }
+  },
+
+  openOrdersModal() {
+    const user = Auth.getUser();
+    const html = user.orders.length
+      ? user.orders.map(o => `
+          <div style="border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:8px;">
+            <div style="display:flex; justify-content:space-between;">
+              <strong>Order #${o.id}</strong>
+              <span style="color:#0C831F; font-weight:800; font-size:12px;">● ${o.status}</span>
+            </div>
+            <small>${o.date} • ${o.items.length} items • ₹${o.total}</small>
+            <div style="font-size:12px; margin-top:5px; color:var(--text-secondary);">
+              ${o.items.map(it => `${it.icon || "•"} ${it.name} x${it.qty}`).join(", ")}
+            </div>
+          </div>
+        `).join("")
+      : `<p>No orders placed yet. Start shopping from Home!</p>`;
+    this.openGenericModal("Your Orders (Live Status)", html);
+  },
+
+  openWishlistModal() {
+    const user = Auth.getUser();
+    const items = PRODUCTS_DB.filter(p => user.wishlist.includes(p.id));
+    const html = items.length
+      ? items.map(p => `
+          <div class="cart-row">
+            <span>${p.icon} ${p.name} (₹${p.price})</span>
+            <button class="btn-add" onclick="App.addToCart(${p.id})">ADD</button>
+          </div>
+        `).join("")
+      : `<p>Your wishlist is empty.</p>`;
+    this.openGenericModal("Your Wishlist", html);
+  },
+          /* ==================== SETTINGS & ADMIN PANEL (KEY: 2411) ==================== */
+  openAdminKeyPrompt() {
+    this.openGenericModal("⚙️ Settings & Admin Access", `
+      <p style="font-size:13px; color:var(--text-secondary); margin-bottom:10px;">
+        Enter 4-digit <b>Admin Key</b> to manage customer orders, shipping & delivery status:
+      </p>
+      <input type="password" id="adminSecretInput" maxlength="6" class="text-input" placeholder="Enter Admin Key (2411)" />
+      <button class="btn-primary full-width" onclick="App.verifyAdminKey()">Unlock Admin Panel</button>
+    `);
+  },
+
+  verifyAdminKey() {
+    const entered = document.getElementById("adminSecretInput").value.trim();
+    if (entered === this.ADMIN_SECRET_KEY) {
+      this.showToast("Admin Access Granted ✅");
+      this.openAdminDashboard();
+    } else {
+      this.showToast("❌ Invalid Admin Key!");
+    }
+  },
+
+  openAdminDashboard() {
+    const allOrders = Auth.getAllGlobalOrders();
+    const totalRevenue = allOrders.reduce((sum, o) => sum + (Number(o.total) || 0), 0);
+    const deliveredCount = allOrders.filter(o => o.status === "Delivered").length;
+
+    const ordersHtml = allOrders.length
+      ? allOrders.map(o => {
+          let badgeClass = "";
+          if (o.status === "Shipped" || o.status === "Out for Delivery") badgeClass = "shipped";
+          if (o.status === "Delivered") badgeClass = "delivered";
+
+          return `
+            <div class="admin-order-card">
+              <div class="admin-order-head">
+                <strong>#${o.id} • ₹${o.total}</strong>
+                <span class="status-badge ${badgeClass}">${o.status}</span>
+              </div>
+              <div style="font-size:12.5px; line-height:1.4;">
+                👤 <b>${o.customerName || "Customer"}</b> (${o.customerPhone || "N/A"})<br>
+                📍 ${o.address}<br>
+                🕒 <small>${o.date} • ${o.payment}</small>
+              </div>
+              <div class="admin-items-box">
+                <strong>Ordered Items:</strong><br>
+                ${o.items.map(it => `${it.icon || "•"} ${it.name} (${it.weight}) × <b>${it.qty}</b> = ₹${it.price * it.qty}`).join("<br>")}
+              </div>
+              <div class="admin-btn-row">
+                <button class="admin-status-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Packed')">📦 Mark as Packed</button>
+                <button class="admin-status-btn ship-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Shipped')">🚚 Mark as Shipped</button>
+                <button class="admin-status-btn ship-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Out for Delivery')">🛵 Out for Delivery</button>
+                <button class="admin-status-btn deliv-btn" onclick="App.updateOrderStatusAdmin('${o.id}', 'Delivered')">✅ Mark as Delivered</button>
+              </div>
+            </div>
+          `;
+        }).join("")
+      : `<p style="font-size:13px;">Abhi tak koi order nahi aaya hai.</p>`;
+
+    this.openGenericModal("🛡️ Blinkit Admin Dashboard", `
+      <div class="admin-stats-grid">
+        <div class="admin-stat-box"><strong>${allOrders.length}</strong><small>Total Orders</small></div>
+        <div class="admin-stat-box"><strong>₹${totalRevenue}</strong><small>Revenue</small></div>
+        <div class="admin-stat-box"><strong>${deliveredCount}</strong><small>Delivered</small></div>
+      </div>
+      ${ordersHtml}
+    `);
+  },
+
+  updateOrderStatusAdmin(orderId, newStatus) {
+    // 1. Update in Global Admin Orders
+    const allOrders = Auth.getAllGlobalOrders();
+    const target = allOrders.find(o => o.id === orderId);
+    if (target) {
+      target.status = newStatus;
+      Auth.saveAllGlobalOrders(allOrders);
+    }
+
+    // 2. Sync status in User's Personal Orders
+    const user = Auth.getUser();
+    const userOrder = user.orders.find(o => o.id === orderId);
+    if (userOrder) {
+      userOrder.status = newStatus;
+      Auth.saveUser(user);
+    }
+
+    this.showToast(`Order #${orderId} → ${newStatus}`);
+    this.openAdminDashboard();
+  },
+
+  openHelpModal() {
+    this.openGenericModal("Need Help? 24x7 Support", `
+      <p style="font-size:13px; line-height:1.5;">
+        • <b>Delivery Time:</b> Standard delivery takes 12 minutes.<br>
+        • <b>Refunds:</b> Instant refund to Blinkit Money wallet.<br>
+        • <b>Support Helpline:</b> support@blinkit-store.demo
+      </p>
+    `);
+  },
+
+  openZomatoModal() {
+    this.openGenericModal("Zomato Food Delivery", `
+      <div style="text-align:center;">
+        <h2 style="color:#E23744; font-style:italic;">zomato</h2>
+        <p style="font-size:13px; margin:8px 0;">Craving hot meals from restaurants near <b>${Auth.getUser().activeAddress}</b>?</p>
+        <button class="btn-primary full-width" style="background:#E23744;" onclick="App.closeModal('genericModal')">Continue on Blinkit</button>
+      </div>
+    `);
+  },
+
+  openFilterModal() {
+    this.openGenericModal("Filter Products", `
+      <button class="btn-primary full-width" style="margin-bottom:8px;" onclick="App.toggleBestsellerFilter(); App.closeModal('genericModal')">Toggle Bestsellers Only</button>
+      <button class="btn-primary full-width" onclick="App.toggleUnder100Filter(); App.closeModal('genericModal')">Toggle Under ₹100 Only</button>
+    `);
+  },
+
+  openSimpleInfo(title, text) {
+    this.openGenericModal(title, `<p style="font-size:13.5px; line-height:1.5;">${text}</p>`);
+  },
+
+  openGenericModal(title, bodyHtml) {
+    document.getElementById("genericModalTitle").textContent = title;
+    document.getElementById("genericModalBody").innerHTML = bodyHtml;
+    document.getElementById("genericModal").classList.remove("hidden");
+  },
+
+  closeModal(id) {
+    document.getElementById(id).classList.add("hidden");
+  },
+
+  showToast(msg) {
+    const t = document.getElementById("toastBanner");
+    t.textContent = msg;
+    t.classList.remove("hidden");
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => t.classList.add("hidden"), 2200);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => App.init());
+        # Blinkit Quick-Commerce Clone (500 Products + Admin Panel)
+
+Complete responsive Blinkit-style web storefront built with HTML5, CSS3, and Vanilla JavaScript for direct GitHub Pages hosting.
+
+## Key Features
+- **Login & OTP Authentication** with Guest Mode and persistent `localStorage` session
+- **500 Functional Products** across Grocery & Kitchen, Snacks & Drinks, Beauty & Personal Care, and Household Essentials
+- **Category Drill-Down View** with left sub-category sidebar, sort options, and instant filters
+- **Floating Green "View cart" Pill** + Slide-up Checkout with Coupons (`MEGA49`, `AXIS150`, `AMEX750`) and Live Order History
+- **Settings & Admin Panel (Key: `2411`)** inside Profile → Other Information to view all customer orders and update status (`Mark as Packed`, `Mark as Shipped`, `Out for Delivery`, `Mark as Delivered`)
+- **5-Tab Bottom Navigation** (`Home`, `Order Again`, `Categories`, `Print` Store, and `Zomato` quick switcher)
+
+## Deploy on GitHub Pages
+1. Ensure all files are uploaded in this exact structure:
+   - `index.html`
+   - `README.md`
+   - `css/style.css`
+   - `js/products.js`
+   - `js/auth.js`
+   - `js/app.js`
+2. Open your repository **Settings → Pages → Build and deployment**.
+3. Select **Deploy from a branch** (`main` / `/root`) and click **Save**.
+        
