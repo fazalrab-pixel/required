@@ -11,745 +11,230 @@
       --teal-mid: #1a6b82;
       --cyan-glow: #29c5df;
       --cyan-light: #e0f7fa;
-      --mint-accent: #10b981;
       --bg: #f0f6f8;
       --card: #ffffff;
       --text: #0f172a;
       --muted: #64748b;
-      --border: #dbeafe;
     }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 95px; overflow-x: hidden; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    }
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes pulseRing { 0% { transform: scale(0.95); opacity: 0.9; } 70% { transform: scale(1.4); opacity: 0; } 100% { opacity: 0; } }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    @keyframes popIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bump { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      padding-bottom: 95px;
-      overflow-x: hidden;
-    }
-
-    /* ================= ANIMATIONS ================= */
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-7px); }
-    }
-    @keyframes pulseRing {
-      0% { transform: scale(0.95); opacity: 0.9; }
-      70% { transform: scale(1.35); opacity: 0; }
-      100% { transform: scale(0.95); opacity: 0; }
-    }
-    @keyframes marqueeScroll {
-      0% { transform: translateX(0%); }
-      100% { transform: translateX(-50%); }
-    }
-    @keyframes cardPopIn {
-      from { opacity: 0; transform: translateY(16px) scale(0.97); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    @keyframes shineSweep {
-      0% { left: -75%; }
-      100% { left: 125%; }
-    }
-    @keyframes popBump {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.18); }
-      100% { transform: scale(1); }
-    }
-
-    /* ================= FULLSCREEN LOGIN GATE ================= */
+    /* LOGIN SCREEN */
     .login-gate {
       position: fixed;
       inset: 0;
       background: radial-gradient(circle at top right, #1b728a, var(--teal-dark) 75%);
-      z-index: 999;
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 18px;
-      transition: opacity 0.45s ease, transform 0.45s ease;
+      padding: 16px;
     }
-    .login-gate.hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(1.04);
-    }
+    .login-gate.hidden { display: none !important; }
     .login-box {
-      background: rgba(255, 255, 255, 0.97);
+      background: #ffffff;
       width: 100%;
-      max-width: 400px;
+      max-width: 390px;
       border-radius: 20px;
-      padding: 24px 20px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      padding: 22px 18px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
       text-align: center;
-      animation: cardPopIn 0.5s ease;
-      border: 2px solid rgba(41, 197, 223, 0.4);
+      border: 2px solid var(--cyan-glow);
+      animation: popIn 0.4s ease;
     }
     .login-logo-banner {
       background: linear-gradient(135deg, var(--teal-main), var(--teal-dark));
       border-radius: 14px;
-      padding: 14px;
-      margin-bottom: 16px;
-      box-shadow: 0 8px 20px rgba(19, 80, 99, 0.3);
-      animation: floatSlow 3.5s ease-in-out infinite;
+      padding: 12px;
+      margin-bottom: 14px;
+      animation: floatSlow 3s ease-in-out infinite;
     }
-    .login-box h2 {
-      font-size: 20px;
-      color: var(--teal-dark);
-      margin-bottom: 4px;
-    }
-    .login-box p.sub {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
+    .login-box h2 { font-size: 20px; color: var(--teal-dark); margin-bottom: 4px; }
+    .login-box p.sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
     .login-input {
       width: 100%;
-      padding: 12px 14px;
-      margin-bottom: 11px;
+      padding: 12px;
+      margin-bottom: 10px;
       border: 1.5px solid #cbd5e1;
       border-radius: 10px;
       font-size: 14px;
       outline: none;
-      transition: border-color 0.2s;
     }
-    .login-input:focus {
-      border-color: var(--cyan-glow);
-    }
+    .login-input:focus { border-color: var(--cyan-glow); }
+    .login-err { color: #dc2626; font-size: 13px; font-weight: 700; margin-bottom: 8px; min-height: 18px; }
     .login-submit {
       width: 100%;
       padding: 13px;
       background: linear-gradient(135deg, var(--teal-main), #1d7a96);
-      color: white;
+      color: #ffffff;
       border: none;
       border-radius: 10px;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 6px 18px rgba(19, 80, 99, 0.35);
-    }
-    .login-submit::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -75%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(to right, transparent, rgba(255,255,255,0.35), transparent);
-      transform: skewX(-25deg);
-      animation: shineSweep 3s infinite;
     }
     .admin-shortcut {
       margin-top: 14px;
       display: inline-block;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--teal-main);
       font-weight: 700;
       cursor: pointer;
       text-decoration: underline;
     }
 
-    /* ================= LIVE TICKER ================= */
-    .live-ticker {
-      background: #092c37;
-      color: #a5f3fc;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      border-bottom: 1px solid rgba(41, 197, 223, 0.25);
-    }
-    .ticker-track {
-      display: inline-block;
-      padding-left: 100%;
-      animation: marqueeScroll 22s linear infinite;
-    }
+    /* LIVE TICKER & HEADER */
+    .live-ticker { background: #092c37; color: #a5f3fc; font-size: 12px; font-weight: 600; padding: 6px 0; overflow: hidden; white-space: nowrap; }
+    .ticker-track { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; }
+    header { background: linear-gradient(135deg, var(--teal-dark), var(--teal-main)); color: white; padding: 10px 14px 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 14px rgba(14,63,78,0.25); }
+    .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 920px; margin: 0 auto; gap: 8px; }
+    .brand-logo-box { width: 140px; height: 48px; display: flex; align-items: center; }
+    .brand-logo-box img { max-height: 46px; max-width: 140px; object-fit: contain; border-radius: 6px; }
+    .header-actions { display: flex; align-items: center; gap: 6px; }
+    .user-chip { background: rgba(41,197,223,0.2); border: 1px solid rgba(41,197,223,0.5); color: #e0f7fa; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .admin-btn { background: var(--cyan-glow); color: #062833; border: none; padding: 6px 11px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; }
+    .controls { max-width: 920px; margin: 8px auto 0; }
+    .search-box { width: 100%; padding: 9px 13px; border-radius: 10px; border: none; font-size: 14px; outline: none; }
 
-    /* ================= HEADER ================= */
-    header {
-      background: linear-gradient(135deg, var(--teal-dark), var(--teal-main));
-      color: white;
-      padding: 12px 14px 14px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 16px rgba(14, 63, 78, 0.25);
-    }
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      max-width: 940px;
-      margin: 0 auto;
-      gap: 8px;
-    }
-    .brand-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .brand-logo-box {
-      width: 145px;
-      height: 52px;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-    .brand-logo-box img {
-      max-height: 50px;
-      max-width: 145px;
-      object-fit: contain;
-      border-radius: 6px;
-    }
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .user-chip {
-      background: rgba(41, 197, 223, 0.18);
-      border: 1px solid rgba(41, 197, 223, 0.45);
-      color: #e0f7fa;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .admin-btn {
-      background: var(--cyan-glow);
-      color: #062833;
-      border: none;
-      padding: 6px 11px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(41, 197, 223, 0.4);
-    }
+    /* HERO BANNER */
+    .hero-banner { max-width: 920px; margin: 12px auto 4px; padding: 0 14px; }
+    .hero-card { background: linear-gradient(120deg, var(--teal-main), #1c7893, var(--teal-dark)); border-radius: 16px; padding: 14px 16px; color: white; display: flex; justify-content: space-between; align-items: center; }
+    .live-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.28); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #67e8f9; margin-bottom: 5px; }
+    .pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; position: relative; }
+    .pulse-dot::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; background: #22c55e; animation: pulseRing 1.5s infinite; }
+    .hero-card h2 { font-size: 17px; font-weight: 800; }
+    .hero-card p { font-size: 12px; opacity: 0.9; }
+    .hero-icon { font-size: 36px; animation: floatSlow 2.6s ease-in-out infinite; }
 
-    .controls {
-      max-width: 940px;
-      margin: 10px auto 0;
-    }
-    .search-box {
-      width: 100%;
-      padding: 10px 14px;
-      border-radius: 10px;
-      border: 2px solid transparent;
-      font-size: 14px;
-      outline: none;
-      background: rgba(255, 255, 255, 0.96);
-      transition: border-color 0.2s;
-    }
-    .search-box:focus {
-      border-color: var(--cyan-glow);
-    }
-
-    /* ================= LIVE HERO BANNER ================= */
-    .hero-banner {
-      max-width: 940px;
-      margin: 12px auto 4px;
-      padding: 0 14px;
-    }
-    .hero-card {
-      background: linear-gradient(120deg, var(--teal-main), #1c7893, var(--teal-dark));
-      border-radius: 16px;
-      padding: 16px 18px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 8px 22px rgba(19, 80, 99, 0.22);
-    }
-    .live-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.28);
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #67e8f9;
-      margin-bottom: 6px;
-    }
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      position: relative;
-    }
-    .pulse-dot::after {
-      content: "";
-      position: absolute;
-      inset: -3px;
-      border-radius: 50%;
-      background: #22c55e;
-      animation: pulseRing 1.5s infinite;
-    }
-    .hero-text h2 {
-      font-size: 18px;
-      font-weight: 800;
-      margin-bottom: 3px;
-    }
-    .hero-text p {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-    .hero-float-icon {
-      font-size: 38px;
-      animation: floatSlow 2.8s ease-in-out infinite;
-      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
-    }
-
-    /* ================= CATEGORIES ================= */
-    .categories {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 10px 14px 4px;
-      max-width: 940px;
-      margin: 0 auto;
-      scrollbar-width: none;
-    }
+    /* CATEGORIES & PRODUCTS */
+    .categories { display: flex; gap: 8px; overflow-x: auto; padding: 10px 14px 4px; max-width: 920px; margin: 0 auto; scrollbar-width: none; }
     .categories::-webkit-scrollbar { display: none; }
-    .cat-btn {
-      background: white;
-      border: 1.5px solid #cbd5e1;
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-size: 13px;
-      white-space: nowrap;
-      cursor: pointer;
-      font-weight: 700;
-      color: var(--teal-dark);
-      transition: all 0.2s ease;
-    }
-    .cat-btn.active {
-      background: var(--teal-main);
-      color: white;
-      border-color: var(--teal-main);
-      box-shadow: 0 4px 10px rgba(19, 80, 99, 0.25);
-    }
+    .cat-btn { background: white; border: 1.5px solid #cbd5e1; padding: 7px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; font-weight: 700; color: var(--teal-dark); }
+    .cat-btn.active { background: var(--teal-main); color: white; border-color: var(--teal-main); }
 
-    /* ================= PRODUCT GRID ================= */
-    .container {
-      max-width: 940px;
-      margin: 10px auto;
-      padding: 0 14px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
-      gap: 12px;
-    }
-    .card {
-      background: var(--card);
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid #e2e8f0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
-      animation: cardPopIn 0.35s ease backwards;
-      transition: transform 0.22s ease, box-shadow 0.22s ease;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 22px rgba(19, 80, 99, 0.14);
-    }
-    .card-img-wrap {
-      width: 100%;
-      height: 128px;
-      background: #f8fafc;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid #f1f5f9;
-    }
-    .card-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.35s ease;
-    }
-    .card:hover .card-img {
-      transform: scale(1.06);
-    }
-    .live-badge {
-      position: absolute;
-      top: 7px;
-      left: 7px;
-      background: rgba(14, 63, 78, 0.88);
-      color: #67e8f9;
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 7px;
-      border-radius: 6px;
-      backdrop-filter: blur(4px);
-    }
-    .card-body {
-      padding: 10px 11px 12px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      justify-content: space-between;
-    }
-    .card-cat {
-      font-size: 10px;
-      color: var(--teal-mid);
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-    .card-title {
-      font-size: 14px;
-      font-weight: 700;
-      margin: 3px 0;
-      line-height: 1.3;
-      color: var(--text);
-    }
-    .card-unit {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .card-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .price {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--teal-dark);
-    }
-    .add-btn {
-      background: linear-gradient(135deg, var(--teal-main), var(--teal-mid));
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .add-btn:active {
-      transform: scale(0.92);
-    }
-    .qty-box {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--cyan-light);
-      padding: 2px 5px;
-      border-radius: 8px;
-      border: 1px solid #bae6fd;
-    }
-    .qty-btn {
-      background: var(--teal-main);
-      color: white;
-      border: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .container { max-width: 920px; margin: 10px auto; padding: 0 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 12px; }
+    .card { background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 3px 10px rgba(15,23,42,0.04); animation: popIn 0.3s ease; }
+    .card-img-wrap { width: 100%; height: 124px; background: #f8fafc; position: relative; overflow: hidden; border-bottom: 1px solid #f1f5f9; }
+    .card-img { width: 100%; height: 100%; object-fit: cover; }
+    .live-badge { position: absolute; top: 6px; left: 6px; background: rgba(14,63,78,0.9); color: #67e8f9; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
+    .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
+    .card-cat { font-size: 10px; color: var(--teal-mid); font-weight: 800; text-transform: uppercase; }
+    .card-title { font-size: 14px; font-weight: 700; margin: 3px 0; line-height: 1.25; }
+    .card-unit { font-size: 12px; color: var(--muted); }
+    .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; }
+    .price { font-size: 16px; font-weight: 800; color: var(--teal-dark); }
+    .add-btn { background: linear-gradient(135deg, var(--teal-main), var(--teal-mid)); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
+    .qty-box { display: flex; align-items: center; gap: 6px; background: var(--cyan-light); padding: 2px 5px; border-radius: 8px; border: 1px solid #bae6fd; }
+    .qty-btn { background: var(--teal-main); color: white; border: none; width: 24px; height: 24px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-    /* ================= CHECKOUT SECTION ================= */
-    .checkout-card {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
-      margin-top: 24px;
-      border: 1.5px solid #bae6fd;
-      box-shadow: 0 6px 20px rgba(19, 80, 99, 0.07);
-    }
-    .checkout-card h2 {
-      font-size: 18px;
-      color: var(--teal-dark);
-      margin-bottom: 12px;
-      border-bottom: 1px solid #e2e8f0;
-      padding-bottom: 8px;
-    }
-    .cart-summary { margin-bottom: 14px; font-size: 14px; }
-    .cart-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; }
-    .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; padding-top: 10px; color: var(--teal-main); }
-
-    .form-group { margin-bottom: 12px; }
+    /* CHECKOUT */
+    .checkout-card { background: white; border-radius: 16px; padding: 18px; margin-top: 22px; border: 1.5px solid #bae6fd; }
+    .checkout-card h2 { font-size: 18px; color: var(--teal-dark); margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+    .cart-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; font-size: 14px; }
+    .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; padding-top: 10px; color: var(--teal-main); margin-bottom: 12px; }
+    .form-group { margin-bottom: 11px; }
     .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--teal-dark); margin-bottom: 4px; }
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1.5px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 14px;
-      outline: none;
-    }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--cyan-glow); }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; }
+    .gps-btn { background: #e0f7fa; color: var(--teal-dark); border: 1px solid #67e8f9; padding: 9px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px; }
+    .upi-box { background: #ecfeff; border: 1px solid #22d3ee; padding: 12px; border-radius: 10px; margin-bottom: 12px; display: none; font-size: 13px; }
+    .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--teal-main), #1a7a96); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; }
+    .submit-btn:disabled { background: #94a3b8; }
 
-    .gps-btn {
-      background: #e0f7fa;
-      color: var(--teal-dark);
-      border: 1px solid #67e8f9;
-      padding: 9px 12px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 8px;
-    }
-    .upi-box {
-      background: #ecfeff;
-      border: 1px solid #22d3ee;
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 12px;
-      display: none;
-      font-size: 13px;
-    }
-    .submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, var(--teal-main), #1a7a96);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 6px 16px rgba(19, 80, 99, 0.3);
-    }
-    .submit-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    /* FLOATING BAR & TOAST */
+    .floating-bar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 28px); max-width: 890px; background: var(--teal-dark); color: white; padding: 12px 16px; border-radius: 14px; display: none; justify-content: space-between; align-items: center; border: 1px solid var(--cyan-glow); z-index: 99; }
+    .floating-bar.bump { animation: bump 0.3s ease; }
+    .floating-bar a { background: var(--cyan-glow); color: #062833; text-decoration: none; padding: 8px 14px; border-radius: 9px; font-weight: 800; font-size: 14px; }
+    .toast-pop { position: fixed; top: 75px; right: 14px; background: var(--teal-dark); color: #67e8f9; border: 1px solid var(--cyan-glow); padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+    .toast-pop.show { opacity: 1; }
 
-    /* ================= FLOATING CART BAR ================= */
-    .floating-bar {
-      position: fixed;
-      bottom: 12px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 28px);
-      max-width: 900px;
-      background: var(--teal-dark);
-      color: white;
-      padding: 12px 18px;
-      border-radius: 14px;
-      display: none;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 8px 25px rgba(9, 44, 55, 0.4);
-      border: 1px solid rgba(41, 197, 223, 0.4);
-      z-index: 99;
-    }
-    .floating-bar.bump { animation: popBump 0.3s ease; }
-    .floating-bar a {
-      background: var(--cyan-glow);
-      color: #062833;
-      text-decoration: none;
-      padding: 8px 15px;
-      border-radius: 9px;
-      font-weight: 800;
-      font-size: 14px;
-    }
-
-    /* ================= TOAST NOTIFICATION ================= */
-    .toast-pop {
-      position: fixed;
-      top: 78px;
-      right: 16px;
-      background: var(--teal-dark);
-      color: #67e8f9;
-      border: 1px solid var(--cyan-glow);
-      padding: 8px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
-      z-index: 300;
-      opacity: 0;
-      transform: translateY(-10px);
-      pointer-events: none;
-      transition: all 0.25s ease;
-    }
-    .toast-pop.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ================= MODALS ================= */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(9, 44, 55, 0.72);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      padding: 14px;
-      backdrop-filter: blur(3px);
-    }
-    .modal-content {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
-      width: 100%;
-      max-width: 460px;
-      max-height: 88vh;
-      overflow-y: auto;
-      animation: cardPopIn 0.3s ease;
-    }
-    .preview-img {
-      width: 85px;
-      height: 85px;
-      object-fit: cover;
-      border-radius: 10px;
-      border: 1px solid #cbd5e1;
-      margin-top: 8px;
-      display: none;
-    }
-    .admin-item-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 8px 0;
-      border-bottom: 1px solid #e2e8f0;
-      font-size: 13px;
-    }
-    .admin-item-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 1;
-      min-width: 0;
-    }
-    .admin-thumb {
-      width: 42px;
-      height: 42px;
-      border-radius: 8px;
-      object-fit: cover;
-      border: 1px solid #cbd5e1;
-      flex-shrink: 0;
-    }
-    .mini-btn {
-      padding: 5px 8px;
-      border-radius: 6px;
-      border: 1px solid #cbd5e1;
-      background: #f8fafc;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-    .mini-del {
-      background: #fee2e2;
-      color: #b91c1c;
-      border-color: #fecaca;
-    }
+    /* MODALS */
+    .modal { display: none; position: fixed; inset: 0; background: rgba(9,44,55,0.75); z-index: 10000; align-items: center; justify-content: center; padding: 14px; }
+    .modal-content { background: white; border-radius: 16px; padding: 18px; width: 100%; max-width: 440px; max-height: 88vh; overflow-y: auto; }
+    .preview-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 6px; display: none; }
+    .admin-item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+    .admin-item-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+    .admin-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+    .mini-btn { padding: 5px 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .mini-del { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
   </style>
 </head>
 <body>
 
-<!-- ================= WEBSITE OPEN LOGIN SCREEN ================= -->
+<!-- LOGIN GATE -->
 <div class="login-gate" id="loginGate">
   <div class="login-box">
     <div class="login-logo-banner" id="loginLogoHolder"></div>
     <h2>Swagat Hai! Login Karein</h2>
-    <p class="sub">Apne ghar ke daily essentials order karne ke liye details daalein</p>
-
+    <p class="sub">Daily essentials order karne ke liye apna naam aur number daalein</p>
     <input type="text" id="loginName" class="login-input" placeholder="Aapka Poora Naam *" />
-    <input type="tel" id="loginPhone" class="login-input" placeholder="10-Digit Mobile Number *" maxlength="10" />
+    <input type="tel" id="loginPhone" class="login-input" placeholder="Mobile Number (10 digits) *" />
     <input type="text" id="loginAddress" class="login-input" placeholder="Area / Colony (Optional)" />
-
-    <button type="button" class="login-submit" onclick="completeUserLogin()">
-      Store Me Enter Karein &rarr;
-    </button>
-
-    <div class="admin-shortcut" onclick="openAdmin()">Store Owner / Admin Login (PIN)</div>
+    <div class="login-err" id="loginErr"></div>
+    <button type="button" class="login-submit" onclick="completeUserLogin()">Store Me Enter Karein &rarr;</button>
+    <div class="admin-shortcut" onclick="openPinBox()">Store Owner / Admin Login</div>
   </div>
 </div>
 
-<!-- Live Animated Toast -->
-<div class="toast-pop" id="liveToast">⚡ Basket me add ho gaya!</div>
+<div class="toast-pop" id="liveToast">✅ Basket me add ho gaya!</div>
 
-<!-- Top Live Ticker -->
 <div class="live-ticker">
-  <div class="ticker-track">
-    ⚡ REQUIRED - Because Life Needs It &nbsp;&bull;&nbsp; 🟢 Store Live &amp; Taking Orders &nbsp;&bull;&nbsp; 🚚 Fast Home Delivery &nbsp;&bull;&nbsp; 💳 FamPay UPI &amp; Cash on Delivery Available &nbsp;&bull;&nbsp; 🛒 Fresh Daily Base Essentials
-  </div>
+  <div class="ticker-track">⚡ REQUIRED - Because Life Needs It &nbsp;&bull;&nbsp; 🟢 Store Live &amp; Taking Orders &nbsp;&bull;&nbsp; 🚚 Fast Home Delivery &nbsp;&bull;&nbsp; 💳 FamPay UPI &amp; Cash on Delivery Available &nbsp;&bull;&nbsp; 🛒 Fresh Daily Base Essentials</div>
 </div>
 
-<!-- Sticky Header with Brand Logo -->
 <header>
   <div class="header-top">
-    <div class="brand-wrap">
-      <div class="brand-logo-box" id="headerLogoHolder"></div>
-    </div>
+    <div class="brand-logo-box" id="headerLogoHolder"></div>
     <div class="header-actions">
-      <button class="user-chip" id="userBadge" onclick="logoutUser()" title="Logout / Change Number">👤 Guest</button>
-      <button class="admin-btn" onclick="openAdmin()">Admin</button>
+      <button class="user-chip" id="userBadge" onclick="logoutUser()">👤 Guest</button>
+      <button class="admin-btn" onclick="openPinBox()">Admin</button>
     </div>
   </div>
   <div class="controls">
-    <input type="text" id="searchInput" class="search-box" placeholder="Daily base items search karein (Atta, Dal, Oil, Milk, Soap)..." oninput="renderProducts()" />
+    <input type="text" id="searchInput" class="search-box" placeholder="Daily items search karein (Atta, Dal, Oil, Milk, Soap)..." oninput="renderProducts()" />
   </div>
 </header>
 
-<!-- Animated Live Hero Banner -->
 <div class="hero-banner">
   <div class="hero-card">
-    <div class="hero-text">
+    <div>
       <div class="live-pill"><span class="pulse-dot"></span> LIVE STORE OPEN</div>
       <h2>Daily Base Essentials</h2>
       <p>"Because Life Needs It" — Ghar baithe seedha order karein</p>
     </div>
-    <div class="hero-float-icon">🛍️</div>
+    <div class="hero-icon">🛍️</div>
   </div>
 </div>
 
-<!-- Category Filter Bar -->
 <div class="categories" id="categoryBar"></div>
 
-<!-- Main Product Grid & Checkout -->
 <div class="container">
   <div class="grid" id="productGrid"></div>
 
-  <!-- Direct Gmail Checkout Section -->
   <div class="checkout-card" id="checkoutSection">
     <h2>Aapka Basket &amp; Delivery Details</h2>
-    <div class="cart-summary" id="cartSummary">
-      <p style="color: var(--muted);">Abhi basket khali hai. Upar se daily items add karein.</p>
-    </div>
+    <div id="cartSummary"><p style="color:var(--muted); margin-bottom:10px;">Abhi basket khali hai. Upar se daily items add karein.</p></div>
 
     <div class="form-group">
       <label>Customer ka Naam *</label>
       <input type="text" id="custName" placeholder="Apna poora naam likhein" />
     </div>
-
     <div class="form-group">
       <label>Mobile Number *</label>
       <input type="tel" id="custPhone" placeholder="10-digit mobile number" />
     </div>
-        <div class="form-group">
+    <div class="form-group">
       <label>Delivery Address *</label>
       <button type="button" class="gps-btn" id="gpsBtn" onclick="getLiveLocation()">📍 Live GPS Location Auto-Fill Karein</button>
       <textarea id="custAddress" rows="2" placeholder="Ghar ka pata, gali, landmark likhein"></textarea>
       <input type="hidden" id="gpsLink" value="Not shared" />
     </div>
-
     <div class="form-group">
       <label>Payment Mode</label>
       <select id="paymentMode" onchange="toggleUpiBox()">
@@ -757,92 +242,83 @@
         <option value="FamPay / UPI Online">FamPay / UPI Payment</option>
       </select>
     </div>
-
     <div class="upi-box" id="upiBox">
       <p><strong>FamPay / UPI ID:</strong> <span id="displayUpiId">yourname@fam</span></p>
-      <p style="margin-top:4px; color:var(--teal-dark);">Upar di gayi UPI ID par total bill pay karke Transaction ID niche daalein (optional):</p>
+      <p style="margin-top:4px;">Upar di gayi UPI ID par pay karke Transaction ID niche daalein (optional):</p>
       <input type="text" id="upiTxnId" placeholder="UPI Transaction / UTR Number" style="margin-top:6px; width:100%; padding:8px; border:1px solid #22d3ee; border-radius:8px;" />
     </div>
 
-    <button type="button" class="submit-btn" id="placeOrderBtn" onclick="submitOrderDirectly()">
-      Confirm Order
-    </button>
+    <button type="button" class="submit-btn" id="placeOrderBtn" onclick="submitOrderDirectly()">Confirm Order</button>
     <p id="statusMsg" style="margin-top:10px; font-weight:700; text-align:center;"></p>
   </div>
 </div>
 
-<!-- Floating Cart Bar -->
 <div class="floating-bar" id="floatingBar">
-  <div>
-    <strong id="floatCount">0 Items</strong> | <span id="floatTotal" style="color:#67e8f9; font-weight:800;">Rs. 0</span>
-  </div>
+  <div><strong id="floatCount">0 Items</strong> | <span id="floatTotal" style="color:#67e8f9; font-weight:800;">Rs. 0</span></div>
   <a href="#checkoutSection">Checkout &rarr;</a>
 </div>
 
-<!-- Order Success Modal -->
-<div class="modal" id="successModal">
-  <div class="modal-content" style="text-align:center;">
-    <div style="font-size:46px; margin-bottom:6px; animation: floatSlow 2s infinite;">✅</div>
-    <h2 style="color:var(--teal-main); margin-bottom:6px;">Order Confirm Ho Gaya!</h2>
-    <p style="font-size:14px; color:#334155;">Aapka order successfully REQUIRED store ko bhej diya gaya hai.</p>
-    <div style="background:#ecfeff; border:1px solid #67e8f9; padding:12px; border-radius:10px; margin:14px 0;">
-      <p style="font-size:12px; color:var(--teal-dark);">Order ID</p>
-      <strong id="modalOrderId" style="font-size:21px; color:var(--teal-main); letter-spacing:1px;">REQ-0000</strong>
+<!-- PIN MODAL (PIN: 2411) -->
+<div class="modal" id="pinModal">
+  <div class="modal-content" style="max-width:340px; text-align:center;">
+    <h3 style="color:var(--teal-dark); margin-bottom:8px;">Admin PIN Daalein</h3>
+    <input type="password" id="pinInput" class="login-input" placeholder="4-Digit PIN" maxlength="6" style="text-align:center; font-size:18px; letter-spacing:4px;" />
+    <div class="login-err" id="pinErr"></div>
+    <div style="display:flex; gap:8px;">
+      <button onclick="closeModal('pinModal')" style="flex:1; padding:10px; border-radius:8px; border:1px solid #cbd5e1; background:white; font-weight:700;">Cancel</button>
+      <button onclick="verifyAdminPin()" style="flex:1; padding:10px; border-radius:8px; border:none; background:var(--teal-main); color:white; font-weight:700;">Open</button>
     </div>
-    <button onclick="closeModal('successModal')" style="background:var(--teal-main); color:white; border:none; padding:11px 26px; border-radius:10px; font-weight:700; cursor:pointer;">Theek Hai</button>
   </div>
 </div>
 
-<!-- Admin Panel Modal (PIN: 2411) -->
+<!-- SUCCESS MODAL -->
+<div class="modal" id="successModal">
+  <div class="modal-content" style="text-align:center;">
+    <div style="font-size:44px;">✅</div>
+    <h2 style="color:var(--teal-main); margin:6px 0;">Order Confirm Ho Gaya!</h2>
+    <p style="font-size:14px; color:#334155;">Aapka order REQUIRED store ko bhej diya gaya hai.</p>
+    <div style="background:#ecfeff; border:1px solid #67e8f9; padding:12px; border-radius:10px; margin:14px 0;">
+      <p style="font-size:12px;">Order ID</p>
+      <strong id="modalOrderId" style="font-size:21px; color:var(--teal-main);">REQ-0000</strong>
+    </div>
+    <button onclick="closeModal('successModal')" style="background:var(--teal-main); color:white; border:none; padding:11px 26px; border-radius:10px; font-weight:700;">Theek Hai</button>
+  </div>
+</div>
+
+<!-- ADMIN MODAL -->
 <div class="modal" id="adminModal">
   <div class="modal-content">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <h3 style="color:var(--teal-dark);">REQUIRED Admin Panel</h3>
-      <button onclick="closeModal('adminModal')" style="border:none; background:none; font-size:22px; cursor:pointer;">&times;</button>
+      <button onclick="closeModal('adminModal')" style="border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
     </div>
-
-    <!-- Custom Logo Upload Option -->
     <div class="form-group">
       <label>Store Logo Image Update Karein (Optional)</label>
       <input type="file" accept="image/*" onchange="handleLogoUpload(event)" />
     </div>
-
-    <!-- UPI Setting -->
     <div class="form-group">
       <label>FamPay / UPI ID Update Karein</label>
       <div style="display:flex; gap:6px;">
         <input type="text" id="adminUpiInput" placeholder="e.g. 9876543210@fam" />
-        <button onclick="saveUpiSettings()" style="background:var(--teal-dark); color:white; border:none; padding:0 14px; border-radius:8px; font-weight:700; cursor:pointer;">Save</button>
+        <button onclick="saveUpiSettings()" style="background:var(--teal-dark); color:white; border:none; padding:0 14px; border-radius:8px; font-weight:700;">Save</button>
       </div>
     </div>
-
-    <hr style="margin:14px 0; border:none; border-top:1px solid #e2e8f0;" />
-
-    <!-- Add New Product with Real Photo -->
+    <hr style="margin:12px 0; border:none; border-top:1px solid #e2e8f0;" />
     <h4 style="margin-bottom:8px; color:var(--teal-dark);">Naya Product + Real Photo Add Karein</h4>
     <div class="form-group">
-      <input type="text" id="newProdName" placeholder="Product Name (e.g. Fortune Oil 1L)" style="margin-bottom:6px;" />
+      <input type="text" id="newProdName" placeholder="Product Name" style="margin-bottom:6px;" />
       <input type="text" id="newProdCat" placeholder="Category (e.g. Oil & Masala)" style="margin-bottom:6px;" />
       <div style="display:flex; gap:6px; margin-bottom:6px;">
         <input type="text" id="newProdUnit" placeholder="Weight/Unit (e.g. 1 Kg)" />
-        <input type="number" id="newProdPrice" placeholder="Price Rs. (e.g. 145)" />
+        <input type="number" id="newProdPrice" placeholder="Price Rs." />
       </div>
-
-      <label style="margin-top:6px;">1. Phone Gallery / Camera se Real Photo Chunein:</label>
+      <label>Phone Gallery / Camera se Real Photo:</label>
       <input type="file" id="newProdFile" accept="image/*" onchange="handleNewImageUpload(event)" />
       <img id="newProdPreview" class="preview-img" alt="Preview" />
-
-      <label style="margin-top:8px;">Ya Image URL Paste Karein (Optional):</label>
-      <input type="text" id="newProdUrl" placeholder="https://..." oninput="handleUrlPreview(this.value)" />
-
-      <button onclick="addNewProduct()" style="margin-top:10px; width:100%; background:var(--teal-main); color:white; border:none; padding:11px; border-radius:10px; font-weight:700; cursor:pointer;">
-        + Product Store Me Jodein
-      </button>
+      <input type="text" id="newProdUrl" placeholder="Ya Image URL Paste Karein (Optional)" style="margin-top:6px;" oninput="handleUrlPreview(this.value)" />
+      <button onclick="addNewProduct()" style="margin-top:10px; width:100%; background:var(--teal-main); color:white; border:none; padding:11px; border-radius:10px; font-weight:700;">+ Product Add Karein</button>
     </div>
-
-    <hr style="margin:14px 0; border:none; border-top:1px solid #e2e8f0;" />
-
-    <!-- Manage Existing Products & Change Photos -->
+    <hr style="margin:12px 0; border:none; border-top:1px solid #e2e8f0;" />
     <h4 style="margin-bottom:6px; color:var(--teal-dark);">Products ki Photo Badlein / Hatayein</h4>
     <input type="file" id="editProdFile" accept="image/*" style="display:none;" onchange="handleExistingImageChange(event)" />
     <div id="adminProductList"></div>
@@ -853,103 +329,59 @@
   const STORE_EMAIL = "Fazalrab56@gmail.com";
   const ADMIN_PIN = "2411";
 
-  const defaultBrandSvg = `
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 125" style="width:100%; height:auto; display:block;">
-      <defs>
-        <linearGradient id="swooshGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#38bdf8"/>
-          <stop offset="55%" stop-color="#67e8f9"/>
-          <stop offset="100%" stop-color="#ffffff"/>
-        </linearGradient>
-      </defs>
-      <polygon points="58,12 12,48 24,48 58,21 92,48 104,48" fill="#ffffff"/>
-      <rect x="24" y="48" width="68" height="62" rx="4" fill="rgba(255,255,255,0.16)" stroke="#ffffff" stroke-width="2.5"/>
-      <rect x="43" y="56" width="28" height="24" rx="2" fill="#135063" stroke="#ffffff" stroke-width="2.2"/>
-      <line x1="57" y1="56" x2="57" y2="80" stroke="#ffffff" stroke-width="1.8"/>
-      <line x1="43" y1="68" x2="71" y2="68" stroke="#ffffff" stroke-width="1.8"/>
-      <rect x="28" y="62" width="10" height="20" rx="2" fill="#ffffff"/>
-      <rect x="76" y="60" width="11" height="22" rx="3" fill="#ffffff"/>
-      <circle cx="35" cy="96" r="8" fill="#ffffff"/>
-      <rect x="48" y="87" width="18" height="19" rx="2" fill="#ffffff"/>
-      <rect x="72" y="88" width="14" height="18" rx="2" fill="#ffffff"/>
-      <circle cx="16" cy="28" r="2" fill="#67e8f9"/>
-      <circle cx="98" cy="25" r="2.2" fill="#67e8f9"/>
-      <text x="118" y="58" font-family="Arial, sans-serif" font-size="36" font-weight="900" letter-spacing="1.5" fill="#ffffff">
-        RE<tspan fill="#38d9f5">Q</tspan>UIRED
-      </text>
-      <path d="M138,68 L162,88 C205,74 265,64 335,62 C265,72 205,84 160,97 L132,74 Z" fill="url(#swooshGrad)"/>
-      <text x="232" y="112" font-family="Arial, sans-serif" font-size="13.5" font-weight="700" fill="#e0f7fa" text-anchor="middle">
-        "Because Life Needs It"
-      </text>
-    </svg>
-  `;
+  const brandSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 125" style="width:100%;height:auto;display:block;"><polygon points="58,12 12,48 24,48 58,21 92,48 104,48" fill="#fff"/><rect x="24" y="48" width="68" height="62" rx="4" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="2.5"/><rect x="43" y="56" width="28" height="24" rx="2" fill="#135063" stroke="#fff" stroke-width="2"/><line x1="57" y1="56" x2="57" y2="80" stroke="#fff" stroke-width="1.8"/><line x1="43" y1="68" x2="71" y2="68" stroke="#fff" stroke-width="1.8"/><rect x="28" y="62" width="10" height="20" rx="2" fill="#fff"/><rect x="76" y="60" width="11" height="22" rx="3" fill="#fff"/><circle cx="35" cy="96" r="8" fill="#fff"/><rect x="48" y="87" width="18" height="19" rx="2" fill="#fff"/><rect x="72" y="88" width="14" height="18" rx="2" fill="#fff"/><text x="118" y="58" font-family="Arial,sans-serif" font-size="36" font-weight="900" fill="#fff">RE<tspan fill="#38d9f5">Q</tspan>UIRED</text><path d="M138,68 L162,88 C205,74 265,64 335,62 C265,72 205,84 160,97 L132,74 Z" fill="#67e8f9"/><text x="232" y="112" font-family="Arial,sans-serif" font-size="13.5" font-weight="700" fill="#e0f7fa" text-anchor="middle">"Because Life Needs It"</text></svg>';
 
-  let customLogoData = localStorage.getItem("required_custom_logo") || "";
+  function safeGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function safeSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  function safeDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
 
-  function renderBrandLogos() {
-    const loginHolder = document.getElementById("loginLogoHolder");
-    const headerHolder = document.getElementById("headerLogoHolder");
-    if (customLogoData) {
-      loginHolder.innerHTML = `<img src="${customLogoData}" alt="REQUIRED Logo" style="max-height:95px; max-width:100%; border-radius:10px;" />`;
-      headerHolder.innerHTML = `<img src="${customLogoData}" alt="REQUIRED Logo" />`;
-    } else {
-      loginHolder.innerHTML = defaultBrandSvg;
-      headerHolder.innerHTML = defaultBrandSvg;
-    }
+  function makePackImg(title, sub, c1, c2) {
+    const s = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="220" viewBox="0 0 300 220"><rect width="300" height="220" fill="#eef6f8"/><rect x="60" y="16" width="180" height="188" rx="16" fill="' + c1 + '"/><rect x="60" y="110" width="180" height="94" rx="16" fill="' + c2 + '"/><text x="150" y="88" font-family="sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">' + title + '</text><text x="150" y="115" font-family="sans-serif" font-size="13" font-weight="600" fill="#e0f7fa" text-anchor="middle">' + sub + '</text><rect x="95" y="152" width="110" height="24" rx="6" fill="#fff"/><text x="150" y="168" font-family="sans-serif" font-size="11" font-weight="800" fill="' + c2 + '" text-anchor="middle">REQUIRED</text></svg>';
+    return "data:image/svg+xml;utf8," + encodeURIComponent(s);
   }
 
-  function makePackGraphic(title, sub, c1, c2, tag) {
-    const svg =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="240" viewBox="0 0 320 240">' +
-      '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
-      '<stop offset="0%" stop-color="' + c1 + '"/><stop offset="100%" stop-color="' + c2 + '"/>' +
-      '</linearGradient></defs>' +
-      '<rect width="320" height="240" fill="#eef6f8"/>' +
-      '<rect x="65" y="18" width="190" height="204" rx="18" fill="url(#g)"/>' +
-      '<rect x="82" y="34" width="156" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>' +
-      '<text x="160" y="50" font-family="sans-serif" font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">' + tag + '</text>' +
-      '<text x="160" y="116" font-family="sans-serif" font-size="21" font-weight="800" fill="#ffffff" text-anchor="middle">' + title + '</text>' +
-      '<text x="160" y="144" font-family="sans-serif" font-size="13" font-weight="600" fill="rgba(255,255,255,0.92)" text-anchor="middle">' + sub + '</text>' +
-      '<rect x="102" y="172" width="116" height="25" rx="6" fill="#ffffff"/>' +
-      '<text x="160" y="188" font-family="sans-serif" font-size="11" font-weight="800" fill="' + c2 + '" text-anchor="middle">REQUIRED DAILY</text>' +
-      '</svg>';
-    return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
-  }
+  const baseItems = [
+    [1,"Aashirvaad Chakki Atta","Atta & Rice","5 Kg",245,"#d97706","#92400e"],
+    [2,"India Gate Basmati Rice","Atta & Rice","1 Kg",115,"#0d9488","#115e59"],
+    [3,"Toor / Arhar Dal","Atta & Rice","1 Kg",165,"#eab308","#a16207"],
+    [4,"Moong Dal Yellow","Atta & Rice","1 Kg",135,"#ca8a04","#854d0e"],
+    [5,"Chana Dal Super","Atta & Rice","1 Kg",98,"#d97706","#78350f"],
+    [6,"Fortune Thick Poha","Atta & Rice","500g",42,"#0284c7","#075985"],
+    [7,"Fortune Sunlite Oil","Oil & Masala","1 Litre",138,"#f59e0b","#b45309"],
+    [8,"Kachi Ghani Mustard Oil","Oil & Masala","1 Litre",155,"#eab308","#713f12"],
+    [9,"Amul Pure Cow Ghee","Oil & Masala","500 ml",325,"#f59e0b","#92400e"],
+    [10,"Tata Salt Iodized","Oil & Masala","1 Kg",28,"#0284c7","#1e3a8a"],
+    [11,"MDH Haldi Powder","Oil & Masala","200g",64,"#eab308","#a16207"],
+    [12,"Everest Mirchi Powder","Oil & Masala","200g",88,"#dc2626","#991b1b"],
+    [13,"Whole Jeera / Cumin","Oil & Masala","100g",55,"#78350f","#451a03"],
+    [14,"Refined White Sugar","Oil & Masala","1 Kg",48,"#0891b2","#164e63"],
+    [15,"Amul Taaza Milk","Dairy & Tea","500 ml",28,"#2563eb","#1d4ed8"],
+    [16,"Amul Pasteurised Butter","Dairy & Tea","100g",58,"#facc15","#ca8a04"],
+    [17,"Amul Fresh Paneer","Dairy & Tea","200g",92,"#0284c7","#0369a1"],
+    [18,"Fresh Sandwich Bread","Dairy & Tea","400g",40,"#d97706","#92400e"],
+    [19,"Tata Tea Gold","Dairy & Tea","250g",140,"#15803d","#14532d"],
+    [20,"Nescafe Classic Coffee","Dairy & Tea","50g",165,"#7f1d1d","#450a0a"],
+    [21,"Maggi Masala Noodles","Snacks & Drinks","Pack of 4",56,"#eab308","#b91c1c"],
+    [22,"Parle-G Gold Biscuits","Snacks & Drinks","250g",30,"#f97316","#9a3412"],
+    [23,"Britannia Good Day","Snacks & Drinks","200g",40,"#2563eb","#1e40af"],
+    [24,"Haldiram Aloo Bhujia","Snacks & Drinks","200g",55,"#dc2626","#7f1d1d"],
+    [25,"Real Mixed Fruit Juice","Snacks & Drinks","1 Litre",115,"#16a34a","#14532d"],
+    [26,"Surf Excel Easy Wash","Home & Care","1 Kg",135,"#0ea5e9","#0369a1"],
+    [27,"Vim Dishwash Gel","Home & Care","750 ml",155,"#eab308","#854d0e"],
+    [28,"Lizol Floor Cleaner","Home & Care","500 ml",105,"#0891b2","#155e75"],
+    [29,"Colgate Strong Teeth","Home & Care","200g",112,"#dc2626","#991b1b"],
+    [30,"Lifebuoy Soap Pack","Home & Care","4 x 125g",136,"#e11d48","#881337"]
+  ];
 
-  const defaultProducts = [
-    { id: 1, name: "Aashirvaad Shudh Chakki Atta", cat: "Atta & Rice", unit: "5 Kg", price: 245, badge: "Daily Need", image: makePackGraphic("CHAKKI ATTA", "100% Whole Wheat", "#d97706", "#92400e", "ATTA & FLOUR") },
-    { id: 2, name: "India Gate Basmati Rice", cat: "Atta & Rice", unit: "1 Kg", price: 115, badge: "Top Pick", image: makePackGraphic("BASMATI RICE", "Long Grain Rozana", "#0d9488", "#115e59", "DAILY RICE") },
-    { id: 3, name: "Toor / Arhar Dal Premium", cat: "Atta & Rice", unit: "1 Kg", price: 165, badge: "Daily Need", image: makePackGraphic("TOOR DAL", "Unpolished Arhar", "#eab308", "#a16207", "PULSES & DAL") },
-    { id: 4, name: "Moong Dal Yellow Split", cat: "Atta & Rice", unit: "1 Kg", price: 135, badge: "Fresh", image: makePackGraphic("MOONG DAL", "Protein Rich Dal", "#ca8a04", "#854d0e", "PULSES & DAL") },
-    { id: 5, name: "Chana Dal Super", cat: "Atta & Rice", unit: "1 Kg", price: 98, badge: "Daily Need", image: makePackGraphic("CHANA DAL", "Farm Fresh Split", "#d97706", "#78350f", "PULSES & DAL") },
-    { id: 6, name: "Fortune Poha Thick", cat: "Atta & Rice", unit: "500g", price: 42, badge: "Breakfast", image: makePackGraphic("THICK POHA", "Healthy Breakfast", "#0284c7", "#075985", "BREAKFAST") },
-    { id: 7, name: "Fortune Sunlite Refined Oil", cat: "Oil & Masala", unit: "1 Litre", price: 138, badge: "Daily Need", image: makePackGraphic("SUNLITE OIL", "Refined Sunflower", "#f59e0b", "#b45309", "COOKING OIL") },
-    { id: 8, name: "Fortune Kachi Ghani Mustard Oil", cat: "Oil & Masala", unit: "1 Litre", price: 155, badge: "Pure", image: makePackGraphic("MUSTARD OIL", "Kachi Ghani Sarso", "#eab308", "#713f12", "COOKING OIL") },
-    { id: 9, name: "Amul Pure Cow Ghee", cat: "Oil & Masala", unit: "500 ml", price: 325, badge: "Pure", image: makePackGraphic("PURE GHEE", "Rich Aroma & Taste", "#f59e0b", "#92400e", "DESI GHEE") },
-    { id: 10, name: "Tata Salt Iodized", cat: "Oil & Masala", unit: "1 Kg", price: 28, badge: "Essential", image: makePackGraphic("IODIZED SALT", "Desh Ka Namak", "#0284c7", "#1e3a8a", "DAILY SALT") },
-    { id: 11, name: "MDH Haldi / Turmeric Powder", cat: "Oil & Masala", unit: "200g", price: 64, badge: "Pure Spice", image: makePackGraphic("HALDI POWDER", "Pure Turmeric", "#eab308", "#a16207", "MASALA") },
-    { id: 12, name: "Everest Tikhalal Chilli Powder", cat: "Oil & Masala", unit: "200g", price: 88, badge: "Daily Need", image: makePackGraphic("MIRCHI POWDER", "Vibrant Red Chilli", "#dc2626", "#991b1b", "MASALA") },
-    { id: 13, name: "Whole Jeera / Cumin Seeds", cat: "Oil & Masala", unit: "100g", price: 55, badge: "Fresh", image: makePackGraphic("SHAHI JEERA", "Aromatic Cumin", "#78350f", "#451a03", "WHOLE SPICE") },
-    { id: 14, name: "Refined White Sugar", cat: "Oil & Masala", unit: "1 Kg", price: 48, badge: "Daily Need", image: makePackGraphic("PURE SUGAR", "Fine Crystal Cheeni", "#0891b2", "#164e63", "ESSENTIALS") },
-    { id: 15, name: "Amul Taaza Toned Milk", cat: "Dairy & Tea", unit: "500 ml", price: 28, badge: "Fresh Live", image: makePackGraphic("TAAZA MILK", "Fresh Toned Milk", "#2563eb", "#1d4ed8", "FRESH DAIRY") },
-    { id: 16, name: "Amul Pasteurised Butter", cat: "Dairy & Tea", unit: "100g", price: 58, badge: "Daily Need", image: makePackGraphic("TABLE BUTTER", "Utterly Butterly", "#facc15", "#ca8a04", "DAIRY") },
-    { id: 17, name: "Amul Fresh Malai Paneer", cat: "Dairy & Tea", unit: "200g", price: 92, badge: "Fresh", image: makePackGraphic("MALAI PANEER", "Soft & Fresh", "#0284c7", "#0369a1", "DAIRY") },
-    { id: 18, name: "Fresh Sandwich Bread", cat: "Dairy & Tea", unit: "400g", price: 40, badge: "Daily Fresh", image: makePackGraphic("FRESH BREAD", "Soft White Loaf", "#d97706", "#92400e", "BAKERY") },
-    { id: 19, name: "Tata Tea Gold", cat: "Dairy & Tea", unit: "250g", price: 140, badge: "Morning", image: makePackGraphic("TEA GOLD", "Rich Aroma Leaves", "#15803d", "#14532d", "TEA & COFFEE") },
-    { id: 20, name: "Nescafe Classic Coffee", cat: "Dairy & Tea", unit: "50g", price: 165, badge: "Energy", image: makePackGraphic("CLASSIC COFFEE", "100% Pure Coffee", "#7f1d1d", "#450a0a", "TEA & COFFEE") },
-    { id: 21, name: "Maggi 2-Minute Masala Noodles", cat: "Snacks & Drinks", unit: "Pack of 4", price: 56, badge: "Hot Pick", image: makePackGraphic("MASALA NOODLES", "2-Minute Pack", "#eab308", "#b91c1c", "NOODLES") },
-    { id: 22, name: "Parle-G Gold Biscuits", cat: "Snacks & Drinks", unit: "250g", price: 30, badge: "Daily Need", image: makePackGraphic("GLUCOSE BISCUITS", "Chai Partner", "#f97316", "#9a3412", "BISCUITS") },
-    { id: 23, name: "Britannia Good Day Cashew", cat: "Snacks & Drinks", unit: "200g", price: 40, badge: "Tasty", image: makePackGraphic("GOOD DAY", "Cashew Cookies", "#2563eb", "#1e40af", "BISCUITS") },
-    { id: 24, name: "Haldiram Aloo Bhujia", cat: "Snacks & Drinks", unit: "200g", price: 55, badge: "Crunchy", image: makePackGraphic("ALOO BHUJIA", "Crispy Namkeen", "#dc2626", "#7f1d1d", "NAMKEEN") },
-    { id: 25, name: "Real Mixed Fruit Juice", cat: "Snacks & Drinks", unit: "1 Litre", price: 115, badge: "Chilled", image: makePackGraphic("MIXED FRUIT", "100% Goodness", "#16a34a", "#14532d", "BEVERAGES") },
-    { id: 26, name: "Surf Excel Easy Wash", cat: "Home & Care", unit: "1 Kg", price: 135, badge: "Daily Need", image: makePackGraphic("EASY WASH", "Detergent Powder", "#0ea5e9", "#0369a1", "LAUNDRY") },
-    { id: 27, name: "Vim Dishwash Gel Lemon", cat: "Home & Care", unit: "750 ml", price: 155, badge: "Kitchen", image: makePackGraphic("DISHWASH GEL", "100 Lemons Power", "#eab308", "#854d0e", "KITCHEN CARE") },
-    { id: 28, name: "Lizol Floor Cleaner Citrus", cat: "Home & Care", unit: "500 ml", price: 105, badge: "Hygiene", image: makePackGraphic("FLOOR CLEANER", "Kills 99.9% Germs", "#0891b2", "#155e75", "HOME CARE") },
-    { id: 29, name: "Colgate Strong Teeth Paste", cat: "Home & Care", unit: "200g", price: 112, badge: "Daily Need", image: makePackGraphic("STRONG TEETH", "Dental Cream", "#dc2626", "#991b1b", "PERSONAL CARE") },
-    { id: 30, name: "Lifebuoy Total Soap Pack", cat: "Home & Care", unit: "4 x 125g", price: 136, badge: "Family Pack", image: makePackGraphic("BATH SOAP", "Germ Protection", "#e11d48", "#881337", "PERSONAL CARE") }
-    let products = JSON.parse(localStorage.getItem("required_products_v3")) || defaultProducts;
-  let storeUpi = localStorage.getItem("required_upi") || "yourname@fam";
-  let currentUser = JSON.parse(localStorage.getItem("required_user_session")) || null;
+  const defaultProducts = baseItems.map(x => ({
+    id: x[0], name: x[1], cat: x[2], unit: x[3], price: x[4],
+    image: makePackImg(x[1].slice(0,14).toUpperCase(), x[3], x[5], x[6])
+  }));
+
+  let products = JSON.parse(safeGet("req_prods_v4") || "null") || defaultProducts;
+  let storeUpi = safeGet("req_upi") || "yourname@fam";
+  let customLogo = safeGet("req_logo") || "";
+  let currentUser = JSON.parse(safeGet("req_user") || "null");
   let cart = {};
   let activeCategory = "All";
   let uploadedBase64 = "";
@@ -957,471 +389,265 @@
 
   document.getElementById("displayUpiId").innerText = storeUpi;
 
-  function initLoginState() {
-    renderBrandLogos();
-    if (currentUser && currentUser.name && currentUser.phone) {
-      document.getElementById("loginGate").classList.add("hidden");
-      applyUserToStore(currentUser);
+  function renderLogos() {
+    const l1 = document.getElementById("loginLogoHolder");
+    const l2 = document.getElementById("headerLogoHolder");
+    if (customLogo) {
+      l1.innerHTML = '<img src="' + customLogo + '" style="max-height:90px;max-width:100%;border-radius:10px;" />';
+      l2.innerHTML = '<img src="' + customLogo + '" />';
     } else {
-      document.getElementById("loginGate").classList.remove("hidden");
+      l1.innerHTML = brandSvg;
+      l2.innerHTML = brandSvg;
+    }
+  }
+
+  function initLogin() {
+    renderLogos();
+    if (currentUser && currentUser.name) {
+      document.getElementById("loginGate").classList.add("hidden");
+      applyUser(currentUser);
     }
   }
 
   function completeUserLogin() {
     const name = document.getElementById("loginName").value.trim();
-    const phone = document.getElementById("loginPhone").value.trim();
+    const rawPhone = document.getElementById("loginPhone").value.replace(/\D/g, "");
     const address = document.getElementById("loginAddress").value.trim();
+    const errEl = document.getElementById("loginErr");
 
     if (!name) {
-      alert("Kripya apna naam likhein.");
+      errEl.innerText = "Kripya apna naam likhein!";
       return;
     }
-    if (!/^\d{10}$/.test(phone)) {
-      alert("Kripya sahi 10-digit mobile number daalein.");
+    if (rawPhone.length < 10) {
+      errEl.innerText = "Kripya sahi 10-digit mobile number daalein!";
       return;
     }
-
+    errEl.innerText = "";
+    const phone = rawPhone.slice(-10);
     currentUser = { name, phone, address };
-    localStorage.setItem("required_user_session", JSON.stringify(currentUser));
-    applyUserToStore(currentUser);
+    safeSet("req_user", JSON.stringify(currentUser));
+    applyUser(currentUser);
     document.getElementById("loginGate").classList.add("hidden");
-    showToast(`Welcome ${name}!`);
+    showToast("Welcome " + name + "!");
   }
 
-  function applyUserToStore(user) {
-    const firstName = user.name.split(" ")[0];
-    document.getElementById("userBadge").innerText = `👤 ${firstName} (Logout)`;
-    document.getElementById("custName").value = user.name;
-    document.getElementById("custPhone").value = user.phone;
-    if (user.address && !document.getElementById("custAddress").value) {
-      document.getElementById("custAddress").value = user.address;
+  function applyUser(u) {
+    document.getElementById("userBadge").innerText = "👤 " + u.name.split(" ")[0] + " (Logout)";
+    document.getElementById("custName").value = u.name;
+    document.getElementById("custPhone").value = u.phone;
+    if (u.address && !document.getElementById("custAddress").value) {
+      document.getElementById("custAddress").value = u.address;
     }
   }
 
   function logoutUser() {
-    if (!confirm("Kya aap logout karke doosre number se login karna chahte hain?")) return;
-    localStorage.removeItem("required_user_session");
+    safeDel("req_user");
     currentUser = null;
-    document.getElementById("loginName").value = "";
-    document.getElementById("loginPhone").value = "";
-    document.getElementById("loginAddress").value = "";
     document.getElementById("loginGate").classList.remove("hidden");
   }
-
-  let toastTimer = null;
+    let toastT = null;
   function showToast(msg) {
     const t = document.getElementById("liveToast");
     t.innerText = msg;
     t.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove("show"), 1800);
+    clearTimeout(toastT);
+    toastT = setTimeout(() => t.classList.remove("show"), 1600);
   }
 
-  function saveProductsToStorage() {
-    try {
-      localStorage.setItem("required_products_v3", JSON.stringify(products));
-    } catch (e) {
-      alert("Browser storage full ho gayi hai! Purane kuch items delete karein.");
-    }
-  }
-
-  function compressImage(file, maxSide, callback) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
+  function compressImg(file, maxSide, cb) {
+    const r = new FileReader();
+    r.onload = function(e) {
       const img = new Image();
       img.onload = function() {
-        const canvas = document.createElement("canvas");
-        let w = img.width;
-        let h = img.height;
-        if (w > h && w > maxSide) {
-          h = Math.round((h * maxSide) / w);
-          w = maxSide;
-        } else if (h > maxSide) {
-          w = Math.round((w * maxSide) / h);
-          h = maxSide;
-        }
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, w, h);
-        callback(canvas.toDataURL("image/jpeg", 0.78));
+        const c = document.createElement("canvas");
+        let w = img.width, h = img.height;
+        if (w > h && w > maxSide) { h = Math.round(h * maxSide / w); w = maxSide; }
+        else if (h > maxSide) { w = Math.round(w * maxSide / h); h = maxSide; }
+        c.width = w; c.height = h;
+        c.getContext("2d").drawImage(img, 0, 0, w, h);
+        cb(c.toDataURL("image/jpeg", 0.78));
       };
       img.src = e.target.result;
     };
-    reader.readAsDataURL(file);
+    r.readAsDataURL(file);
   }
 
-  function handleLogoUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImage(file, 360, function(dataUrl) {
-      customLogoData = dataUrl;
-      localStorage.setItem("required_custom_logo", dataUrl);
-      renderBrandLogos();
-      alert("Store logo update ho gaya!");
+  function handleLogoUpload(ev) {
+    if (!ev.target.files[0]) return;
+    compressImg(ev.target.files[0], 340, function(url) {
+      customLogo = url;
+      safeSet("req_logo", url);
+      renderLogos();
+      alert("Logo update ho gaya!");
     });
   }
 
-  function handleNewImageUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    compressImage(file, 400, function(compressedDataUrl) {
-      uploadedBase64 = compressedDataUrl;
-      const prev = document.getElementById("newProdPreview");
-      prev.src = compressedDataUrl;
-      prev.style.display = "block";
+  function handleNewImageUpload(ev) {
+    if (!ev.target.files[0]) return;
+    compressImg(ev.target.files[0], 380, function(url) {
+      uploadedBase64 = url;
+      const p = document.getElementById("newProdPreview");
+      p.src = url; p.style.display = "block";
     });
   }
 
   function handleUrlPreview(url) {
     if (url.trim()) {
-      const prev = document.getElementById("newProdPreview");
-      prev.src = url.trim();
-      prev.style.display = "block";
+      const p = document.getElementById("newProdPreview");
+      p.src = url.trim(); p.style.display = "block";
     }
   }
 
   function renderCategories() {
     const cats = ["All", ...new Set(products.map(p => p.cat))];
-    const bar = document.getElementById("categoryBar");
-    bar.innerHTML = cats.map(c =>
-      `<button class="cat-btn ${c === activeCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>`
+    document.getElementById("categoryBar").innerHTML = cats.map(c =>
+      '<button class="cat-btn ' + (c === activeCategory ? 'active' : '') + '" onclick="setCategory(\'' + c + '\')">' + c + '</button>'
     ).join("");
   }
 
-  function setCategory(cat) {
-    activeCategory = cat;
-    renderCategories();
-    renderProducts();
-  }
+  function setCategory(c) { activeCategory = c; renderCategories(); renderProducts(); }
 
   function renderProducts() {
-    const query = document.getElementById("searchInput").value.toLowerCase();
-    const grid = document.getElementById("productGrid");
-
-    const filtered = products.filter(p => {
-      const matchCat = activeCategory === "All" || p.cat === activeCategory;
-      const matchSearch = p.name.toLowerCase().includes(query) || p.cat.toLowerCase().includes(query);
-      return matchCat && matchSearch;
-    });
-
-    grid.innerHTML = filtered.map((p, idx) => {
+    const q = document.getElementById("searchInput").value.toLowerCase();
+    const list = products.filter(p => (activeCategory === "All" || p.cat === activeCategory) && (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)));
+    document.getElementById("productGrid").innerHTML = list.map(p => {
       const qty = cart[p.id] || 0;
-      const imgSrc = p.image || makePackGraphic(p.name.slice(0, 12).toUpperCase(), p.unit, "#135063", "#0e3f4e", p.cat);
-      const delay = Math.min(idx * 0.03, 0.35);
-      return `
-        <div class="card" style="animation-delay:${delay}s;">
-          <div class="card-img-wrap">
-            <span class="live-badge">⚡ ${p.badge || 'Daily'}</span>
-            <img class="card-img" src="${imgSrc}" alt="${p.name}" loading="lazy" />
-          </div>
-          <div class="card-body">
-            <div>
-              <div class="card-cat">${p.cat}</div>
-              <div class="card-title">${p.name}</div>
-              <div class="card-unit">${p.unit}</div>
-            </div>
-            <div class="card-bottom">
-              <span class="price">Rs.${p.price}</span>
-              ${qty === 0
-                ? `<button class="add-btn" onclick="updateQty(${p.id}, 1)">+ Add</button>`
-                : `<div class="qty-box">
-                     <button class="qty-btn" onclick="updateQty(${p.id}, -1)">-</button>
-                     <strong>${qty}</strong>
-                     <button class="qty-btn" onclick="updateQty(${p.id}, 1)">+</button>
-                   </div>`
-              }
-            </div>
-          </div>
-        </div>
-      `;
+      const btnHtml = qty === 0
+        ? '<button class="add-btn" onclick="updateQty(' + p.id + ',1)">+ Add</button>'
+        : '<div class="qty-box"><button class="qty-btn" onclick="updateQty(' + p.id + ',-1)">-</button><strong>' + qty + '</strong><button class="qty-btn" onclick="updateQty(' + p.id + ',1)">+</button></div>';
+      return '<div class="card"><div class="card-img-wrap"><span class="live-badge">⚡ Daily</span><img class="card-img" src="' + p.image + '" alt="' + p.name + '" /></div><div class="card-body"><div><div class="card-cat">' + p.cat + '</div><div class="card-title">' + p.name + '</div><div class="card-unit">' + p.unit + '</div></div><div class="card-bottom"><span class="price">Rs.' + p.price + '</span>' + btnHtml + '</div></div></div>';
     }).join("");
-  }
-
-  function updateQty(id, delta) {
-    const newQty = (cart[id] || 0) + delta;
-    const prod = products.find(p => p.id === id);
-    if (newQty <= 0) {
-      delete cart[id];
-    } else {
-      cart[id] = newQty;
-      if (delta > 0 && prod) {
-        showToast(`✅ ${prod.name} (${newQty}) added!`);
       }
+
+  function updateQty(id, d) {
+    const n = (cart[id] || 0) + d;
+    if (n <= 0) delete cart[id];
+    else {
+      cart[id] = n;
+      const p = products.find(x => x.id === id);
+      if (d > 0 && p) showToast("✅ " + p.name + " (" + n + ") added!");
     }
-    renderProducts();
-    renderCart(delta > 0);
+    renderProducts(); renderCart(d > 0);
   }
 
-  function getCartDetails() {
-    let items = [];
-    let total = 0;
-    let count = 0;
+  function getCart() {
+    let items = [], total = 0, count = 0;
     for (const [id, qty] of Object.entries(cart)) {
-      const prod = products.find(p => p.id == id);
-      if (prod) {
-        const sub = prod.price * qty;
-        total += sub;
-        count += qty;
-        items.push({ name: prod.name, unit: prod.unit, qty, price: prod.price, sub });
-      }
+      const p = products.find(x => x.id == id);
+      if (p) { total += p.price * qty; count += qty; items.push({ name: p.name, unit: p.unit, qty, sub: p.price * qty }); }
     }
     return { items, total, count };
   }
 
-  function renderCart(animateBar) {
-    const { items, total, count } = getCartDetails();
-    const summary = document.getElementById("cartSummary");
-    const floatBar = document.getElementById("floatingBar");
-
+  function renderCart(anim) {
+    const { items, total, count } = getCart();
+    const s = document.getElementById("cartSummary");
+    const bar = document.getElementById("floatingBar");
     if (count === 0) {
-      summary.innerHTML = `<p style="color: var(--muted);">Abhi basket khali hai. Upar se daily items add karein.</p>`;
-      floatBar.style.display = "none";
+      s.innerHTML = '<p style="color:var(--muted);margin-bottom:10px;">Abhi basket khali hai. Upar se daily items add karein.</p>';
+      bar.style.display = "none";
       return;
     }
-
-    floatBar.style.display = "flex";
-    if (animateBar) {
-      floatBar.classList.remove("bump");
-      void floatBar.offsetWidth;
-      floatBar.classList.add("bump");
-    }
-    document.getElementById("floatCount").innerText = `${count} Item${count > 1 ? 's' : ''}`;
-    document.getElementById("floatTotal").innerText = `Rs. ${total}`;
-
-    summary.innerHTML = items.map(i => `
-      <div class="cart-row">
-        <span>${i.name} (${i.unit}) &times; ${i.qty}</span>
-        <strong>Rs. ${i.sub}</strong>
-      </div>
-    `).join("") + `
-      <div class="total-row">
-        <span>Total Bill</span>
-        <span>Rs. ${total}</span>
-      </div>
-    `;
+    bar.style.display = "flex";
+    if (anim) { bar.classList.remove("bump"); void bar.offsetWidth; bar.classList.add("bump"); }
+    document.getElementById("floatCount").innerText = count + " Items";
+    document.getElementById("floatTotal").innerText = "Rs. " + total;
+    s.innerHTML = items.map(i => '<div class="cart-row"><span>' + i.name + ' (' + i.unit + ') x ' + i.qty + '</span><strong>Rs. ' + i.sub + '</strong></div>').join("") + '<div class="total-row"><span>Total Bill</span><span>Rs. ' + total + '</span></div>';
   }
 
   function toggleUpiBox() {
-    const mode = document.getElementById("paymentMode").value;
-    document.getElementById("upiBox").style.display = mode.includes("UPI") ? "block" : "none";
+    document.getElementById("upiBox").style.display = document.getElementById("paymentMode").value.includes("UPI") ? "block" : "none";
   }
 
   function getLiveLocation() {
     const btn = document.getElementById("gpsBtn");
-    if (!navigator.geolocation) {
-      alert("Aapke browser me GPS support nahi hai.");
-      return;
-    }
+    if (!navigator.geolocation) { alert("GPS support nahi hai."); return; }
     btn.innerText = "Location fetch ho rahi hai...";
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const lat = pos.coords.latitude.toFixed(6);
-        const lng = pos.coords.longitude.toFixed(6);
-        const mapUrl = `https://maps.google.com/?q=${lat},${lng}`;
-        document.getElementById("gpsLink").value = mapUrl;
-        const addrField = document.getElementById("custAddress");
-        if (!addrField.value.includes("GPS:")) {
-          addrField.value = `${addrField.value} (GPS: ${lat}, ${lng})`.trim();
-        }
-        btn.innerText = "✅ GPS Location Attach Ho Gayi";
-      },
-      () => {
-        btn.innerText = "📍 Live GPS Location Auto-Fill Karein";
-        alert("Location permission allow karein ya address manually likhein.");
-      }
-    );
-  }
-
-  async function submitOrderDirectly() {
-    const { items, total, count } = getCartDetails();
+    navigator.geolocation.getCurrentPosition(pos => {
+      const lat = pos.coords.latitude.toFixed(6), lng = pos.coords.longitude.toFixed(6);
+      document.getElementById("gpsLink").value = "https://maps.google.com/?q=" + lat + "," + lng;
+      const a
+        async function submitOrderDirectly() {
+    const { items, total, count } = getCart();
     const name = document.getElementById("custName").value.trim();
     const phone = document.getElementById("custPhone").value.trim();
     const address = document.getElementById("custAddress").value.trim();
     const gps = document.getElementById("gpsLink").value;
     const payment = document.getElementById("paymentMode").value;
-    const txnId = document.getElementById("upiTxnId").value.trim();
+    const txn = document.getElementById("upiTxnId").value.trim();
     const btn = document.getElementById("placeOrderBtn");
-    const statusMsg = document.getElementById("statusMsg");
-
-    if (count === 0) {
-      alert("Pehle basket me kam se kam 1 daily item add karein.");
-      return;
-    }
-    if (!name || !phone || !address) {
-      alert("Kripya apna Naam, Mobile Number aur Delivery Address bharein.");
-      return;
-    }
-
+    const msg = document.getElementById("statusMsg");
+    if (count === 0) { alert("Pehle basket me item add karein."); return; }
+    if (!name || !phone || !address) { alert("Naam, Mobile Number aur Address bharein."); return; }
     const orderId = "REQ-" + Math.floor(10000 + Math.random() * 90000);
-    const itemsFormatted = items
-      .map((item, idx) => `${idx + 1}. ${item.name} (${item.unit}) x ${item.qty} = Rs.${item.sub}`)
-      .join("\n");
-
-    btn.disabled = true;
-    btn.innerText = "Order Bheja Ja Raha Hai...";
-    statusMsg.innerText = "";
-
-    const payload = {
-      _subject: `Naya Order ${orderId} - ${name} (Rs.${total})`,
-      _template: "table",
-      _captcha: "false",
-      Order_ID: orderId,
-      Customer_Name: name,
-      Mobile_Number: phone,
-      Delivery_Address: address,
-      Google_Maps_GPS: gps,
-      Payment_Method: txnId ? `${payment} (Txn: ${txnId})` : payment,
-      Ordered_Items: itemsFormatted,
-      Total_Amount: `Rs. ${total}`
-    };
-
+    btn.disabled = true; btn.innerText = "Order Bheja Ja Raha Hai..."; msg.innerText = "";
     try {
-      const res = await fetch(`https://formsubmit.co/ajax/${STORE_EMAIL}`, {
+      const res = await fetch("https://formsubmit.co/ajax/" + STORE_EMAIL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          _subject: "Naya Order " + orderId + " - " + name + " (Rs." + total + ")",
+          _template: "table", _captcha: "false", Order_ID: orderId,
+          Customer_Name: name, Mobile_Number: phone, Delivery_Address: address, Google_Maps_GPS: gps,
+          Payment_Method: txn ? payment + " (Txn: " + txn + ")" : payment,
+          Ordered_Items: items.map((i, k) => (k + 1) + ". " + i.name + " (" + i.unit + ") x" + i.qty + " = Rs." + i.sub).join("\n"),
+          Total_Amount: "Rs. " + total
+        })
       });
-
       const data = await res.json();
-
       if (data.success === "true" || data.success === true) {
-        cart = {};
-        renderProducts();
-        renderCart(false);
-        document.getElementById("upiTxnId").value = "";
+        cart = {}; renderProducts(); renderCart(false);
         document.getElementById("modalOrderId").innerText = orderId;
         document.getElementById("successModal").style.display = "flex";
-      } else {
-        statusMsg.style.color = "red";
-        statusMsg.innerText = "Order send nahi ho paya. Kripya dobara try karein.";
-      }
-    } catch (err) {
-      statusMsg.style.color = "red";
-      statusMsg.innerText = "Network error! Internet connection check karke dobara dabayein.";
-    } finally {
-      btn.disabled = false;
-      btn.innerText = "Confirm Order";
-    }
+      } else { msg.style.color = "red"; msg.innerText = "Order send nahi ho paya, dobara try karein."; }
+    } catch (e) { msg.style.color = "red"; msg.innerText = "Network error! Internet check karein."; }
+    finally { btn.disabled = false; btn.innerText = "Confirm Order"; }
   }
 
-  function openAdmin() {
-    const pin = prompt("Admin PIN Daalein:");
-    if (pin === ADMIN_PIN) {
-      document.getElementById("adminUpiInput").value = storeUpi;
-      renderAdminProductList();
-      document.getElementById("adminModal").style.display = "flex";
-    } else if (pin !== null) {
-      alert("Galat PIN!");
-    }
+  function openPinBox() { document.getElementById("pinInput").value = ""; document.getElementById("pinErr").innerText = ""; document.getElementById("pinModal").style.display = "flex"; }
+  function verifyAdminPin() {
+    if (document.getElementById("pinInput").value.trim() === ADMIN_PIN) {
+      closeModal("pinModal"); document.getElementById("adminUpiInput").value = storeUpi; renderAdminList(); document.getElementById("adminModal").style.display = "flex";
+    } else { document.getElementById("pinErr").innerText = "Galat PIN!"; }
   }
-
-  function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-  }
-
-  function saveUpiSettings() {
-    const val = document.getElementById("adminUpiInput").value.trim();
-    if (val) {
-      storeUpi = val;
-      localStorage.setItem("required_upi", storeUpi);
-      document.getElementById("displayUpiId").innerText = storeUpi;
-      alert("FamPay / UPI ID update ho gayi!");
-    }
-  }
+  function closeModal(id) { document.getElementById(id).style.display = "none"; }
+  function saveUpiSettings() { const v = document.getElementById("adminUpiInput").value.trim(); if (v) { storeUpi = v; safeSet("req_upi", v); document.getElementById("displayUpiId").innerText = v; alert("UPI ID saved!"); } }
 
   function addNewProduct() {
     const name = document.getElementById("newProdName").value.trim();
     const cat = document.getElementById("newProdCat").value.trim() || "Daily Needs";
     const unit = document.getElementById("newProdUnit").value.trim() || "1 Pc";
     const price = parseFloat(document.getElementById("newProdPrice").value);
-    const urlVal = document.getElementById("newProdUrl").value.trim();
-
-    if (!name || !price) {
-      alert("Product ka naam aur price dono bharna zaroori hai.");
-      return;
-    }
-
-    const finalImage = uploadedBase64 || urlVal || makePackGraphic(name.slice(0, 12).toUpperCase(), unit, "#135063", "#0e3f4e", cat);
-
-    products.unshift({ id: Date.now(), name, cat, unit, price, badge: "New", image: finalImage });
-    saveProductsToStorage();
-    renderCategories();
-    renderProducts();
-    renderAdminProductList();
-
-    uploadedBase64 = "";
-    document.getElementById("newProdName").value = "";
-    document.getElementById("newProdUnit").value = "";
-    document.getElementById("newProdPrice").value = "";
-    document.getElementById("newProdFile").value = "";
-    document.getElementById("newProdUrl").value = "";
-    document.getElementById("newProdPreview").style.display = "none";
-    alert("Product real image ke saath store me add ho gaya!");
+    const url = document.getElementById("newProdUrl").value.trim();
+    if (!name || !price) { alert("Product naam aur price bharein."); return; }
+    const img = uploadedBase64 || url || makePackImg(name.slice(0,14).toUpperCase(), unit, "#135063", "#0e3f4e");
+    products.unshift({ id: Date.now(), name, cat, unit, price, image: img });
+    safeSet("req_prods_v4", JSON.stringify(products));
+    renderCategories(); renderProducts(); renderAdminList();
+    uploadedBase64 = ""; document.getElementById("newProdName").value = ""; document.getElementById("newProdUnit").value = ""; document.getElementById("newProdPrice").value = ""; document.getElementById("newProdUrl").value = ""; document.getElementById("newProdPreview").style.display = "none";
+    alert("Product add ho gaya!");
   }
 
-  function renderAdminProductList() {
-    const list = document.getElementById("adminProductList");
-    list.innerHTML = products.map(p => `
-      <div class="admin-item-row">
-        <div class="admin-item-left">
-          <img class="admin-thumb" src="${p.image}" alt="${p.name}" />
-          <div style="overflow:hidden;">
-            <div style="font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${p.name}</div>
-            <div style="color:#64748b; font-size:11px;">${p.unit} • Rs.${p.price}</div>
-          </div>
-        </div>
-        <div style="display:flex; gap:4px;">
-          <button class="mini-btn" onclick="triggerEditPhoto(${p.id})">📷 Photo</button>
-          <button class="mini-btn mini-del" onclick="deleteProduct(${p.id})">Delete</button>
-        </div>
-      </div>
-    `).join("");
+  function renderAdminList() {
+    document.getElementById("adminProductList").innerHTML = products.map(p =>
+      '<div class="admin-item-row"><div class="admin-item-left"><img class="admin-thumb" src="' + p.image + '" /><div><strong>' + p.name + '</strong><div style="font-size:11px;color:#64748b;">' + p.unit + ' • Rs.' + p.price + '</div></div></div><div style="display:flex;gap:4px;"><button class="mini-btn" onclick="editPhoto(' + p.id + ')">📷 Photo</button><button class="mini-btn mini-del" onclick="delProd(' + p.id + ')">Del</button></div></div>'
+    ).join("");
   }
-
-  function triggerEditPhoto(id) {
-    editingProductId = id;
-    document.getElementById("editProdFile").click();
-  }
-
-  function handleExistingImageChange(event) {
-    const file = event.target.files[0];
-    if (!file || !editingProductId) return;
-    compressImage(file, 400, function(compressedDataUrl) {
-      const idx = products.findIndex(p => p.id === editingProductId);
-      if (idx !== -1) {
-        products[idx].image = compressedDataUrl;
-        saveProductsToStorage();
-        renderProducts();
-        renderAdminProductList();
-        alert("Product ki real photo update ho gayi!");
-      }
-      event.target.value = "";
-      editingProductId = null;
+  function editPhoto(id) { editingProductId = id; document.getElementById("editProdFile").click(); }
+  function handleExistingImageChange(ev) {
+    if (!ev.target.files[0] || !editingProductId) return;
+    compressImg(ev.target.files[0], 380, function(url) {
+      const i = products.findIndex(p => p.id === editingProductId);
+      if (i !== -1) { products[i].image = url; safeSet("req_prods_v4", JSON.stringify(products)); renderProducts(); renderAdminList(); alert("Photo update ho gayi!"); }
+      ev.target.value = ""; editingProductId = null;
     });
   }
+  function delProd(id) { products = products.filter(p => p.id !== id); delete cart[id]; safeSet("req_prods_v4", JSON.stringify(products)); renderCategories(); renderProducts(); renderCart(false); renderAdminList(); }
 
-  function deleteProduct(id) {
-    if (!confirm("Kya aap is product ko store se hatana chahte hain?")) return;
-    products = products.filter(p => p.id !== id);
-    delete cart[id];
-    saveProductsToStorage();
-    renderCategories();
-    renderProducts();
-    renderCart(false);
-    renderAdminProductList();
-  }
-
-  initLoginState();
+  initLogin();
   renderCategories();
   renderProducts();
 </script>
-
 </body>
 </html>
-
-
-  
