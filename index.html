@@ -3,1854 +3,703 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Blinkit — Everything delivered in 12 minutes</title>
+  <title>REQUIRED — Daily Essentials in 12 Minutes</title>
   <style>
     :root {
-      --bg-main: #F4F6FB;
-      --bg-card: #FFFFFF;
-      --bg-soft: #F8F9FC;
-      --text-primary: #1C1C1C;
-      --text-secondary: #666666;
-      --border-color: #EAECEF;
-      --blinkit-yellow: #F8CB46;
-      --blinkit-yellow-grad: linear-gradient(180deg, #FFF3C4 0%, #FFFFFF 100%);
-      --blinkit-green: #0C831F;
-      --blinkit-green-light: #F7FFF9;
-      --zomato-red: #E23744;
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-      --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.14);
+      --bg: #F4F6FB;
+      --card: #FFFFFF;
+      --soft: #F8F9FC;
+      --text: #1C1C1C;
+      --muted: #666666;
+      --border: #E5E8EF;
+      --yellow: #F8CB46;
+      --grad: linear-gradient(180deg, #FFF1B8 0%, #FFFFFF 100%);
+      --green: #0C831F;
+      --green-bg: #F1FFF4;
+      --red: #E23744;
     }
-
     [data-theme="dark"] {
-      --bg-main: #121212;
-      --bg-card: #1E1E1E;
-      --bg-soft: #262626;
-      --text-primary: #F5F5F5;
-      --text-secondary: #AAAAAA;
-      --border-color: #333333;
-      --blinkit-yellow-grad: linear-gradient(180deg, #3A3010 0%, #1E1E1E 100%);
-      --blinkit-green-light: #132A18;
+      --bg: #111214;
+      --card: #1C1D21;
+      --soft: #26282E;
+      --text: #F5F5F7;
+      --muted: #A0A4AB;
+      --border: #32343B;
+      --grad: linear-gradient(180deg, #3A2F0D 0%, #1C1D21 100%);
+      --green-bg: #122B17;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background: #E5E8EF;
-      color: var(--text-primary);
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-    }
-
-    .app-shell {
-      width: 100%;
-      max-width: 480px;
-      background: var(--bg-main);
-      min-height: 100vh;
-      position: relative;
-      padding-bottom: 135px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.1);
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #DCE1EB; color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
+    .app { width: 100%; max-width: 480px; background: var(--bg); min-height: 100vh; position: relative; padding-bottom: 135px; box-shadow: 0 0 28px rgba(0,0,0,0.12); }
     .hidden { display: none !important; }
-
-    /* HEADER */
-    .top-header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: var(--blinkit-yellow-grad);
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .header-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 14px 6px;
-    }
-
-    .eta-label { font-size: 11px; font-weight: 800; letter-spacing: 0.3px; }
-    .eta-time { font-size: 22px; font-weight: 900; line-height: 1.1; }
-    .address-line { font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
-    .header-actions { display: flex; align-items: center; gap: 8px; }
-
-    .wallet-pill {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 5px 10px;
-      font-weight: 800;
-      font-size: 13px;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      cursor: pointer;
-    }
-
-    .wallet-icon {
-      background: var(--blinkit-yellow);
-      color: #000;
-      border-radius: 50%;
-      width: 16px;
-      height: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-    }
-
-    .profile-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid var(--border-color);
-      background: var(--bg-card);
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
-
-    .search-wrapper { padding: 4px 14px 8px; }
-    .search-bar {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      height: 42px;
-      display: flex;
-      align-items: center;
-      padding: 0 12px;
-      gap: 8px;
-      box-shadow: var(--shadow-sm);
-    }
-    .search-bar input {
-      flex: 1;
-      border: none;
-      background: transparent;
-      outline: none;
-      font-size: 14px;
-      color: var(--text-primary);
-    }
-    .clear-btn { border: none; background: transparent; color: var(--text-secondary); font-size: 14px; cursor: pointer; }
-
-    .top-tabs {
-      display: flex;
-      overflow-x: auto;
-      padding: 4px 10px 0;
-      gap: 14px;
-      scrollbar-width: none;
-    }
-    .top-tabs::-webkit-scrollbar { display: none; }
-
-    .tab-item {
-      position: relative;
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-      padding: 4px 6px 8px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .tab-item.active { color: var(--text-primary); border-bottom: 3px solid var(--text-primary); font-weight: 800; }
-    .tab-icon { font-size: 18px; }
-    .new-badge {
-      position: absolute;
-      top: -2px;
-      right: -2px;
-      background: #E23744;
-      color: #fff;
-      font-size: 9px;
-      font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 8px;
-    }
-
-    /* HERO CAROUSEL */
-    .hero-carousel {
-      display: flex;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      gap: 12px;
-      padding: 12px 14px;
-      scrollbar-width: none;
-    }
-    .hero-carousel::-webkit-scrollbar { display: none; }
-    .hero-slide {
-      min-width: 100%;
-      scroll-snap-align: center;
-      border-radius: 18px;
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #1C1C1C;
-      box-shadow: var(--shadow-sm);
-    }
-    .hero-tag {
-      font-size: 11px;
-      font-weight: 800;
-      background: rgba(255,255,255,0.8);
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-    .hero-content h2 { font-size: 21px; font-weight: 900; margin: 6px 0 4px; color: #C2185B; }
-    .hero-content p { font-size: 12px; opacity: 0.85; margin-bottom: 10px; }
-    .hero-cta {
-      background: linear-gradient(90deg, #F48FB1, #EC407A);
-      color: #fff;
-      border: none;
-      padding: 7px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .hero-art { font-size: 48px; }
-
-    /* SECTIONS & BESTSELLERS */
-    .home-section { padding: 12px 14px; background: var(--bg-card); margin-bottom: 8px; }
-    .section-title { font-size: 17px; font-weight: 800; margin-bottom: 10px; }
-    .section-sub { font-size: 12px; color: var(--text-secondary); margin-top: -6px; margin-bottom: 10px; }
-
-    .bestsellers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .bestseller-card {
-      background: var(--bg-soft);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 8px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .mini-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px; margin-bottom: 6px; }
-    .mini-thumb {
-      background: var(--bg-card);
-      border-radius: 8px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-    }
-    .more-pill {
-      display: inline-block;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-secondary);
-      padding: 2px 7px;
-      border-radius: 10px;
-      margin-bottom: 4px;
-    }
-    .bestseller-title { font-size: 12px; font-weight: 700; line-height: 1.2; }
-
-    /* BANK OFFERS & 4-COL TILES */
-    .bank-offers-row { display: flex; overflow-x: auto; gap: 10px; scrollbar-width: none; }
-    .bank-offers-row::-webkit-scrollbar { display: none; }
-    .bank-card {
-      min-width: 240px;
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--bg-soft);
-      cursor: pointer;
-    }
-    .bank-badge { padding: 8px 10px; border-radius: 8px; color: #fff; font-weight: 900; font-size: 11px; }
-    .bank-badge.amex { background: #006FCF; }
-    .bank-badge.axis { background: #97144D; }
-    .bank-badge.upi { background: #0C831F; }
-    .bank-card strong { font-size: 13px; display: block; }
-    .bank-card p { font-size: 11px; color: var(--text-secondary); }
-
-    .category-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .cat-tile { text-align: center; cursor: pointer; }
-    .cat-tile-img {
-      background: #EAF4FF;
-      border-radius: 14px;
-      height: 72px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      margin-bottom: 5px;
-    }
-    [data-theme="dark"] .cat-tile-img { background: #262E38; }
-    .cat-tile span { font-size: 11px; font-weight: 700; line-height: 1.2; display: block; }
-
-    /* PRODUCT CARDS */
-    .horizontal-products { display: flex; overflow-x: auto; gap: 10px; padding-bottom: 6px; scrollbar-width: none; }
-    .horizontal-products::-webkit-scrollbar { display: none; }
-    .horizontal-products .product-card { min-width: 155px; max-width: 155px; }
-    .product-grid-2col { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; padding: 8px; }
-
-    .product-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
-    .p-img-box {
-      background: var(--bg-soft);
-      border-radius: 10px;
-      height: 105px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 46px;
-      position: relative;
-      margin-bottom: 12px;
-    }
-    .wish-btn {
-      position: absolute;
-      top: 6px;
-      right: 6px;
-      background: var(--bg-card);
-      border: none;
-      border-radius: 50%;
-      width: 26px;
-      height: 26px;
-      font-size: 13px;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-    }
-    .weight-pill {
-      position: absolute;
-      bottom: 6px;
-      left: 6px;
-      background: var(--bg-card);
-      font-size: 10px;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
-    }
-    .add-btn-wrap { position: absolute; bottom: -10px; right: 6px; }
-    .btn-add {
-      background: var(--blinkit-green-light);
-      color: var(--blinkit-green);
-      border: 1px solid var(--blinkit-green);
-      border-radius: 8px;
-      padding: 5px 14px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .qty-stepper {
-      background: var(--blinkit-green);
-      color: #fff;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 8px;
-      font-size: 12px;
-      font-weight: 800;
-    }
-    .qty-stepper button { background: transparent; border: none; color: #fff; font-size: 15px; font-weight: 900; cursor: pointer; }
-    .p-title {
-      font-size: 12.5px;
-      font-weight: 700;
-      line-height: 1.25;
-      margin-bottom: 4px;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    .p-tag {
-      display: inline-block;
-      font-size: 10px;
-      background: #EEF6FF;
-      color: #1565C0;
-      padding: 1px 6px;
-      border-radius: 4px;
-      font-weight: 600;
-      margin-bottom: 4px;
-      width: fit-content;
-    }
-    .p-meta { font-size: 10.5px; color: var(--text-secondary); margin-bottom: 4px; }
-    .stock-low { color: #E65100; font-weight: 700; }
-    .p-price-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-    .p-price { font-size: 13.5px; font-weight: 800; }
-    .p-mrp { font-size: 11px; color: var(--text-secondary); text-decoration: line-through; }
-    .p-off { font-size: 10px; color: #1976D2; font-weight: 800; }
-    .see-all-pill {
-      width: 100%;
-      margin-top: 8px;
-      padding: 9px;
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      background: var(--bg-soft);
-      color: var(--blinkit-green);
-      font-weight: 700;
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    /* CATEGORY SPLIT VIEW */
-    .cat-top-bar {
-      position: sticky;
-      top: 0;
-      z-index: 45;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-      padding: 10px 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .cat-title-wrap { flex: 1; }
-    .cat-title-wrap h3 { font-size: 15px; font-weight: 800; }
-    .cat-title-wrap small { font-size: 11px; color: var(--text-secondary); }
-    .icon-btn {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      border: 1px solid var(--border-color);
-      background: var(--bg-soft);
-      color: var(--text-primary);
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .filter-bar {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding: 8px 10px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border-color);
-    }
-    .filter-chip {
-      border: 1px solid var(--border-color);
-      background: var(--bg-card);
-      color: var(--text-primary);
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 600;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-    .filter-chip.active { border-color: var(--blinkit-green); background: var(--blinkit-green-light); color: var(--blinkit-green); }
-    .split-cat-layout { display: flex; min-height: calc(100vh - 140px); }
-    .subcat-sidebar { width: 78px; background: var(--bg-card); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; }
-    .subcat-item { padding: 10px 4px; text-align: center; border-left: 3px solid transparent; cursor: pointer; font-size: 10.5px; font-weight: 600; color: var(--text-secondary); }
-    .subcat-item.active { border-left-color: var(--blinkit-green); background: var(--blinkit-green-light); color: var(--blinkit-green); font-weight: 800; }
-    .subcat-icon { font-size: 24px; display: block; margin-bottom: 3px; }
-    .cat-products-area { flex: 1; }
-    .cat-count-banner { padding: 8px 10px 0; font-size: 11px; color: var(--text-secondary); font-weight: 600; }
-
-    /* PROFILE, CART PILL, BOTTOM NAV & MODALS */
-    .profile-header-bg { background: var(--blinkit-yellow-grad); padding: 16px; text-align: center; }
-    .profile-back { display: block; background: transparent; border: none; font-size: 15px; font-weight: 700; color: var(--text-primary); cursor: pointer; margin-bottom: 10px; }
-    .profile-avatar { width: 68px; height: 68px; border-radius: 50%; background: var(--bg-card); margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 32px; box-shadow: var(--shadow-sm); }
-    .profile-body { padding: 12px; }
-    .profile-quick-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-    .p-quick-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px 6px; text-align: center; font-size: 12px; cursor: pointer; }
-    .p-quick-card span { display: block; font-size: 20px; margin-bottom: 4px; }
-    .p-group-title { font-size: 12px; text-transform: uppercase; color: var(--text-secondary); margin: 14px 4px 6px; }
-    .profile-list-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; }
-    .p-row { display: flex; justify-content: space-between; align-items: center; padding: 13px 14px; border-bottom: 1px solid var(--border-color); font-size: 14px; font-weight: 600; cursor: pointer; }
-    .p-row:last-child { border-bottom: none; }
-    .logout-row { color: #D32F2F; }
-    .theme-pill { background: var(--bg-soft); padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 800; }
-    .app-version-foot { text-align: center; padding: 20px; color: var(--text-secondary); font-weight: 800; }
-
-    .floating-cart-pill {
-      position: fixed;
-      bottom: 66px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% - 28px);
-      max-width: 452px;
-      background: var(--blinkit-green);
-      color: #fff;
-      border-radius: 14px;
-      padding: 10px 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: var(--shadow-md);
-      z-index: 60;
-      cursor: pointer;
-    }
-    .fc-left { display: flex; align-items: center; gap: 10px; }
-    .fc-thumb { width: 34px; height: 34px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .fc-title { font-size: 14px; font-weight: 800; }
-    .fc-sub { font-size: 12px; opacity: 0.95; }
-    .fc-arrow { font-size: 22px; font-weight: 700; }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 480px;
-      height: 58px;
-      background: var(--bg-card);
-      border-top: 1px solid var(--border-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      z-index: 55;
-      padding: 0 6px;
-    }
-    .bnav-item { background: transparent; border: none; color: var(--text-secondary); display: flex; flex-direction: column; align-items: center; font-size: 10.5px; font-weight: 600; cursor: pointer; }
-    .bnav-item.active { color: var(--text-primary); font-weight: 800; }
-    .bnav-icon { font-size: 18px; }
-    .bnav-zomato { background: var(--zomato-red); color: #fff; border: none; border-radius: 10px; padding: 8px 12px; font-weight: 900; font-style: italic; font-size: 13px; cursor: pointer; }
-
-    .modal-overlay, .drawer-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.58); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 14px; }
-    .drawer-overlay { align-items: flex-end; padding: 0; }
-    .drawer-sheet { width: 100%; max-width: 480px; max-height: 88vh; background: var(--bg-main); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; overflow: hidden; }
-    .drawer-header, .modal-head { background: var(--bg-card); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
-    .drawer-body { padding: 12px; overflow-y: auto; flex: 1; }
-    .drawer-footer { background: var(--bg-card); padding: 12px 16px; border-top: 1px solid var(--border-color); }
-    .close-circle { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--bg-soft); color: var(--text-primary); cursor: pointer; }
-    .free-delivery-bar { background: #E8F5E9; color: #1B5E20; font-size: 12px; font-weight: 700; padding: 8px 12px; border-radius: 10px; margin-bottom: 10px; }
-    .cart-items-list, .bill-card, .payment-card { background: var(--bg-card); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
-    .cart-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-color); }
-    .cart-row:last-child { border-bottom: none; }
-    .coupon-box { display: flex; gap: 8px; margin-bottom: 10px; }
-    .coupon-box input { flex: 1; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); }
-    .coupon-box button { background: var(--blinkit-green); color: #fff; border: none; padding: 0 16px; border-radius: 10px; font-weight: 700; cursor: pointer; }
-    .bill-row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
-    .discount-row { color: var(--blinkit-green); font-weight: 700; }
-    .grand-total { font-size: 15px; font-weight: 900; border-top: 1px dashed var(--border-color); padding-top: 8px; }
-    .place-order-btn { width: 100%; background: var(--blinkit-green); color: #fff; border: none; border-radius: 12px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 800; cursor: pointer; }
-    .place-order-btn small { display: block; font-size: 10px; opacity: 0.85; }
-
-    .auth-card, .modal-card { width: 100%; max-width: 430px; max-height: 86vh; display: flex; flex-direction: column; background: var(--bg-card); border-radius: 18px; padding: 18px; box-shadow: var(--shadow-md); }
-    .modal-body-scroll { overflow-y: auto; padding-top: 10px; }
-    .auth-logo { font-size: 34px; font-weight: 900; color: #F8CB46; text-align: center; }
-    .auth-logo span { color: var(--blinkit-green); }
-    .auth-card h2 { text-align: center; font-size: 18px; margin-top: 6px; }
-    .auth-sub { text-align: center; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px; }
-    .input-group { display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 10px; padding: 0 12px; margin-bottom: 10px; }
-    .prefix { font-weight: 700; margin-right: 8px; }
-    .input-group input { border: none; outline: none; height: 42px; flex: 1; background: transparent; color: var(--text-primary); }
-    .text-input { width: 100%; height: 42px; border: 1px solid var(--border-color); border-radius: 10px; padding: 0 12px; margin-bottom: 10px; background: var(--bg-card); color: var(--text-primary); }
-    .btn-primary { background: var(--blinkit-green); color: #fff; border: none; height: 44px; border-radius: 10px; font-weight: 800; font-size: 14px; cursor: pointer; }
-    .btn-ghost { background: transparent; color: var(--text-secondary); border: none; height: 38px; margin-top: 6px; font-weight: 700; cursor: pointer; }
-    .full-width { width: 100%; }
-    .otp-boxes { display: flex; gap: 10px; justify-content: center; margin: 14px 0; }
-    .otp-digit { width: 46px; height: 46px; text-align: center; font-size: 18px; font-weight: 800; border: 1px solid var(--border-color); border-radius: 10px; }
-
-    /* ADMIN PANEL */
-    .admin-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-    .admin-stat-box { background: var(--bg-soft); border: 1px solid var(--border-color); border-radius: 10px; padding: 8px; text-align: center; }
-    .admin-stat-box strong { font-size: 16px; display: block; color: var(--blinkit-green); }
-    .admin-stat-box small { font-size: 10.5px; color: var(--text-secondary); }
-    .admin-order-card { background: var(--bg-soft); border: 1px solid var(--border-color); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
-    .admin-order-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-    .status-badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; background: #FFF3CD; color: #856404; }
-    .status-badge.shipped { background: #CCE5FF; color: #004085; }
-    .status-badge.delivered { background: #D4EDDA; color: #155724; }
-    .admin-items-box { background: var(--bg-card); padding: 8px; border-radius: 8px; font-size: 12px; margin: 8px 0; border: 1px solid var(--border-color); }
-    .admin-btn-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px; }
-    .admin-status-btn { padding: 7px 8px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); font-size: 11px; font-weight: 700; cursor: pointer; }
-    .admin-status-btn.ship-btn { border-color: #006FCF; color: #006FCF; }
-    .admin-status-btn.deliv-btn { background: var(--blinkit-green); color: #fff; border-color: var(--blinkit-green); }
-
-    .padded-section { padding: 12px; }
-    .section-header-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--bg-card); }
-    .text-link { background: transparent; border: none; color: var(--blinkit-green); font-weight: 700; cursor: pointer; }
-    .print-card { margin: 12px; background: var(--bg-card); padding: 16px; border-radius: 16px; }
-    .print-hero { font-size: 18px; font-weight: 900; margin-bottom: 6px; }
-    .upload-box { display: block; border: 2px dashed var(--blinkit-green); border-radius: 12px; padding: 18px; text-align: center; margin: 12px 0; cursor: pointer; font-weight: 700; }
-    .upload-box input { display: none; }
-    .print-options label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; font-weight: 600; }
-    .print-options input, .print-options select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color); }
-    .print-total-row { display: flex; justify-content: space-between; font-size: 16px; padding: 10px 0; border-top: 1px solid var(--border-color); }
-    .footer-tagline { padding: 28px 18px; color: var(--text-secondary); }
-    .footer-tagline h1 { font-size: 28px; line-height: 1.15; opacity: 0.55; }
-    .footer-tagline p { font-size: 12px; margin-top: 6px; }
-    .toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: #1C1C1C; color: #fff; padding: 9px 16px; border-radius: 20px; font-size: 12.5px; font-weight: 700; z-index: 200; box-shadow: var(--shadow-md); }
+    .header { position: sticky; top: 0; z-index: 50; background: var(--grad); border-bottom: 1px solid var(--border); padding: 10px 12px 8px; }
+    .h-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .brand-badge { display: inline-flex; align-items: center; gap: 5px; background: #1C1C1C; color: #F8CB46; padding: 3px 9px; border-radius: 7px; font-size: 12px; font-weight: 900; letter-spacing: 0.6px; }
+    .brand-badge span { color: #4ADE80; }
+    .eta { font-size: 19px; font-weight: 900; line-height: 1.15; margin-top: 2px; }
+    .addr { font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; }
+    .h-btns { display: flex; align-items: center; gap: 7px; }
+    .pill-btn { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 6px 10px; font-size: 12.5px; font-weight: 800; color: var(--text); cursor: pointer; }
+    .icon-round { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .p-name { font-size: 12.5px; font-weight: 700; line-height: 1.25; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .p-tag { display: inline-block; font-size: 10px; background: #EEF6FF; color: #1565C0; padding: 1px 6px; border-radius: 4px; font-weight: 700; margin-bottom: 4px; }
+    .p-meta { font-size: 10.5px; color: var(--muted); margin-bottom: 5px; }
+    .p-prices { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .price { font-size: 14px; font-weight: 900; }
+    .mrp { font-size: 11px; color: var(--muted); text-decoration: line-through; }
+    .off { font-size: 10px; color: #1976D2; font-weight: 800; }
+    .load-btn { width: 100%; margin-top: 12px; padding: 10px; border-radius: 10px; border: 1px solid var(--green); background: var(--green-bg); color: var(--green); font-weight: 800; font-size: 13px; cursor: pointer; }
+    .cart-pill { position: fixed; bottom: 64px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 456px; background: var(--green); color: #fff; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; z-index: 60; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+    .bnav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 56px; background: var(--card); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; z-index: 55; }
+    .bitem { background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; font-size: 10.5px; font-weight: 700; cursor: pointer; }
+    .bitem.active { color: var(--green); }
+    .bitem span:first-child { font-size: 18px; }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 12px; }
+    .overlay.bottom { align-items: flex-end; padding: 0; }
+    .sheet { width: 100%; max-width: 480px; max-height: 90vh; background: var(--bg); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; overflow: hidden; }
+    .modal { width: 100%; max-width: 430px; max-height: 86vh; background: var(--card); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; overflow: hidden; }
+    .m-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+    .m-body { overflow-y: auto; padding-top: 10px; flex: 1; }
+    .close-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--soft); color: var(--text); font-weight: 800; cursor: pointer; }
+        .inp { width: 100%; height: 40px; border: 1px solid var(--border); border-radius: 10px; padding: 0 12px; margin-bottom: 8px; background: var(--card); color: var(--text); font-size: 13.5px; }
+    .btn-main { width: 100%; height: 42px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; }
+    .btn-sub { width: 100%; height: 36px; background: transparent; color: var(--muted); border: none; font-weight: 700; cursor: pointer; margin-top: 4px; }
+    .card-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
+    .row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+    .row:last-child { border-bottom: none; }
+    .qr-box { background: #141414; color: #fff; border: 1.5px solid #0C831F; border-radius: 14px; padding: 12px; text-align: center; margin-top: 8px; }
+    .qr-box img { width: 190px; height: 190px; object-fit: contain; border-radius: 10px; background: #222; padding: 6px; margin: 8px auto; display: block; }
+    .admin-card { background: var(--soft); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; font-size: 12.5px; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+    .abtn { padding: 7px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; }
+    .abtn.ok { background: var(--green); color: #fff; border-color: var(--green); }
+    .abtn.no { border-color: #D32F2F; color: #D32F2F; }
+    .abtn.blue { border-color: #006FCF; color: #006FCF; }
+    .stats-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
+    .stat { background: var(--soft); border: 1px solid var(--border); border-radius: 10px; padding: 8px; text-align: center; }
+    .stat strong { display: block; font-size: 15px; color: var(--green); }
+    .toast { position: fixed; top: 68px; left: 50%; transform: translateX(-50%); background: #1C1C1C; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; z-index: 200; }
   </style>
 </head>
-  <!-- LOGIN / OTP MODAL -->
-  <div id="authModal" class="modal-overlay hidden">
-    <div class="auth-card">
-      <div class="auth-logo">blink<span>it</span></div>
-      <h2>India's last minute app</h2>
-      <p class="auth-sub">Log in or Sign up to get 12-minute delivery</p>
-      <div id="authStepPhone">
-        <div class="input-group">
-          <span class="prefix">+91</span>
-          <input type="tel" id="loginPhoneInput" maxlength="10" placeholder="Enter mobile number" value="9329736019" />
-        </div>
-        <input type="text" id="loginNameInput" class="text-input" placeholder="Your Name" value="Rizwan Khan" />
-        <input type="text" id="loginAddressInput" class="text-input" placeholder="Delivery Address" value="HOME - pratappur" />
-        <button class="btn-primary full-width" onclick="Auth.sendOtp()">Continue</button>
-        <button class="btn-ghost full-width" onclick="Auth.continueAsGuest()">Continue as Guest</button>
+<body>
+    <!-- LOGIN / OTP MODAL -->
+  <div id="authModal" class="overlay hidden">
+    <div class="modal">
+      <div style="text-align:center; margin-bottom:10px;">
+        <div class="brand-badge" style="font-size:16px; padding:5px 14px;">REQUIRED <span>STORE</span></div>
+        <h3 style="margin-top:8px;">12-Minute Daily Essentials</h3>
       </div>
-      <div id="authStepOtp" class="hidden">
-        <p class="auth-sub">OTP sent to <strong id="otpPhoneDisplay">+91 9329736019</strong> (Demo OTP: <b>1234</b>)</p>
-        <div class="otp-boxes">
-          <input type="text" maxlength="1" class="otp-digit" value="1" />
-          <input type="text" maxlength="1" class="otp-digit" value="2" />
-          <input type="text" maxlength="1" class="otp-digit" value="3" />
-          <input type="text" maxlength="1" class="otp-digit" value="4" />
-        </div>
-        <button class="btn-primary full-width" onclick="Auth.verifyOtp()">Verify & Login</button>
-        <button class="btn-ghost full-width" onclick="Auth.backToPhone()">Change Number</button>
+      <div id="stepPhone">
+        <input id="inPhone" class="inp" type="tel" maxlength="10" value="9329736019" placeholder="Mobile Number" />
+        <input id="inName" class="inp" type="text" value="Rizwan Khan" placeholder="Your Name" />
+        <input id="inAddr" class="inp" type="text" value="HOME - pratappur" placeholder="Delivery Address" />
+        <button class="btn-main" onclick="Auth.sendOtp()">Send OTP</button>
+        <button class="btn-sub" onclick="Auth.guest()">Continue as Guest</button>
+      </div>
+      <div id="stepOtp" class="hidden">
+        <p style="font-size:12.5px; text-align:center; margin-bottom:8px;">Demo OTP: <b>1234</b></p>
+        <input id="inOtp" class="inp" type="text" maxlength="4" value="1234" style="text-align:center; font-weight:900; letter-spacing:6px;" />
+        <button class="btn-main" onclick="Auth.verify()">Verify & Login</button>
+        <button class="btn-sub" onclick="Auth.back()">Change Number</button>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP SHELL -->
-  <div id="appShell" class="app-shell">
-    <header id="mainHeader" class="top-header">
-      <div class="header-top-row">
-        <div class="delivery-info" onclick="App.openAddressModal()">
-          <span class="eta-label">Blinkit in</span>
-          <div class="eta-time">12 minutes</div>
-          <div class="address-line"><span id="headerAddressText">HOME - pratappur</span> ▾</div>
+  <div class="app">
+    <!-- STICKY HEADER WITH REQUIRED LOGO -->
+    <header class="header">
+      <div class="h-top">
+        <div onclick="App.openAddressModal()">
+          <div class="brand-badge">🛒 REQUIRED <span>• 12 MINS</span></div>
+          <div class="eta">Delivery in 12 minutes</div>
+          <div class="addr">📍 <span id="hdrAddr">HOME - pratappur</span> ▾</div>
         </div>
-        <div class="header-actions">
-          <button class="wallet-pill" onclick="App.openWalletModal()">
-            <span class="wallet-icon">₹</span><span id="headerWalletBalance">0</span>
-          </button>
-          <button class="profile-btn" onclick="App.switchView('profileView')" title="Profile">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="8" r="4"></circle>
-              <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
-            </svg>
-          </button>
+        <div class="h-btns">
+          <button class="pill-btn" onclick="App.openWalletModal()">₹<span id="hdrWallet">0</span></button>
+          <button class="icon-round" onclick="App.switchTab('profileView')" title="Profile & Admin">👤</button>
         </div>
       </div>
-
-      <div class="search-wrapper">
-        <div class="search-bar">
-          <span>🔍</span>
-          <input type="text" id="globalSearchInput" placeholder='Search "healthy snacks"' oninput="App.handleSearch(this.value)" />
-          <button id="clearSearchBtn" class="clear-btn hidden" onclick="App.clearSearch()">✕</button>
-          <span style="cursor:pointer;" onclick="App.voiceSearchDemo()">🎤</span>
-        </div>
+      <div class="search-box">
+        <span>🔍</span>
+        <input id="searchInp" type="text" placeholder='Search "atta, dal, milk, orange, soap..."' oninput="App.onSearch(this.value)" />
+        <button id="clearBtn" class="hidden" style="border:none; background:none; cursor:pointer;" onclick="App.clearSearch()">✕</button>
       </div>
-
-      <nav class="top-tabs">
-        <button class="tab-item active" onclick="App.selectTopTab('All', this)"><span class="tab-icon">🛍️</span><span>All</span></button>
-        <button class="tab-item" onclick="App.selectTopTab('Winter', this)"><span class="new-badge">New</span><span class="tab-icon">❄️</span><span>Winter</span></button>
-        <button class="tab-item" onclick="App.selectTopTab('Electronics', this)"><span class="tab-icon">🎧</span><span>Electronics</span></button>
-        <button class="tab-item" onclick="App.selectTopTab('Beauty', this)"><span class="tab-icon">💄</span><span>Beauty</span></button>
-        <button class="tab-item" onclick="App.selectTopTab('Gifting', this)"><span class="tab-icon">🎁</span><span>Gifting</span></button>
-        <button class="tab-item" onclick="App.selectTopTab('Decor', this)"><span class="tab-icon">🪔</span><span>Decor</span></button>
-        <button class="tab-item" onclick="App.selectTopTab('Kids', this)"><span class="tab-icon">🧸</span><span>Kids</span></button>
-      </nav>
     </header>
+        <!-- 1. HOME VIEW (DIRECT REQUIRED PRODUCTS + CATEGORIES) -->
+    <main id="homeView" class="view">
+      <div class="cat-pills" id="homeCatPills"></div>
 
-    <!-- SEARCH RESULTS -->
-    <section id="searchResultsView" class="view-section hidden">
-      <div class="section-header-bar">
-        <h3 id="searchResultCount">Showing results</h3>
-        <button class="text-link" onclick="App.clearSearch()">Back to Home</button>
-      </div>
-      <div id="searchProductGrid" class="product-grid-2col"></div>
-    </section>
-
-    <!-- HOME FEED -->
-    <main id="homeView" class="view-section active">
-      <div class="hero-carousel">
-        <div class="hero-slide" style="background: linear-gradient(135deg, #FCE7EB 0%, #F9D5DC 100%);">
-          <div class="hero-content">
-            <span class="hero-tag">Minimalist</span>
-            <h2>BARRIER RESCUE</h2>
-            <p>Dermatologist-backed winter skincare essentials</p>
-            <button class="hero-cta" onclick="App.openCategory('Beauty & Personal Care')">Shop now</button>
-          </div>
-          <div class="hero-art">🧴✨</div>
+      <div class="hero">
+        <div>
+          <span class="hero-tag">REQUIRED DAILY STORE</span>
+          <h2>Ghar Ka Saara Saman</h2>
+          <p>Atta, Dal, Sabzi, Milk & 500+ Items in 12 Mins</p>
         </div>
-        <div class="hero-slide" style="background: linear-gradient(135deg, #FFF3CD 0%, #FFE082 100%);">
-          <div class="hero-content">
-            <span class="hero-tag">MEGA CARNIVAL</span>
-            <h2>GET EXCITING REWARDS</h2>
-            <p>Shop above ₹299 & unlock instant cashback</p>
-            <button class="hero-cta" onclick="App.openCategory('Snacks & Drinks')">Take the challenge</button>
-          </div>
-          <div class="hero-art">🎁🏆</div>
-        </div>
-        <div class="hero-slide" style="background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);">
-          <div class="hero-content">
-            <span class="hero-tag">CELEBRATE</span>
-            <h2>MEN'S DAY SPECIAL</h2>
-            <p>Perfumes, grooming & electronics in 12 mins</p>
-            <button class="hero-cta" onclick="App.openCategory('Household Essentials')">Explore now</button>
-          </div>
-          <div class="hero-art">⌚🕶️</div>
-        </div>
+        <div class="hero-icon">🛍️⚡</div>
       </div>
 
-      <section class="home-section">
-        <h2 class="section-title">Bestsellers</h2>
-        <div class="bestsellers-grid" id="bestsellersGrid"></div>
-      </section>
-
-      <section class="home-section">
-        <h2 class="section-title">Bank offers</h2>
-        <div class="bank-offers-row">
-          <div class="bank-card" onclick="App.copyCoupon('AMEX750')">
-            <div class="bank-badge amex">AMEX</div>
-            <div><strong>Up to ₹750 OFF</strong><p>Eligible Amex Cards • Tap to copy</p></div>
-          </div>
-          <div class="bank-card" onclick="App.copyCoupon('AXIS150')">
-            <div class="bank-badge axis">AXIS</div>
-            <div><strong>Flat ₹150 OFF</strong><p>Above ₹1799 with Axis Cards • Tap to copy</p></div>
-          </div>
-          <div class="bank-card" onclick="App.copyCoupon('MEGA49')">
-            <div class="bank-badge upi">UPI</div>
-            <div><strong>Flat ₹49 OFF</strong><p>Above ₹149 • Code: MEGA49</p></div>
-          </div>
+      <!-- DIRECT HOME PRODUCTS GRID -->
+      <section class="sec">
+        <div class="sec-head">
+          <h3 class="sec-title" id="homeGridHeading">Most Required Daily Items</h3>
+          <span style="font-size:11.5px; color:var(--green); font-weight:800;" id="homeCountBadge">500 Items</span>
         </div>
+        <div class="prod-grid" id="homeProdGrid"></div>
+        <button id="loadMoreBtn" class="load-btn" onclick="App.loadMoreHome()">Show More Products (+20)</button>
       </section>
 
-      <section class="home-section"><h2 class="section-title">Grocery & Kitchen</h2><div class="category-grid-4" id="groceryGrid"></div></section>
-      <section class="home-section"><h2 class="section-title">Snacks & Drinks</h2><div class="category-grid-4" id="snacksGrid"></div></section>
-
-      <section class="home-section">
-        <h2 class="section-title">For your healthy munching plans</h2>
-        <p class="section-sub">Because you love guilt-free snacking</p>
-        <div class="horizontal-products" id="healthyCarousel"></div>
-        <button class="see-all-pill" onclick="App.openCategory('Grocery & Kitchen', 'Bakery & Biscuits')">See all products ▸</button>
+      <!-- SHOP BY CATEGORY -->
+      <section class="sec">
+        <div class="sec-head"><h3 class="sec-title">Shop by Category</h3></div>
+        <div class="cat-grid" id="homeCatGrid"></div>
       </section>
-
-      <section class="home-section"><h2 class="section-title">Beauty & Personal Care</h2><div class="category-grid-4" id="beautyGrid"></div></section>
-
-      <section class="home-section">
-        <h2 class="section-title">Serums for every skin type</h2>
-        <div class="horizontal-products" id="serumsCarousel"></div>
-        <button class="see-all-pill" onclick="App.openCategory('Beauty & Personal Care', 'Skin & Face')">See all products ▸</button>
-      </section>
-
-      <section class="home-section"><h2 class="section-title">Stores in spotlight</h2><div class="category-grid-4" id="spotlightGrid"></div></section>
-      <section class="home-section"><h2 class="section-title">Picks for your lifestyle</h2><div class="category-grid-4" id="lifestyleGrid"></div></section>
-
-      <section class="home-section">
-        <h2 class="section-title">Perfumes & Fragrances</h2>
-        <div class="horizontal-products" id="perfumesCarousel"></div>
-        <button class="see-all-pill" onclick="App.openCategory('Beauty & Personal Care', 'Fragrances')">See all products ▸</button>
-      </section>
-
-      <section class="home-section"><h2 class="section-title">Household Essentials</h2><div class="category-grid-4" id="householdGrid"></div></section>
-
-      <div class="footer-tagline">
-        <h1>India's last minute app ❤️</h1>
-        <p>500+ Daily Essentials • Delivered in 12 Minutes</p>
-      </div>
     </main>
 
-    <!-- CATEGORY DRILL-DOWN VIEW -->
-    <section id="categoryView" class="view-section hidden">
-      <div class="cat-top-bar">
-        <button class="icon-btn" onclick="App.switchView('homeView')">←</button>
-        <div class="cat-title-wrap"><h3 id="catViewTitle">Vegetables & Fruits</h3><small id="catViewSub">Delivering to HOME - pratappur</small></div>
-        <button class="icon-btn" onclick="App.focusSearch()">🔍</button>
+    <!-- 2. ORDER AGAIN VIEW -->
+    <section id="ordersTabView" class="view hidden">
+      <div class="sec">
+        <div class="sec-head">
+          <h3 class="sec-title">Your Orders & Quick Re-Order</h3>
+          <button class="pill-btn" onclick="App.switchTab('homeView')">← Home</button>
+        </div>
+        <div id="ordersTabBody"></div>
       </div>
-      <div class="filter-bar">
-        <button class="filter-chip" onclick="App.openFilterModal()">⚙️ Filters</button>
-        <select id="sortSelect" class="filter-chip" onchange="App.applyCategoryFilters()">
-          <option value="relevance">Sort: Relevance</option>
-          <option value="priceLow">Price: Low to High</option>
-          <option value="priceHigh">Price: High to Low</option>
-          <option value="discount">Highest Discount</option>
+    </section>
+
+    <!-- 3. PRINT STORE VIEW -->
+    <section id="printView" class="view hidden">
+      <div class="sec">
+        <div class="sec-head">
+          <h3 class="sec-title">🖨️ Blinkit / Required Print Store</h3>
+          <button class="pill-btn" onclick="App.switchTab('homeView')">← Home</button>
+        </div>
+        <p style="font-size:12.5px; color:var(--muted); margin-bottom:10px;">PDF ya Photo upload karein — 12 minute mein printout ghar par.</p>
+        <input type="file" class="inp" style="padding-top:8px;" />
+        <input id="pPages" type="number" class="inp" value="5" min="1" placeholder="Pages" oninput="App.calcPrint()" />
+        <select id="pColor" class="inp" onchange="App.calcPrint()">
+          <option value="3">Black & White (₹3/page)</option>
+          <option value="10">Color Print (₹10/page)</option>
         </select>
-        <button class="filter-chip" id="bestsellerFilterBtn" onclick="App.toggleBestsellerFilter()">⭐ Bestsellers</button>
-        <button class="filter-chip" id="under100FilterBtn" onclick="App.toggleUnder100Filter()">Under ₹100</button>
-      </div>
-      <div class="split-cat-layout">
-        <aside id="subcatSidebar" class="subcat-sidebar"></aside>
-        <div class="cat-products-area">
-          <div class="cat-count-banner" id="catItemCount">Showing products</div>
-          <div id="categoryProductGrid" class="product-grid-2col"></div>
-        </div>
+        <div class="row"><strong>Total Print Charge:</strong><strong id="pTotal">₹15</strong></div>
+        <button class="btn-main" style="margin-top:8px;" onclick="App.addPrint()">Add Printout to Cart</button>
       </div>
     </section>
-
-    <!-- ORDER AGAIN VIEW -->
-    <section id="orderAgainView" class="view-section hidden">
-      <div class="cat-top-bar"><button class="icon-btn" onclick="App.switchView('homeView')">←</button><div class="cat-title-wrap"><h3>Order Again</h3><small>Quickly re-order your frequent items</small></div></div>
-      <div id="orderAgainContent" class="padded-section"></div>
-    </section>
-
-    <!-- ALL CATEGORIES VIEW -->
-    <section id="allCategoriesView" class="view-section hidden">
-      <div class="cat-top-bar"><button class="icon-btn" onclick="App.switchView('homeView')">←</button><div class="cat-title-wrap"><h3>All Categories (500 Products)</h3><small>Tap any category to explore</small></div></div>
-      <div id="allCategoriesContainer" class="padded-section"></div>
-    </section>
-
-    <!-- PRINT STORE VIEW -->
-    <section id="printView" class="view-section hidden">
-      <div class="cat-top-bar"><button class="icon-btn" onclick="App.switchView('homeView')">←</button><div class="cat-title-wrap"><h3>Blinkit Print Store</h3><small>Documents delivered in 12 minutes</small></div></div>
-      <div class="print-card">
-        <div class="print-hero">🖨️ Instant Document Printing</div>
-        <p style="font-size:13px; color:var(--text-secondary);">Upload PDF, Resume, Notes, or ID Card for doorstep delivery.</p>
-        <label class="upload-box"><input type="file" onchange="App.handlePrintFile(this)" /><span id="printFileName">📄 Tap to select PDF / Image file</span></label>
-        <div class="print-options">
-          <label>Pages: <input type="number" id="printPages" min="1" max="200" value="5" oninput="App.updatePrintPrice()" /></label>
-          <label>Copies: <input type="number" id="printCopies" min="1" max="50" value="1" oninput="App.updatePrintPrice()" /></label>
-          <label>Color:
-            <select id="printColor" onchange="App.updatePrintPrice()">
-              <option value="bw">Black & White (₹3 / page)</option>
-              <option value="color">Full Color (₹10 / page)</option>
-            </select>
-          </label>
+        <!-- 4. PROFILE & SETTINGS / ADMIN VIEW -->
+    <section id="profileView" class="view hidden">
+      <div class="sec" style="background:var(--grad); text-align:center;">
+        <div style="display:flex; justify-content:space-between;">
+          <button class="pill-btn" onclick="App.switchTab('homeView')">← Back</button>
+          <button class="pill-btn" onclick="App.toggleTheme()">🌓 Theme</button>
         </div>
-        <div class="print-total-row"><span>Total Print Cost:</span><strong id="printTotalPrice">₹15</strong></div>
-        <button class="btn-primary full-width" onclick="App.addPrintToCart()">Add Printout to Cart</button>
+        <div style="font-size:44px; margin:8px 0;">👤</div>
+        <h3 id="profName">Rizwan Khan</h3>
+        <p style="font-size:12.5px; color:var(--muted);" id="profPhone">9329736019</p>
       </div>
-    </section>
 
-    <!-- PROFILE & SETTINGS VIEW -->
-    <section id="profileView" class="view-section hidden">
-      <div class="profile-header-bg">
-        <button class="profile-back" onclick="App.switchView('homeView')">← Profile</button>
-        <div class="profile-avatar">👤</div>
-        <h2 id="profileUserName">Your account</h2>
-        <p id="profileUserPhone">9329736019</p>
-      </div>
-      <div class="profile-body">
-        <div class="profile-quick-3">
-          <div class="p-quick-card" onclick="App.openOrdersModal()"><span>🛍️</span><strong>Your orders</strong></div>
-          <div class="p-quick-card" onclick="App.openWalletModal()"><span>💳</span><strong>Blinkit Money</strong></div>
-          <div class="p-quick-card" onclick="App.openHelpModal()"><span>💬</span><strong>Need help?</strong></div>
+      <div style="padding:10px 12px;">
+        <div class="card-box">
+          <div class="row" onclick="App.openOrdersModal()"><span>🛍️ My Orders & Live Status</span><span>›</span></div>
+          <div class="row" onclick="App.openAddressModal()"><span>📍 Saved Addresses</span><span>›</span></div>
+          <div class="row" onclick="App.openWishlistModal()"><span>❤️ My Wishlist (<b id="wishCount">0</b>)</span><span>›</span></div>
+          <div class="row" onclick="App.openWalletModal()"><span>💰 Wallet Balance</span><span>₹<b id="profWallet">0</b> ›</span></div>
         </div>
-        <div class="profile-list-card">
-          <div class="p-row" onclick="App.toggleTheme()"><span>☀️ Appearance</span><span class="theme-pill" id="themeStatusLabel">LIGHT ▾</span></div>
-        </div>
-        <h4 class="p-group-title">Your information</h4>
-        <div class="profile-list-card">
-          <div class="p-row" onclick="App.openAddressModal()"><span>📍 Address book</span><span>›</span></div>
-          <div class="p-row" onclick="App.openWishlistModal()"><span>❤️ Your wishlist (<b id="wishlistCountBadge">0</b>)</span><span>›</span></div>
-          <div class="p-row" onclick="App.openGiftCardModal()"><span>🎁 Claim Gift card (Try: BLINKIT100)</span><span>›</span></div>
-        </div>
-        <h4 class="p-group-title">Settings & Admin</h4>
-        <div class="profile-list-card">
-          <div class="p-row" style="color:#0C831F;" onclick="App.openAdminKeyPrompt()"><span>⚙️ Settings & Admin Panel (Key: 2411)</span><span>🔐 ›</span></div>
-          <div class="p-row" onclick="App.openSimpleInfo('About Blinkit Store', '500+ Daily Essentials • QR Scanner Checkout • Admin Order Control')"><span>ℹ️ About us</span><span>›</span></div>
-          <div class="p-row logout-row" onclick="Auth.logout()"><span>🚪 Log out</span><span>›</span></div>
-        </div>
-        <div class="app-version-foot">blinkit<br><small>v18.39.1</small></div>
-      </div>
-    </section>
 
-    <!-- FLOATING GREEN VIEW CART PILL -->
-    <div id="floatingCartBar" class="floating-cart-pill hidden" onclick="App.openCartDrawer()">
-      <div class="fc-left">
-        <div id="fcThumb" class="fc-thumb">🛒</div>
-        <div>
-          <div class="fc-title">View cart</div>
-          <div class="fc-sub"><span id="fcCount">1 item</span> • <strong id="fcTotal">₹0</strong></div>
-        </div>
-      </div>
-      <div class="fc-arrow">›</div>
-    </div>
-
-    <!-- FIXED 5-TAB BOTTOM NAV -->
-    <nav class="bottom-nav">
-      <button class="bnav-item active" data-view="homeView" onclick="App.switchView('homeView')"><span class="bnav-icon">🏠</span><span>Home</span></button>
-      <button class="bnav-item" data-view="orderAgainView" onclick="App.switchView('orderAgainView')"><span class="bnav-icon">🛍️</span><span>Order Again</span></button>
-      <button class="bnav-item" data-view="allCategoriesView" onclick="App.switchView('allCategoriesView')"><span class="bnav-icon">⊞</span><span>Categories</span></button>
-      <button class="bnav-item" data-view="printView" onclick="App.switchView('printView')"><span class="bnav-icon">🖨️</span><span>Print</span></button>
-      <button class="bnav-zomato" onclick="App.openZomatoModal()">zomato</button>
-    </nav>
-  </div>
-
-  <!-- SLIDE-UP CART & QR SCANNER CHECKOUT DRAWER -->
-  <div id="cartDrawer" class="drawer-overlay hidden">
-    <div class="drawer-sheet">
-      <div class="drawer-header">
-        <div><h3>Delivery in 12 minutes</h3><small id="cartItemCountLabel">Shipment of 1 item</small></div>
-        <button class="close-circle" onclick="App.closeCartDrawer()">✕</button>
-      </div>
-      <div class="drawer-body">
-        <div class="free-delivery-bar" id="freeDeliveryProgress">Add ₹99 more for FREE delivery</div>
-        <div id="cartItemsContainer" class="cart-items-list"></div>
-        <div class="coupon-box">
-          <input type="text" id="couponInput" placeholder="Coupon (AMEX750, AXIS150, MEGA49)" />
-          <button onclick="App.applyCoupon()">Apply</button>
-        </div>
-        <div class="bill-card">
-          <h4>Bill details</h4>
-          <div class="bill-row"><span>Items total</span><span id="billItemTotal">₹0</span></div>
-          <div class="bill-row"><span>Delivery charge</span><span id="billDelivery">₹25</span></div>
-          <div class="bill-row"><span>Handling charge</span><span>₹2</span></div>
-          <div class="bill-row discount-row hidden" id="billDiscountRow"><span>Coupon discount</span><span id="billDiscount">-₹0</span></div>
-          <div class="bill-row grand-total"><span>Grand total</span><span id="billGrandTotal">₹0</span></div>
-        </div>
-        <div class="payment-card">
-          <h4 style="margin-bottom:8px;">Payment Mode</h4>
-          <select id="paymentMethodSelect" class="text-input" onchange="App.toggleQrBox()">
-            <option value="QR_SCANNER">📲 Scan & Pay (UPI QR Scanner)</option>
-            <option value="WALLET">💰 Blinkit Money Wallet</option>
-            <option value="COD">💵 Cash on Delivery</option>
-          </select>
-          <div id="qrScannerPayBox" class="qr-pay-box">
-            <div style="font-size:12px; font-weight:800; color:#F8CB46;">SCAN & PAY USING ANY UPI APP</div>
-            <div style="font-size:13px; margin-top:4px;">Payable Amount: <strong id="qrPayAmountText" style="font-size:16px; color:#4ADE80;">₹0</strong></div>
-            <div class="qr-img-wrap">
-              <img src="5846.png" alt="Payment QR Scanner" onerror="this.alt='Upload 5846.png in GitHub repo';" />
-            </div>
-            <div style="font-size:11px; color:#BBBBBB;">GPay • PhonePe • Paytm • FamPay • BHIM UPI</div>
-            <input type="text" id="qrUtrInput" maxlength="20" class="qr-utr-input" placeholder="Enter 12-digit UTR / Transaction ID" />
+        <div class="card-box">
+          <div class="row" style="color:var(--green); font-weight:800;" onclick="App.openAdminLogin()">
+            <span>⚙️ Settings & Admin Panel (Key: 2411)</span><span>🔐 ›</span>
+          </div>
+          <div class="row" style="color:#D32F2F; font-weight:700;" onclick="Auth.logout()">
+            <span>🚪 Log Out</span><span>›</span>
           </div>
         </div>
       </div>
-      <div class="drawer-footer">
-        <button class="place-order-btn" onclick="App.placeOrder()">
-          <div><strong id="checkoutBtnTotal">₹0</strong><small>TOTAL</small></div>
-          <span>Place Order ▸</span>
+    </section>
+
+    <!-- FLOATING GREEN VIEW CART BAR -->
+    <div id="cartBar" class="cart-pill hidden" onclick="App.openCart()">
+      <div>
+        <div style="font-size:13.5px; font-weight:900;">🛒 View Cart (<span id="barCount">0</span> items)</div>
+        <div style="font-size:11.5px; opacity:0.95;">Total: <strong id="barTotal">₹0</strong> • 12 mins delivery</div>
+      </div>
+      <div style="font-size:16px; font-weight:900;">Checkout ▸</div>
+    </div>
+
+    <!-- BOTTOM 4-TAB NAVIGATION -->
+    <nav class="bnav">
+      <button class="bitem active" data-t="homeView" onclick="App.switchTab('homeView')"><span>🏠</span><span>Home</span></button>
+      <button class="bitem" data-t="ordersTabView" onclick="App.switchTab('ordersTabView')"><span>🛍️</span><span>Orders</span></button>
+      <button class="bitem" data-t="printView" onclick="App.switchTab('printView')"><span>🖨️</span><span>Print</span></button>
+      <button class="bitem" data-t="profileView" onclick="App.switchTab('profileView')"><span>⚙️</span><span>Account/Admin</span></button>
+    </nav>
+  </div>
+    <!-- CART & QR SCANNER CHECKOUT DRAWER -->
+  <div id="cartDrawer" class="overlay bottom hidden">
+    <div class="sheet">
+      <div class="m-head" style="padding:12px 14px; background:var(--card);">
+        <div><strong>Delivery in 12 minutes</strong><br><small id="cartSubTxt">Your items</small></div>
+        <button class="close-btn" onclick="App.closeCart()">✕</button>
+      </div>
+      <div class="m-body" style="padding:12px;">
+        <div id="freeBar" style="background:#E8F5E9; color:#1B5E20; padding:8px 10px; border-radius:10px; font-size:12px; font-weight:700; margin-bottom:10px;">
+          Add ₹199 for FREE delivery
+        </div>
+        <div id="cartItemsList" class="card-box"></div>
+        <div style="display:flex; gap:6px; margin-bottom:10px;">
+          <input id="coupInp" class="inp" style="margin:0; flex:1;" placeholder="Coupon: MEGA49 or AXIS150" />
+          <button class="btn-add" style="padding:0 16px;" onclick="App.applyCoupon()">Apply</button>
+        </div>
+        <div class="card-box">
+          <div class="row"><span>Items Total</span><span id="bItem">₹0</span></div>
+          <div class="row"><span>Delivery Fee</span><span id="bDel">₹25</span></div>
+          <div class="row"><span>Handling Charge</span><span>₹2</span></div>
+          <div class="row hidden" id="bDiscRow" style="color:var(--green); font-weight:800;"><span>Coupon Discount</span><span id="bDisc">-₹0</span></div>
+          <div class="row" style="font-weight:900; font-size:15px;"><span>Grand Total</span><span id="bGrand">₹0</span></div>
+        </div>
+        <div class="card-box">
+          <strong style="font-size:13px; display:block; margin-bottom:6px;">Payment Mode</strong>
+          <select id="paySelect" class="inp" onchange="App.toggleQr()">
+            <option value="QR_SCANNER">📲 Scan & Pay (UPI QR Scanner)</option>
+            <option value="WALLET">💰 Store Wallet</option>
+            <option value="COD">💵 Cash on Delivery</option>
+          </select>
+          <div id="qrBox" class="qr-box">
+            <div style="font-size:11.5px; font-weight:800; color:#F8CB46;">SCAN & PAY USING ANY UPI APP</div>
+            <div style="font-size:13px; margin-top:3px;">Payable: <strong id="qrAmt" style="color:#4ADE80; font-size:16px;">₹0</strong></div>
+            <img src="5846.png" alt="UPI QR Scanner" onerror="this.alt='Upload 5846.png in GitHub repo';" />
+            <div style="font-size:11px; color:#BBB;">GPay • PhonePe • Paytm • FamPay • BHIM</div>
+            <input id="utrInp" class="inp" style="margin-top:8px; margin-bottom:0; background:#222; color:#fff; border-color:#444;" placeholder="Enter 12-digit UTR / Ref No." />
+          </div>
+        </div>
+      </div>
+      <div style="padding:10px 14px; background:var(--card); border-top:1px solid var(--border);">
+        <button class="btn-main" style="display:flex; justify-content:space-between; align-items:center; padding:0 16px;" onclick="App.placeOrder()">
+          <span id="payBtnTot">₹0</span><span>Place Order ▸</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- MODALS & TOAST -->
-  <div id="variantModal" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-head"><h3 id="variantModalTitle">Select Pack Size</h3><button class="close-circle" onclick="App.closeModal('variantModal')">✕</button></div>
-      <div id="variantOptionsList" class="modal-body-scroll"></div>
+  <!-- GENERIC MODAL & TOAST -->
+  <div id="gModal" class="overlay hidden">
+    <div class="modal">
+      <div class="m-head"><strong id="gTitle">Details</strong><button class="close-btn" onclick="App.closeModal()">✕</button></div>
+      <div id="gBody" class="m-body"></div>
     </div>
-  </div>
-
-  <div id="genericModal" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-h
-              <div class="modal-head"><h3 id="genericModalTitle">Details</h3><button class="close-circle" onclick="App.closeModal('genericModal')">✕</button></div>
-      <div id="genericModalBody" class="modal-body-scroll"></div>
     </div>
-  </div>
-
-  <div id="toastBanner" class="toast hidden"></div>
+  <div id="toast" class="toast hidden"></div>
 
   <script>
-    const CATEGORY_CONFIG = [
-      {
-        name: "Grocery & Kitchen",
-        icon: "🥦",
-        subcategories: [
-          { name: "Vegetables & Fruits", icon: "🍊" },
-          { name: "Atta, Rice & Dal", icon: "🌾" },
-          { name: "Oil, Ghee & Masala", icon: "🫙" },
-          { name: "Dairy, Bread & Eggs", icon: "🥛" },
-          { name: "Bakery & Biscuits", icon: "🍪" },
-          { name: "Dry Fruits & Cereals", icon: "🥜" },
-          { name: "Chicken, Meat & Fish", icon: "🍗" },
-          { name: "Kitchenware & Appliances", icon: "🍳" }
-        ]
-      },
-      {
-        name: "Snacks & Drinks",
-        icon: "🍿",
-        subcategories: [
-          { name: "Chips & Namkeen", icon: "🥔" },
-          { name: "Sweets & Chocolates", icon: "🍫" },
-          { name: "Drinks & Juices", icon: "🥤" },
-          { name: "Tea, Coffee & Health Drinks", icon: "☕" },
-          { name: "Instant Food", icon: "🍜" },
-          { name: "Sauces & Spreads", icon: "🍯" },
-          { name: "Paan Corner", icon: "🌿" },
-          { name: "Ice Creams & More", icon: "🍨" }
-        ]
-      },
-      {
-        name: "Beauty & Personal Care",
-        icon: "🧴",
-        subcategories: [
-          { name: "Skin & Face", icon: "✨" },
-          { name: "Fragrances", icon: "🌸" },
-          { name: "Bath & Body", icon: "🧼" },
-          { name: "Hair", icon: "💇" },
-          { name: "Beauty & Cosmetics", icon: "💄" },
-          { name: "Feminine Hygiene", icon: "🩺" },
-          { name: "Baby Care", icon: "👶" },
-          { name: "Health & Pharma", icon: "💊" }
-        ]
-      },
-      {
-        name: "Household Essentials",
-        icon: "🏠",
-        subcategories: [
-          { name: "Home & Lifestyle", icon: "🛋️" },
-          { name: "Cleaners & Repellents", icon: "🧹" },
-          { name: "Electronics", icon: "🎧" },
-          { name: "Stationery & Games", icon: "📚" }
-        ]
-      }
+    const $ = (...ids) => { for (const id of ids) { const e = document.getElementById(id); if (e) return e; } return null; };
+    const setTxt = (ids, v) => { const e = $(...[].concat(ids)); if (e) e.textContent = v; };
+    const setHtml = (ids, v) => { const e = $(...[].concat(ids)); if (e) e.innerHTML = v; };
+
+    const CATS = [
+      { name: "All", icon: "🛍️" },
+      { name: "Atta, Rice & Dal", icon: "🌾" },
+      { name: "Vegetables & Fruits", icon: "🍊" },
+      { name: "Dairy & Bread", icon: "🥛" },
+      { name: "Oil & Masala", icon: "🫙" },
+      { name: "Snacks & Biscuits", icon: "🍪" },
+      { name: "Cold Drinks & Tea", icon: "🥤" },
+      { name: "Bath & Personal", icon: "🧼" },
+      { name: "Home & Cleaners", icon: "🧹" }
     ];
 
-    const CURATED_BASE_ITEMS = [
-      { name: "Nagpur Orange", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "500 g", price: 59, mrp: 67, icon: "🍊", tag: "Vitamin C", stock: 4, isBestseller: true },
-      { name: "Apple Ber", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "250 g", price: 42, mrp: 49, icon: "🍏", tag: "Sweet & Crisp", stock: 3, isBestseller: true },
-      { name: "Custard Apple (Sitaphal)", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "300 g", price: 96, mrp: 111, icon: "🍈", tag: "2 pcs", stock: 6, isBestseller: true },
-      { name: "Pomegranate - 1 piece", brand: "Fresh Farm", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "175 g", price: 59, mrp: 69, icon: "🍎", tag: "Rich Iron", stock: 8, isBestseller: true },
-      { name: "Red Potato (Aloo)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "1 kg", price: 29, mrp: 35, icon: "🥔", tag: "30 recipes", stock: 15, isBestseller: true },
-      { name: "Fresh Lemon (Nimbu)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "250 g", price: 35, mrp: 45, icon: "🍋", tag: "Juicy", stock: 12, isBestseller: false },
-      { name: "Green Cucumber (Kheera)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "500 g", price: 27, mrp: 31, icon: "🥒", tag: "Hydrating", stock: 9, isBestseller: true },
-      { name: "Baby Onion (Sirka Pyaz)", brand: "Farm Direct", category: "Grocery & Kitchen", subCategory: "Vegetables & Fruits", weight: "250 g", price: 17, mrp: 20, icon: "🧅", tag: "30 recipes", stock: 11, isBestseller: false },
-      { name: "Britannia NutriChoice Digestive Zero", brand: "Britannia", category: "Grocery & Kitchen", subCategory: "Bakery & Biscuits", weight: "100 g", price: 25, mrp: 30, icon: "🍪", tag: "No Maida", stock: 14, isBestseller: true },
-      { name: "Britannia NutriChoice Sugar Free Crackers", brand: "Britannia", category: "Grocery & Kitchen", subCategory: "Bakery & Biscuits", weight: "300 g", price: 85, mrp: 95, icon: "🍘", tag: "No Added Sugar", stock: 10, isBestseller: true },
-      { name: "Britannia NutriChoice Oats Milk Biscuits", brand: "Britannia", category: "Grocery & Kitchen", subCategory: "Bakery & Biscuits", weight: "150 g", price: 45, mrp: 50, icon: "🍪", tag: "No Maida", stock: 7, isBestseller: true },
-      { name: "The Derma Co 10% Niacinamide Face Serum", brand: "The Derma Co", category: "Beauty & Personal Care", subCategory: "Skin & Face", weight: "10 ml", price: 232, mrp: 249, icon: "🧴", tag: "Acne Control", stock: 4, isBestseller: true },
-      { name: "Pilgrim 10% Vitamin C Face Serum", brand: "Pilgrim", category: "Beauty & Personal Care", subCategory: "Skin & Face", weight: "10 ml", price: 229, mrp: 275, icon: "💧", tag: "Vitamin C", stock: 12, isBestseller: true },
-      { name: "Minimalist 10% Vitamin C Brightening Serum", brand: "Minimalist", category: "Beauty & Personal Care", subCategory: "Skin & Face", weight: "10 ml", price: 270, mrp: 299, icon: "🧪", tag: "Vitamin C", stock: 3, isBestseller: true },
-      { name: "Bella Vita Luxury Fruity Woody EDP", brand: "Bella Vita", category: "Beauty & Personal Care", subCategory: "Fragrances", weight: "100 ml", price: 499, mrp: 849, icon: "🌸", tag: "Long Lasting", stock: 5, isBestseller: true },
-      { name: "Ajmal Oud Spicy Woody Perfume", brand: "Ajmal", category: "Beauty & Personal Care", subCategory: "Fragrances", weight: "100 ml", price: 699, mrp: 999, icon: "🕌", tag: "Oud Edition", stock: 2, isBestseller: true },
-      { name: "CR7 Cristiano Ronaldo Oriental Fragrance", brand: "CR7", category: "Beauty & Personal Care", subCategory: "Fragrances", weight: "30 ml", price: 1199, mrp: 1499, icon: "🏆", tag: "Oriental", stock: 1, isBestseller: true }
+    const BASE_ITEMS = [
+      { name: "Aashirvaad Shudh Chakki Atta", cat: "Atta, Rice & Dal", wt: "5 kg", price: 245, mrp: 285, icon: "🌾", tag: "Most Required", stock: 15 },
+      { name: "Tata Sampann Unpolished Toor Dal", cat: "Atta, Rice & Dal", wt: "1 kg", price: 168, mrp: 199, icon: "🫘", tag: "Daily Essential", stock: 12 },
+      { name: "India Gate Classic Basmati Rice", cat: "Atta, Rice & Dal", wt: "1 kg", price: 135, mrp: 165, icon: "🍚", tag: "Bestseller", stock: 10 },
+      { name: "Amul Taaza Toned Fresh Milk", cat: "Dairy & Bread", wt: "1 L", price: 56, mrp: 58, icon: "🥛", tag: "Fresh Daily", stock: 20 },
+      { name: "Harvest Gold Whole Wheat Bread", cat: "Dairy & Bread", wt: "400 g", price: 50, mrp: 55, icon: "🍞", tag: "Zero Maida", stock: 14 },
+      { name: "Farm Fresh White Eggs (6 pcs)", cat: "Dairy & Bread", wt: "6 pcs", price: 54, mrp: 65, icon: "🥚", tag: "High Protein", stock: 18 },
+      { name: "Fortune Sunlite Refined Sunflower Oil", cat: "Oil & Masala", wt: "1 L", price: 142, mrp: 165, icon: "🫙", tag: "Daily Use", stock: 16 },
+      { name: "Amul Pure Desi Cow Ghee", cat: "Oil & Masala", wt: "500 ml", price: 315, mrp: 345, icon: "🧈", tag: "Pure Ghee", stock: 9 },
+      { name: "Tata Iodized Crystal Salt", cat: "Oil & Masala", wt: "1 kg", price: 28, mrp: 30, icon: "🧂", tag: "Essential", stock: 25 },
+      { name: "Nagpur Fresh Oranges", cat: "Vegetables & Fruits", wt: "500 g", price: 59, mrp: 67, icon: "🍊", tag: "Vitamin C", stock: 6 },
+      { name: "Red Potato (Aloo)", cat: "Vegetables & Fruits", wt: "1 kg", price: 29, mrp: 35, icon: "🥔", tag: "Fresh Farm", stock: 22 },
+      { name: "Fresh Onion (Pyaz)", cat: "Vegetables & Fruits", wt: "1 kg", price: 38, mrp: 45, icon: "🧅", tag: "Daily Need", stock: 19 },
+      { name: "Britannia NutriChoice Digestive", cat: "Snacks & Biscuits", wt: "100 g", price: 25, mrp: 30, icon: "🍪", tag: "No Maida", stock: 14 },
+      { name: "Lay's India's Magic Masala Chips", cat: "Snacks & Biscuits", wt: "50 g", price: 20, mrp: 20, icon: "🥔", tag: "Crispy", stock: 30 },
+      { name: "Tata Tea Gold Leaf Pack", cat: "Cold Drinks & Tea", wt: "250 g", price: 145, mrp: 165, icon: "☕", tag: "Morning Tea", stock: 11 },
+      { name: "Coca-Cola Original Soft Drink", cat: "Cold Drinks & Tea", wt: "750 ml", price: 40, mrp: 45, icon: "🥤", tag: "Chilled", stock: 17 },
+      { name: "Dove Cream Beauty Bathing Bar", cat: "Bath & Personal", wt: "100 g", price: 65, mrp: 75, icon: "🧼", tag: "Moisturizing", stock: 13 },
+      { name: "Harpic Power Plus Toilet Cleaner", cat: "Home & Cleaners", wt: "500 ml", price: 105, mrp: 118, icon: "🧹", tag: "99.9% Germs", stock: 8 }
     ];
-        const GENERATOR_TEMPLATES = [
-      { prefix: "Aashirvaad Shudh Chakki Atta", brand: "Aashirvaad", cat: "Grocery & Kitchen", sub: "Atta, Rice & Dal", icon: "🌾", basePrice: 245, tag: "100% Whole Wheat" },
-      { prefix: "India Gate Basmati Rice Classic", brand: "India Gate", cat: "Grocery & Kitchen", sub: "Atta, Rice & Dal", icon: "🍚", basePrice: 185, tag: "Aged Grain" },
-      { prefix: "Tata Sampann Unpolished Toor Dal", brand: "Tata Sampann", cat: "Grocery & Kitchen", sub: "Atta, Rice & Dal", icon: "🫘", basePrice: 165, tag: "High Protein" },
-      { prefix: "Fortune Sunlite Refined Sunflower Oil", brand: "Fortune", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icon: "🫙", basePrice: 142, tag: "Light & Healthy" },
-      { prefix: "Amul Pure Cow Ghee Pouch", brand: "Amul", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icon: "🧈", basePrice: 315, tag: "Pure Desi Ghee" },
-      { prefix: "Everest Kashmiri Lal Chilli Powder", brand: "Everest", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icon: "🌶️", basePrice: 88, tag: "Rich Color" },
-      { prefix: "Amul Taaza Toned Fresh Milk", brand: "Amul", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icon: "🥛", basePrice: 56, tag: "Fresh Daily" },
-      { prefix: "Harvest Gold 100% Whole Wheat Bread", brand: "Harvest Gold", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icon: "🍞", basePrice: 50, tag: "Zero Maida" },
-      { prefix: "Farm Fresh White Protein Eggs", brand: "Eggoz", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icon: "🥚", basePrice: 89, tag: "6 pcs Pack" },
-      { prefix: "Happilo Premium California Almonds", brand: "Happilo", cat: "Grocery & Kitchen", sub: "Dry Fruits & Cereals", icon: "🥜", basePrice: 249, tag: "Crunchy" },
-      { prefix: "Kellogg's Corn Flakes Original", brand: "Kellogg's", cat: "Grocery & Kitchen", sub: "Dry Fruits & Cereals", icon: "🥣", basePrice: 175, tag: "Iron & B Vitamins" },
-      { prefix: "Licious Fresh Chicken Curry Cut", brand: "Licious", cat: "Grocery & Kitchen", sub: "Chicken, Meat & Fish", icon: "🍗", basePrice: 215, tag: "Antibiotic Free" },
-      { prefix: "Prestige Non-Stick Fry Pan", brand: "Prestige", cat: "Grocery & Kitchen", sub: "Kitchenware & Appliances", icon: "🍳", basePrice: 649, tag: "Induction Base" },
-      { prefix: "Lay's India's Magic Masala Chips", brand: "Lay's", cat: "Snacks & Drinks", sub: "Chips & Namkeen", icon: "🥔", basePrice: 20, tag: "Bestseller" },
-      { prefix: "Haldiram's Aloo Bhujia Namkeen", brand: "Haldiram's", cat: "Snacks & Drinks", sub: "Chips & Namkeen", icon: "🥨", basePrice: 55, tag: "Crispy" },
-      { prefix: "Cadbury Dairy Milk Silk Chocolate", brand: "Cadbury", cat: "Snacks & Drinks", sub: "Sweets & Chocolates", icon: "🍫", basePrice: 85, tag: "Creamy" },
-      { prefix: "Coca-Cola Original Taste Soft Drink", brand: "Coca-Cola", cat: "Snacks & Drinks", sub: "Drinks & Juices", icon: "🥤", basePrice: 40, tag: "Chilled" },
-      { prefix: "Real Fruit Power Mixed Fruit Juice", brand: "Real", cat: "Snacks & Drinks", sub: "Drinks & Juices", icon: "🧃", basePrice: 115, tag: "No Preservatives" },
-      { prefix: "Tata Tea Gold Leaf Tea Pack", brand: "Tata Tea", cat: "Snacks & Drinks", sub: "Tea, Coffee & Health Drinks", icon: "☕", basePrice: 145, tag: "Rich Aroma" },
-      { prefix: "Maggi 2-Minute Masala Noodles", brand: "Nestle", cat: "Snacks & Drinks", sub: "Instant Food", icon: "🍜", basePrice: 56, tag: "4-Pack" },
-      { prefix: "Kissan Fresh Tomato Ketchup", brand: "Kissan", cat: "Snacks & Drinks", sub: "Sauces & Spreads", icon: "🍅", basePrice: 99, tag: "100% Real Tomatoes" },
-      { prefix: "Kwality Wall's Belgian Chocolate Tub", brand: "Kwality Wall's", cat: "Snacks & Drinks", sub: "Ice Creams & More", icon: "🍨", basePrice: 199, tag: "Frozen Treat" },
-      { prefix: "Dove Cream Beauty Bathing Bar", brand: "Dove", cat: "Beauty & Personal Care", sub: "Bath & Body", icon: "🧼", basePrice: 65, tag: "1/4 Moisturizing" },
-      { prefix: "L'Oreal Paris Total Repair 5 Shampoo", brand: "L'Oreal", cat: "Beauty & Personal Care", sub: "Hair", icon: "🧴", basePrice: 195, tag: "Keratin Smooth" },
-      { prefix: "boAt BassHeads Wired Earphones", brand: "boAt", cat: "Household Essentials", sub: "Electronics", icon: "🎧", basePrice: 399, tag: "1 Yr Warranty" },
-      { prefix: "Harpic Power Plus Disinfectant Cleaner", brand: "Harpic", cat: "Household Essentials", sub: "Cleaners & Repellents", icon: "🧹", basePrice: 105, tag: "Kills 99.9% Germs" },
-      { prefix: "Classmate Pulse Spiral Notebook", brand: "Classmate", cat: "Household Essentials", sub: "Stationery & Games", icon: "📓", basePrice: 75, tag: "300 Pages" }
-    ];
-
-    const VARIANTS_PACK = ["100 g", "250 g", "500 g", "1 kg", "Pack of 2", "Family Pack", "Value Saver", "Combo Pack", "Mini Pack", "XL Pack", "Classic", "Masala", "Zero Sugar", "Premium", "Organic", "Fresh", "Gold Edition", "Daily Pack"];
 
     const PRODUCTS_DB = (function () {
+      const saved = localStorage.getItem("req_products_v1");
+      if (saved) { try { const p = JSON.parse(saved); if (p.length) return p; } catch (e) {} }
+      const packs = ["250 g", "500 g", "1 kg", "2 kg", "Pack of 2", "Family Pack", "Value Pack", "Combo", "Mini Pack", "Jumbo Pack", "Classic", "Premium", "Organic", "Daily Pack", "Saver Pack", "Gold", "Fresh", "Super Saver", "Lite", "Special", "Regular", "XL Pack", "Smart Pack", "Eco Pack", "Deluxe", "Mega Pack", "Fresh Batch", "Home Pack"];
       const list = [];
-      let idCounter = 1;
-      CURATED_BASE_ITEMS.forEach(item => {
-        const discountPct = Math.round(((item.mrp - item.price) / item.mrp) * 100);
-        list.push({
-          id: idCounter++, name: item.name, brand: item.brand, category: item.category, subCategory: item.subCategory,
-          weight: item.weight, price: item.price, mrp: item.mrp, discountPct, icon: item.icon, tag: item.tag,
-          rating: (4.3 + (idCounter % 6) * 0.1).toFixed(1), reviews: 120 + idCounter * 17, eta: "12 mins",
-          stock: item.stock, isBestseller: item.isBestseller,
-          variants: [{ label: item.weight, price: item.price, mrp: item.mrp }, { label: "2x Value Pack", price: Math.round(item.price * 1.85), mrp: item.mrp * 2 }]
-        });
-      });
-      let idx = 0;
-      while (list.length < 500) {
-        const tpl = GENERATOR_TEMPLATES[idx % GENERATOR_TEMPLATES.length];
-        const variantLabel = VARIANTS_PACK[Math.floor(idx / GENERATOR_TEMPLATES.length) % VARIANTS_PACK.length];
-        const price = Math.round(tpl.basePrice * (1 + ((idx % 4) * 0.25)));
-        const mrp = Math.round(price * 1.18);
-        list.push({
-          id: idCounter++, name: `${tpl.prefix} (${variantLabel})`, brand: tpl.brand, category: tpl.cat, subCategory: tpl.sub,
-          weight: variantLabel, price, mrp, discountPct: Math.round(((mrp - price) / mrp) * 100),
-          icon: tpl.icon, tag: tpl.tag, rating: (4.1 + (idx % 8) * 0.1).toFixed(1), reviews: 45 + (idx * 13) % 900,
-          eta: "12 mins", stock: (idx % 12) + 2, isBestseller: idx % 3 === 0,
-          variants: [{ label: variantLabel, price, mrp }, { label: "Double Saver Pack", price: Math.round(price * 1.8), mrp: mrp * 2 }]
-        });
-        idx++;
-      }
-      return list;
-    })();
+      let id = 1;
+      for (let r = 0; r < 28; r++) {
+        for (let i = 0; i < BASE_ITEMS.length && list.length < 500; i++) {
         const Auth = {
-      STORAGE_KEY: "blinkit_clone_user_v2",
-      GLOBAL_ORDERS_KEY: "blinkit_all_orders_admin_v2",
-
+      UKEY: "req_user_v1",
+      OKEY: "req_orders_v1",
       getUser() {
-        const raw = localStorage.getItem(this.STORAGE_KEY);
+        const raw = localStorage.getItem(this.UKEY);
         if (!raw) {
-          const def = {
-            isLoggedIn: true, name: "Rizwan Khan", phone: "9329736019",
-            activeAddress: "HOME - pratappur", addresses: ["HOME - pratappur", "OFFICE - Korba Main Market"],
-            walletBalance: 0, wishlist: [1, 12, 15], orders: [], claimedGiftCodes: []
-          };
+          const def = { logged: true, name: "Rizwan Khan", phone: "9329736019", addr: "HOME - pratappur", addrs: ["HOME - pratappur", "OFFICE - Korba Market"], wallet: 0, wish: [1, 4, 10], orders: [] };
           this.saveUser(def);
           return def;
         }
         return JSON.parse(raw);
       },
-
-      saveUser(u) {
-        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(u));
-        this.syncUI();
-      },
-
-      getAllGlobalOrders() {
-        const raw = localStorage.getItem(this.GLOBAL_ORDERS_KEY);
+      saveUser(u) { localStorage.setItem(this.UKEY, JSON.stringify(u)); this.sync(); },
+      getOrders() {
+        const raw = localStorage.getItem(this.OKEY);
         if (!raw) {
-          const sample = [{
-            id: "BLK849210", customerName: "Aman Verma", customerPhone: "9826100421",
-            address: "Ward 4 - Pratappur Main Road", date: new Date().toLocaleString(),
-            items: [{ id: 1, name: "Nagpur Orange", weight: "500 g", price: 59, qty: 2, icon: "🍊" }],
-            total: 145, payment: "QR Scanner (UTR: 432981204912)", paymentStatus: "Pending Verification", status: "Order Placed"
-          }];
-          localStorage.setItem(this.GLOBAL_ORDERS_KEY, JSON.stringify(sample));
-          return sample;
+          const demo = [{ id: "REQ84921", name: "Aman Verma", phone: "9826100421", addr: "Pratappur Main Road", date: new Date().toLocaleString(), items: [{ name: "Aashirvaad Shudh Chakki Atta", wt: "5 kg", price: 245, qty: 1, icon: "🌾" }], total: 247, pay: "QR Scanner (UTR: 4329812049)", payStatus: "Pending Verification", status: "Order Placed" }];
+          localStorage.setItem(this.OKEY, JSON.stringify(demo));
+          return demo;
         }
         return JSON.parse(raw);
       },
-
-      saveAllGlobalOrders(list) { localStorage.setItem(this.GLOBAL_ORDERS_KEY, JSON.stringify(list)); },
-
+      saveOrders(list) { localStorage.setItem(this.OKEY, JSON.stringify(list)); },
       sendOtp() {
-        const phone = document.getElementById("loginPhoneInput").value.trim();
-        if (phone.length < 10) return App.showToast("Enter 10-digit mobile number");
-        document.getElementById("otpPhoneDisplay").textContent = `+91 ${phone}`;
-        document.getElementById("authStepPhone").classList.add("hidden");
-        document.getElementById("authStepOtp").classList.remove("hidden");
-        App.showToast("OTP sent! Demo OTP: 1234");
+        const ph = $("inPhone");
+        if (ph && ph.value.trim().length < 10) return App.toast("Enter 10-digit number");
+        $("stepPhone")?.classList.add("hidden");
+        $("stepOtp")?.classList.remove("hidden");
+        App.toast("OTP sent: 1234");
       },
-
-      backToPhone() {
-        document.getElementById("authStepOtp").classList.add("hidden");
-        document.getElementById("authStepPhone").classList.remove("hidden");
-      },
-
-      verifyOtp() {
+      back() { $("stepOtp")?.classList.add("hidden"); $("stepPhone")?.classList.remove("hidden"); },
+      verify() {
         const u = this.getUser();
-        u.isLoggedIn = true;
-        u.phone = document.getElementById("loginPhoneInput").value.trim() || "9329736019";
-        u.name = document.getElementById("loginNameInput").value.trim() || "Rizwan Khan";
-        u.activeAddress = document.getElementById("loginAddressInput").value.trim() || "HOME - pratappur";
-        if (!u.addresses.includes(u.activeAddress)) u.addresses.unshift(u.activeAddress);
+        u.logged = true;
+        u.phone = $("inPhone")?.value.trim() || "9329736019";
+        u.name = $("inName")?.value.trim() || "Rizwan Khan";
+        u.addr = $("inAddr")?.value.trim() || "HOME - pratappur";
+        if (!u.addrs.includes(u.addr)) u.addrs.unshift(u.addr);
         this.saveUser(u);
-        document.getElementById("authModal").classList.add("hidden");
-        App.showToast(`Welcome back, ${u.name}!`);
+        $("authModal")?.classList.add("hidden");
+        App.toast("Welcome " + u.name + "!");
       },
-
-      continueAsGuest() {
-        const u = this.getUser(); u.isLoggedIn = true; this.saveUser(u);
-        document.getElementById("authModal").classList.add("hidden");
-      },
-
-      logout() {
-        const u = this.getUser(); u.isLoggedIn = false; this.saveUser(u);
-        this.backToPhone();
-        document.getElementById("authModal").classList.remove("hidden");
-      },
-
-      syncUI() {
+      guest() { const u = this.getUser(); u.logged = true; this.saveUser(u); $("authModal")?.classList.add("hidden"); },
+      logout() { const u = this.getUser(); u.logged = false; this.saveUser(u); this.back(); $("authModal")?.classList.remove("hidden"); },
+      sync() {
         const u = this.getUser();
-        document.getElementById("headerAddressText").textContent = u.activeAddress;
-        document.getElementById("catViewSub").textContent = `Delivering to ${u.activeAddress}`;
-        document.getElementById("headerWalletBalance").textContent = u.walletBalance;
-        document.getElementById("profileUserName").textContent = u.name;
-        document.getElementById("profileUserPhone").textContent = u.phone;
-        document.getElementById("wishlistCountBadge").textContent = u.wishlist.length;
+        setTxt("hdrAddr", u.addr);
+        setTxt("hdrWallet", u.wallet);
+        setTxt("profName", u.name);
+        setTxt("profPhone", u.phone);
+        setTxt("profWallet", u.wallet);
+        setTxt("wishCount", u.wish.length);
       }
     };
-        const App = {
-      cart: JSON.parse(localStorage.getItem("blinkit_cart_v2") || "{}"),
-      appliedCoupon: null,
-      currentCategory: "Grocery & Kitchen",
-      currentSubCategory: "All",
-      filterBestsellerOnly: false,
-      filterUnder100Only: false,
-      placeholderIndex: 0,
-      ADMIN_SECRET_KEY: "2411",
+              const App = {
+      cart: JSON.parse(localStorage.getItem("req_cart_v1") || "{}"),
+      activeCat: "All",
+      visibleLimit: 24,
+      searchTerm: "",
+      coupon: null,
+      ADMIN_KEY: "2411",
 
       init() {
-        const u = Auth.getUser();
-        if (!u.isLoggedIn) document.getElementById("authModal").classList.remove("hidden");
-        Auth.syncUI();
-        this.renderHomeSections();
-        this.updateCartUI();
-        setInterval(() => {
-          const prompts = ['Search "healthy snacks"', 'Search "nagpur orange"', 'Search "atta, dal, coke..."', 'Search "vitamin c serum"', 'Search "perfumes & oud"'];
-          const inp = document.getElementById("globalSearchInput");
-          if (inp && document.activeElement !== inp && !inp.value) {
-            this.placeholderIndex = (this.placeholderIndex + 1) % prompts.length;
-            inp.placeholder = prompts[this.placeholderIndex];
-          }
-        }, 2500);
+        if (!Auth.getUser().logged) $("authModal")?.classList.remove("hidden");
+        Auth.sync();
+        this.renderCats();
+        this.renderHome();
+        this.updateBar();
       },
 
-      renderHomeSections() {
-        const bestsellers = [
-          { title: "Chips & Namkeen", count: "+315 more", cat: "Snacks & Drinks", sub: "Chips & Namkeen", icons: ["🥔", "🥨", "🍿", "🥜"] },
-          { title: "Bakery & Biscuits", count: "+124 more", cat: "Grocery & Kitchen", sub: "Bakery & Biscuits", icons: ["🍪", "🍘", "🍞", "🧁"] },
-          { title: "Vegetable & Fruits", count: "+104 more", cat: "Grocery & Kitchen", sub: "Vegetables & Fruits", icons: ["🍊", "🍏", "🥔", "🥒"] },
-          { title: "Oil, Ghee & Masala", count: "+123 more", cat: "Grocery & Kitchen", sub: "Oil, Ghee & Masala", icons: ["🫙", "🧈", "🌶️", "🧂"] },
-          { title: "Dairy & Bread", count: "+13 more", cat: "Grocery & Kitchen", sub: "Dairy, Bread & Eggs", icons: ["🥛", "🍞", "🥚", "🧀"] },
-          { title: "Drinks & Juices", count: "+114 more", cat: "Snacks & Drinks", sub: "Drinks & Juices", icons: ["🥤", "🧃", "☕", "🧋"] }
-        ];
-        document.getElementById("bestsellersGrid").innerHTML = bestsellers.map(b => `
-          <div class="bestseller-card" onclick="App.openCategory('${b.cat}', '${b.sub}')">
-            <div class="mini-2x2">${b.icons.map(ic => `<div class="mini-thumb">${ic}</div>`).join("")}</div>
-            <span class="more-pill">${b.count}</span>
-            <div class="bestseller-title">${b.title}</div>
-          </div>
-        `).join("");
-
-        this.renderTileGrid("groceryGrid", CATEGORY_CONFIG[0].subcategories, "Grocery & Kitchen");
-        this.renderTileGrid("snacksGrid", CATEGORY_CONFIG[1].subcategories, "Snacks & Drinks");
-        this.renderTileGrid("beautyGrid", CATEGORY_CONFIG[2].subcategories, "Beauty & Personal Care");
-        this.renderTileGrid("householdGrid", CATEGORY_CONFIG[3].subcategories, "Household Essentials");
-
-        const spotlight = [
-          { name: "Winter Store", icon: "🧥", cat: "Beauty & Personal Care", sub: "Skin & Face" },
-          { name: "Travel Store", icon: "🧳", cat: "Household Essentials", sub: "Home & Lifestyle" },
-          { name: "Hobby Store", icon: "📷", cat: "Household Essentials", sub: "Electronics" },
-          { name: "Sports Store", icon: "🏀", cat: "Household Essentials", sub: "Stationery & Games" }
-        ];
-        document.getElementById("spotlightGrid").innerHTML = spotlight.map(s => `<div class="cat-tile" onclick="App.openCategory('${s.cat}', '${s.sub}')"><div class="cat-tile-img">${s.icon}</div><span>${s.name}</span></div>`).join("");
-
-        const lifestyle = [
-          { name: "Spiritual Needs", icon: "🪔", cat: "Household Essentials", sub: "Home & Lifestyle" },
-          { name: "Pet Store", icon: "🐶", cat: "Grocery & Kitchen", sub: "Dry Fruits & Cereals" },
-          { name: "Fashion Basics", icon: "👕", cat: "Household Essentials", sub: "Home & Lifestyle" },
-          { name: "Toy Store", icon: "🧸", cat: "Household Essentials", sub: "Stationery & Games" },
-          { name: "Book Store", icon: "📚", cat: "Household Essentials", sub: "Stationery & Games" },
-          { name: "Pharma Store", icon: "🩺", cat: "Beauty & Personal Care", sub: "Health & Pharma" },
-          { name: "E-Gifts Store", icon: "🎁", cat: "Snacks & Drinks", sub: "Sweets & Chocolates" },
-          { name: "Jewellery Store", icon: "💍", cat: "Beauty & Personal Care", sub: "Beauty & Cosmetics" }
-        ];
-        document.getElementById("lifestyleGrid").innerHTML = lifestyle.map(s => `<div class="cat-tile" onclick="App.openCategory('${s.cat}', '${s.sub}')"><div class="cat-tile-img">${s.icon}</div><span>${s.name}</span></div>`).join("");
-
-        document.getElementById("healthyCarousel").innerHTML = PRODUCTS_DB.filter(p => p.subCategory === "Bakery & Biscuits").slice(0, 8).map(p => this.renderProductCard(p)).join("");
-        document.getElementById("serumsCarousel").innerHTML = PRODUCTS_DB.filter(p => p.subCategory === "Skin & Face").slice(0, 8).map(p => this.renderProductCard(p)).join("");
-        document.getElementById("perfumesCarousel").innerHTML = PRODUCTS_DB.filter(p => p.subCategory === "Fragrances").slice(0, 8).map(p => this.renderProductCard(p)).join("");
+      renderCats() {
+        setHtml("homeCatPills", CATS.map(c =>
+          `<button class="cpill ${this.activeCat === c.name ? "active" : ""}" onclick="App.selectCat('${c.name}')">${c.icon} ${c.name}</button>`
+        ).join(""));
+        setHtml("homeCatGrid", CATS.slice(1).map(c =>
+          `<div class="cat-box" onclick="App.selectCat('${c.name}'); window.scrollTo(0,180);"><div class="cat-ico">${c.icon}</div><span>${c.name}</span></div>`
+        ).join(""));
       },
 
-      renderTileGrid(elId, subcats, parentCat) {
-        document.getElementById(elId).innerHTML = subcats.map(s => `<div class="cat-tile" onclick="App.openCategory('${parentCat}', '${s.name}')"><div class="cat-tile-img">${s.icon}</div><span>${s.name}</span></div>`).join("");
+      selectCat(cat) { this.activeCat = cat; this.visibleLimit = 24; this.renderCats(); this.renderHome(); },
+
+      onSearch(val) {
+        this.searchTerm = val.trim().toLowerCase();
+        $("clearBtn", "clrBtn")?.classList.toggle("hidden", !this.searchTerm);
+        this.visibleLimit = 30;
+        this.renderHome();
       },
 
-      renderProductCard(p) {
-        const qty = this.cart[p.id] || 0;
-        const isWished = Auth.getUser().wishlist.includes(p.id);
-        const btnHtml = qty === 0
-          ? `<button class="btn-add" onclick="event.stopPropagation(); App.addToCart(${p.id})">ADD</button>`
-          : `<div class="qty-stepper" onclick="event.stopPropagation()"><button onclick="App.updateQty(${p.id}, -1)">−</button><span>${qty}</span><button onclick="App.updateQty(${p.id}, 1)">+</button></div>`;
+      clearSearch() { const s = $("searchInp"); if (s) s.value = ""; this.onSearch(""); },
+      loadMoreHome() { this.visibleLimit += 24; this.renderHome(); },
 
+      renderHome() {
+        let list = PRODUCTS_DB;
+        if (this.activeCat !== "All") list = list.filter(p => p.cat === this.activeCat);
+        if (this.searchTerm) list = list.filter(p => p.name.toLowerCase().includes(this.searchTerm) || p.cat.toLowerCase().includes(this.searchTerm));
+        setTxt("homeGridHeading", this.searchTerm ? `Results for "${this.searchTerm}"` : (this.activeCat === "All" ? "Most Required Daily Items" : this.activeCat));
+        setTxt("homeCountBadge", `${list.length} Items`);
+        const shown = list.slice(0, this.visibleLimit);
+        setHtml("homeProdGrid", shown.length ? shown.map(p => this.cardHtml(p)).join("") : `<p style="grid-column:1/-1; padding:16px; text-align:center;">No matching products found.</p>`);
+        $("loadMoreBtn")?.classList.toggle("hidden", shown.length >= list.length);
+      },
+
+      cardHtml(p) {
+        const out = Number(p.stock) <= 0;
+        const q = this.cart[p.id] || 0;
+        const wished = Auth.getUser().wish.includes(p.id);
+        const off = Math.max(0, Math.round(((p.mrp - p.price) / p.mrp) * 100));
+        const btn = out
+          ? `<button class="btn-add" style="background:#EEE; color:#888; border-color:#CCC;" onclick="App.toast('Out of Stock!')">OUT OF STOCK</button>`
+          : (q === 0
+              ? `<button class="btn-add" onclick="App.add(${p.id})">ADD</button>`
+              : `<div class="stepper"><button onclick="App.qty(${p.id},-1)">−</button><span>${q}</span><button onclick="App.qty(${p.id},1)">+</button></div>`);
         return `
-          <div class="product-card" onclick="App.openVariantModal(${p.id})">
+          <div class="p-card" style="${out ? "opacity:0.72;" : ""}">
             <div>
-              <div class="p-img-box">
-                <span style="font-size:48px;">${p.icon}</span>
-                <button class="wish-btn" onclick="event.stopPropagation(); App.toggleWishlist(${p.id})">${isWished ? "❤️" : "🤍"}</button>
-                <span class="weight-pill">${p.weight}</span>
-                <div class="add-btn-wrap">${btnHtml}</div>
+              <div class="p-top">
+                <span style="${out ? "filter:grayscale(1);" : ""}">${p.icon}</span>
+                <button class="wish" onclick="App.toggleWish(${p.id})">${wished ? "❤️" : "🤍"}</button>
+                <span class="wt">${p.wt}</span>
+                <div class="add-wrap">${btn}</div>
               </div>
-              <div class="p-title">${p.name}</div>
-              ${p.tag ? `<div class="p-tag">${p.tag}</div>` : ""}
-              <div class="p-meta">⭐ ${p.rating} (${p.reviews}) • ⏱ ${p.eta}${p.stock <= 5 ? `<br><span class="stock-low">${p.stock} left</span>` : ""}</div>
+              <div class="p-name">${p.name}</div>
+              <div class="p-tag">${out ? "Out of Stock" : p.tag}</div>
+              <div class="p-meta">⏱ 12 mins ${!out && p.stock <= 5 ? `• <b style="color:#E65100;">${p.stock} left</b>` : ""}</div>
             </div>
-            <div class="p-price-row">
-              <span class="p-price">₹${p.price}</span>
-              <span class="p-mrp">₹${p.mrp}</span>
-              <span class="p-off">${p.discountPct}% OFF</span>
-            </div>
-          </div>
-        `;
+            <div class="p-prices"><span class="price">₹${p.price}</span><span class="mrp">₹${p.mrp}</span>${off > 0 ? `<span class="off">${off}% OFF</span>` : ""}</div>
+          </div>`;
       },
-
-      openCategory(catName, subName = "All") {
-        this.currentCategory = catName;
-        this.currentSubCategory = subName;
-        this.filterBestsellerOnly = false;
-        this.filterUnder100Only = false;
-        document.getElementById("catViewTitle").textContent = subName === "All" ? catName : subName;
-        this.switchView("categoryView");
-        const catObj = CATEGORY_CONFIG.find(c => c.name === catName) || CATEGORY_CONFIG[0];
-        const items = [{ name: "All", icon: catObj.icon }, ...catObj.subcategories];
-        document.getElementById("subcatSidebar").innerHTML = items.map(s => `
-          <div class="subcat-item ${this.currentSubCategory === s.name ? "active" : ""}" onclick="App.openCategory('${catName}', '${s.name}')">
-            <span class="subcat-icon">${s.icon}</span><span>${s.name}</span>
-          </div>
-        `).join("");
-        this.applyCategoryFilters();
-      },
-
-      toggleBestsellerFilter() {
-        this.filterBestsellerOnly = !this.filterBestsellerOnly;
-        document.getElementById("bestsellerFilterBtn").classList.toggle("active", this.filterBestsellerOnly);
-        this.applyCategoryFilters();
-      },
-
-      toggleUnder100Filter() {
-        this.filterUnder100Only = !this.filterUnder100Only;
-        document.getElementById("under100FilterBtn").classList.toggle("active", this.filterUnder100Only);
-        this.applyCategoryFilters();
-      },
-
-      applyCategoryFilters() {
-        let list = PRODUCTS_DB.filter(p => p.category === this.currentCategory);
-        if (this.currentSubCategory !== "All") list = list.filter(p => p.subCategory === this.currentSubCategory);
-        if (this.filterBestsellerOnly) list = list.filter(p => p.isBestseller);
-        if (this.filterUnder100Only) list = list.filter(p => p.price < 100);
-        const sort = document.getElementById("sortSelect").value;
-        if (sort === "priceLow") list.sort((a, b) => a.price - b.price);
-        if (sort === "priceHigh") list.sort((a, b) => b.price - a.price);
-        if (sort === "discount") list.sort((a, b) => b.discountPct - a.discountPct);
-        document.getElementById("catItemCount").textContent = `Showing ${list.length} products`;
-        document.getElementById("categoryProductGrid").innerHTML = list.map(p => this.renderProductCard(p)).join("");
-      },
-                handleSearch(q) {
-        const term = q.trim().toLowerCase();
-        const clearBtn = document.getElementById("clearSearchBtn");
-        if (!term) {
-          clearBtn.classList.add("hidden");
-          document.getElementById("searchResultsView").classList.add("hidden");
-          document.getElementById("homeView").classList.remove("hidden");
-          return;
-        }
-        clearBtn.classList.remove("hidden");
-        document.querySelectorAll(".view-section").forEach(v => v.classList.add("hidden"));
-        document.getElementById("searchResultsView").classList.remove("hidden");
-        const matches = PRODUCTS_DB.filter(p => p.name.toLowerCase().includes(term) || p.subCategory.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term));
-        document.getElementById("searchResultCount").textContent = `${matches.length} results for "${q}"`;
-        document.getElementById("searchProductGrid").innerHTML = matches.length ? matches.slice(0, 60).map(p => this.renderProductCard(p)).join("") : `<p style="padding:20px;">No products found.</p>`;
-      },
-
-      clearSearch() { document.getElementById("globalSearchInput").value = ""; this.handleSearch(""); },
-      focusSearch() { this.switchView("homeView"); document.getElementById("globalSearchInput").focus(); },
-      voiceSearchDemo() {
-        const pick = ["Orange", "Serum", "Atta", "Chips", "Perfume"][Math.floor(Math.random() * 5)];
-        document.getElementById("globalSearchInput").value = pick;
-        this.handleSearch(pick);
-        this.showToast(`Voice searched: "${pick}"`);
-      },
-
-      selectTopTab(tab, el) {
-        document.querySelectorAll(".tab-item").forEach(b => b.classList.remove("active"));
-        el.classList.add("active");
-        if (tab === "All") this.switchView("homeView");
-        else if (tab === "Winter" || tab === "Beauty") this.openCategory("Beauty & Personal Care", "Skin & Face");
-        else if (tab === "Electronics") this.openCategory("Household Essentials", "Electronics");
-        else if (tab === "Gifting") this.openCategory("Snacks & Drinks", "Sweets & Chocolates");
-        else this.openCategory("Household Essentials", "Home & Lifestyle");
-      },
-
-      addToCart(id) { this.cart[id] = (this.cart[id] || 0) + 1; this.saveCart(); this.showToast("Added to cart"); },
-      updateQty(id, delta) {
-        const next = (this.cart[id] || 0) + delta;
-        if (next <= 0) delete this.cart[id]; else this.cart[id] = next;
+                      add(id) { this.cart[id] = (this.cart[id] || 0) + 1; this.saveCart(); this.toast("Added to cart"); },
+      qty(id, d) {
+        const n = (this.cart[id] || 0) + d;
+        if (n <= 0) delete this.cart[id]; else this.cart[id] = n;
         this.saveCart();
       },
-
       saveCart() {
-        localStorage.setItem("blinkit_cart_v2", JSON.stringify(this.cart));
-        this.updateCartUI();
-        if (!document.getElementById("homeView").classList.contains("hidden")) this.renderHomeSections();
-        if (!document.getElementById("categoryView").classList.contains("hidden")) this.applyCategoryFilters();
-        const q = document.getElementById("globalSearchInput").value;
-        if (q) this.handleSearch(q);
+        localStorage.setItem("req_cart_v1", JSON.stringify(this.cart));
+        this.updateBar();
+        this.renderHome();
+        const cd = $("cartDrawer");
+        if (cd && !cd.classList.contains("hidden")) this.renderCart();
       },
-
-      getCartSummary() {
-        let count = 0, itemTotal = 0, firstIcon = "🛒";
-        const entries = [];
-        Object.keys(this.cart).forEach(idStr => {
-          const qty = this.cart[idStr];
-          if (idStr.startsWith("print_")) {
-            const meta = JSON.parse(localStorage.getItem(idStr) || "{}");
-            count += qty; itemTotal += (meta.price || 15) * qty; firstIcon = "🖨️";
-            entries.push({ id: idStr, name: "Document Printout", weight: `${meta.pages || 5} pages`, price: meta.price || 15, icon: "🖨️", qty });
+      summary() {
+        let count = 0, itemsTotal = 0;
+        const items = [];
+        Object.keys(this.cart).forEach(k => {
+          const q = this.cart[k];
+          if (k.startsWith("pr_")) {
+            const meta = JSON.parse(localStorage.getItem(k) || "{}");
+            count += q; itemsTotal += (meta.price || 15) * q;
+            items.push({ id: k, name: "Document Printout", wt: `${meta.pages || 5} pages`, price: meta.price || 15, icon: "🖨️", qty: q });
           } else {
-            const p = PRODUCTS_DB.find(x => x.id === Number(idStr));
-            if (p) { count += qty; itemTotal += p.price * qty; if (firstIcon === "🛒") firstIcon = p.icon; entries.push({ ...p, qty }); }
+            const p = PRODUCTS_DB.find(x => x.id === Number(k));
+            if (p) { count += q; itemsTotal += p.price * q; items.push({ ...p, qty: q }); }
           }
         });
-        const delivery = itemTotal >= 199 || itemTotal === 0 ? 0 : 25;
-        const handling = itemTotal > 0 ? 2 : 0;
-        let discount = 0;
-        if (this.appliedCoupon === "MEGA49" && itemTotal >= 149) discount = 49;
-        if (this.appliedCoupon === "AXIS150" && itemTotal >= 1799) discount = 150;
-        if (this.appliedCoupon === "AMEX750" && itemTotal >= 2500) discount = 750;
-        const grandTotal = Math.max(0, itemTotal + delivery + handling - discount);
-        return { count, itemTotal, delivery, handling, discount, grandTotal, firstIcon, entries };
+        const del = itemsTotal >= 199 || itemsTotal === 0 ? 0 : 25;
+        const hand = itemsTotal > 0 ? 2 : 0;
+        let disc = 0;
+        if (this.coupon === "MEGA49" && itemsTotal >= 149) disc = 49;
+        if (this.coupon === "AXIS150" && itemsTotal >= 1799) disc = 150;
+        const grand = Math.max(0, itemsTotal + del + hand - disc);
+        return { count, itemsTotal, del, hand, disc, grand, items };
       },
-
-      updateCartUI() {
-        const s = this.getCartSummary();
-        const pill = document.getElementById("floatingCartBar");
-        if (s.count === 0) pill.classList.add("hidden");
-        else {
-          pill.classList.remove("hidden");
-          document.getElementById("fcThumb").textContent = s.firstIcon;
-          document.getElementById("fcCount").textContent = `${s.count} ${s.count === 1 ? "item" : "items"}`;
-          document.getElementById("fcTotal").textContent = `₹${s.grandTotal}`;
-        }
-        if (!document.getElementById("cartDrawer").classList.contains("hidden")) this.renderCartDrawer();
+      updateBar() {
+        const s = this.summary();
+        $("cartBar")?.classList.toggle("hidden", s.count === 0);
+        setTxt("barCount", s.count);
+        setTxt("barTotal", "₹" + s.grand);
       },
-
-      openCartDrawer() { document.getElementById("cartDrawer").classList.remove("hidden"); this.renderCartDrawer(); },
-      closeCartDrawer() { document.getElementById("cartDrawer").classList.add("hidden"); },
-
-      toggleQrBox() {
-        const mode = document.getElementById("paymentMethodSelect").value;
-        document.getElementById("qrScannerPayBox").classList.toggle("hidden", mode !== "QR_SCANNER");
+      openCart() { $("cartDrawer")?.classList.remove("hidden"); this.renderCart(); },
+      closeCart() { $("cartDrawer")?.classList.add("hidden"); },
+      toggleQr() {
+        const sel = $("paySelect", "payMode");
+        $("qrBox")?.classList.toggle("hidden", sel && sel.value !== "QR_SCANNER");
       },
-
-      renderCartDrawer() {
-        const s = this.getCartSummary();
-        document.getElementById("cartItemCountLabel").textContent = `Shipment of ${s.count} items`;
-        document.getElementById("freeDeliveryProgress").textContent = s.itemTotal >= 199 ? "🎉 Yay! You unlocked FREE delivery" : `Add ₹${199 - s.itemTotal} more for FREE delivery`;
-        document.getElementById("cartItemsContainer").innerHTML = s.entries.map(it => `
-          <div class="cart-row">
-            <div><strong>${it.icon}${it.name}</strong><br><small>${it.weight} • ₹${it.price}</small></div>
-            <div class="qty-stepper"><button onclick="App.updateQty('${it.id}', -1)">−</button><span>${it.qty}</span><button onclick="App.updateQty('${it.id}', 1)">+</button></div>
-          </div>
-        `).join("");
-        document.getElementById("billItemTotal").textContent = `₹${s.itemTotal}`;
-        document.getElementById("billDelivery").textContent = s.delivery === 0 ? "FREE" : `₹${s.delivery}`;
-        const dRow = document.getElementById("billDiscountRow");
-        if (s.discount > 0) { dRow.classList.remove("hidden"); document.getElementById("billDiscount").textContent = `-₹${s.discount}`; }
-        else dRow.classList.add("hidden");
-        document.getElementById("billGrandTotal").textContent = `₹${s.grandTotal}`;
-        document.getElementById("checkoutBtnTotal").textContent = `₹${s.grandTotal}`;
-        document.getElementById("qrPayAmountText").textContent = `₹${s.grandTotal}`;
-        this.toggleQrBox();
+      renderCart() {
+        const s = this.summary();
+        setTxt("cartSub", `${s.count} items`);
+        setTxt("freeDelMsg", s.itemsTotal >= 199 ? "🎉 FREE Delivery Unlocked!" : `Add ₹${199 - s.itemsTotal} more for FREE delivery`);
+        setHtml("cartList", s.items.length ? s.items.map(it =>
+          `<div class="row"><div><strong>${it.icon} ${it.name}</strong><br><small>${it.wt} • ₹${it.price}</small></div><div class="stepper"><button onclick="App.qty('${it.id}',-1)">−</button><span>${it.qty}</span><button onclick="App.qty('${it.id}',1)">+</button></div></div>`
+        ).join("") : "<p>Cart is empty.</p>");
+        setTxt("bItems", "₹" + s.itemsTotal);
+        setTxt("bDel", s.del === 0 ? "FREE" : "₹" + s.del);
+        $("bDiscRow")?.classList.toggle("hidden", s.disc === 0);
+        setTxt("bDisc", "-₹" + s.disc);
+        setTxt("bGrand", "₹" + s.grand);
+        setTxt(["payBtnTot", "btnPayTotal"], "₹" + s.grand);
+        setTxt("qrAmt", "₹" + s.grand);
+        this.toggleQr();
       },
-
       applyCoupon() {
-        const code = document.getElementById("couponInput").value.trim().toUpperCase();
-        if (!["MEGA49", "AXIS150", "AMEX750"].includes(code)) return this.showToast("Try MEGA49, AXIS150, or AMEX750");
-        this.appliedCoupon = code; this.renderCartDrawer(); this.updateCartUI(); this.showToast(`Coupon ${code} applied!`);
+        const c = ($("coupInp")?.value || "").trim().toUpperCase();
+        if (!["MEGA49", "AXIS150"].includes(c)) return this.toast("Use MEGA49 or AXIS150");
+        this.coupon = c; this.renderCart(); this.updateBar(); this.toast("Coupon Applied!");
       },
-
-      copyCoupon(code) { navigator.clipboard?.writeText(code); this.appliedCoupon = code; this.showToast(`Coupon ${code} copied!`); },
-
       placeOrder() {
-        const s = this.getCartSummary();
-        if (s.count === 0) return;
-        const mode = document.getElementById("paymentMethodSelect").value;
-        const utr = document.getElementById("qrUtrInput").value.trim();
+        const s = this.summary();
+        if (!s.count) return;
+        const mode = $("paySelect", "payMode")?.value || "QR_SCANNER";
+        const utr = ($("utrInp")?.value || "").trim();
         const u = Auth.getUser();
         if (mode === "WALLET") {
-          if (u.walletBalance < s.grandTotal) return this.showToast("Insufficient Blinkit Money balance!");
-          u.walletBalance -= s.grandTotal;
+          if (u.wallet < s.grand) return this.toast("Low Wallet Balance!");
+          u.wallet -= s.grand;
         }
-        const payText = mode === "QR_SCANNER" ? (utr ? `QR Scanner (UTR: ${utr})` : "QR Scanner (Scan & Pay)") : mode;
-        const newOrder = {
-          id: "BLK" + Math.floor(100000 + Math.random() * 900000),
-          customerName: u.name, customerPhone: u.phone, address: u.activeAddress,
-          date: new Date().toLocaleString(), items: s.entries, total: s.grandTotal,
-          payment: payText, paymentStatus: "Pending Verification", status: "Order Placed"
-        };
-        u.orders.unshift(newOrder); Auth.saveUser(u);
-        const allOrders = Auth.getAllGlobalOrders(); allOrders.unshift(newOrder); Auth.saveAllGlobalOrders(allOrders);
-        this.cart = {}; this.appliedCoupon = null; document.getElementById("qrUtrInput").value = "";
-        this.saveCart(); this.closeCartDrawer();
-        this.openGenericModal("🎉 Order Placed!", `<div style="text-align:center; padding:12px;"><div style="font-size:48px;">🛵💨</div><h3>Order #${newOrder.id}</h3><p style="color:#0C831F; font-weight:800; margin:6px 0;">Arriving in 12 minutes</p><p style="font-size:13px;">Delivering to: <b>${newOrder.address}</b><br>Paid ₹${newOrder.total} via${newOrder.payment}</p></div>`);
+        const payLabel = mode === "QR_SCANNER" ? (utr ? `QR Scanner (UTR: ${utr})` : "QR Scanner (Scan & Pay)") : mode;
+        const ord = { id: "REQ" + Math.floor(10000 + Math.random() * 90000), name: u.name, phone: u.phone, addr: u.addr, date: new Date().toLocaleString(), items: s.items, total: s.grand, pay: payLabel, payStatus: "Pending Verification", status: "Order Placed" };
+        u.orders.unshift(ord); Auth.saveUser(u);
+        const all = Auth.getOrders(); all.unshift(ord); Auth.saveOrders(all);
+        this.cart = {}; this.coupon = null;
+        if ($("utrInp")) $("utrInp").value = "";
+        this.saveCart(); this.closeCart();
+        this.openModal("🎉 Order Placed!", `<div style="text-align:center; padding:10px;"><div style="font-size:44px;">🛵💨</div><h3>Order #${ord.id}</h3><p style="color:var(--green); font-weight:800; margin:6px 0;">Arriving in 12 minutes</p><p style="font-size:12.5px;">Delivering to: <b>${ord.addr}</b><br>Paid ₹${ord.total} via ${ord.pay}</p></div>`);
       },
-
-      switchView(viewId) {
-        document.querySelectorAll(".view-section").forEach(v => v.classList.add("hidden"));
-        document.getElementById(viewId).classList.remove("hidden");
-        document.getElementById("mainHeader").classList.toggle("hidden", viewId !== "homeView");
-        document.querySelectorAll(".bnav-item").forEach(b => b.classList.toggle("active", b.dataset.view === viewId));
-        if (viewId === "orderAgainView") {
+                      switchTab(id) {
+        document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
+        $(id)?.classList.remove("hidden");
+        document.querySelectorAll(".bitem").forEach(b => b.classList.toggle("active", b.dataset.t === id));
+        if (id === "ordersTabView") {
           const u = Auth.getUser();
-          const list = u.orders.length ? u.orders.flatMap(o => o.items).filter(i => typeof i.id === "number") : PRODUCTS_DB.filter(p => p.isBestseller).slice(0, 10);
-          document.getElementById("orderAgainContent").innerHTML = `<div class="product-grid-2col">${list.map(p => this.renderProductCard(p)).join("")}</div>`;
+          const past = u.orders.length ? u.orders.flatMap(o => o.items).filter(i => typeof i.id === "number") : PRODUCTS_DB.slice(0, 8);
+          setHtml("ordersTabBody", `<div class="prod-grid">${past.map(p => this.cardHtml(p)).join("")}</div>`);
         }
-        if (viewId === "allCategoriesView") {
-          document.getElementById("allCategoriesContainer").innerHTML = CATEGORY_CONFIG.map(c => `<div class="home-section" style="border-radius:14px;"><h3 class="section-title">${c.icon}${c.name}</h3><div class="category-grid-4">${c.subcategories.map(s => `<div class="cat-tile" onclick="App.openCategory('${c.name}', '${s.name}')"><div class="cat-tile-img">${s.icon}</div><span>${s.name}</span></div>`).join("")}</div></div>`).join("");
-        }
-        if (viewId === "profileView") Auth.syncUI();
+        if (id === "profileView") Auth.sync();
         window.scrollTo(0, 0);
       },
-
-      handlePrintFile(inp) { if (inp.files[0]) document.getElementById("printFileName").textContent = `✅ ${inp.files[0].name}`; },
-      updatePrintPrice() {
-        const p = Math.max(1, Number(document.getElementById("printPages").value) || 1);
-        const c = Math.max(1, Number(document.getElementById("printCopies").value) || 1);
-        const r = document.getElementById("printColor").value === "color" ? 10 : 3;
-        document.getElementById("printTotalPrice").textContent = `₹${p * c * r}`;
+      calcPrint() {
+        const p = Math.max(1, Number($("pPages")?.value) || 1);
+        const r = Number($("pColor")?.value) || 3;
+        setTxt("pTotal", "₹" + (p * r));
       },
-      addPrintToCart() {
-        const p = Math.max(1, Number(document.getElementById("printPages").value) || 1);
-        const c = Math.max(1, Number(document.getElementById("printCopies").value) || 1);
-        const r = document.getElementById("printColor").value === "color" ? 10 : 3;
-        const k = "print_" + Date.now();
-        localStorage.setItem(k, JSON.stringify({ pages: p * c, price: p * c * r }));
-        this.cart[k] = 1; this.saveCart(); this.showToast("Printout added to cart!");
+      addPrint() {
+        const p = Math.max(1, Number($("pPages")?.value) || 1);
+        const r = Number($("pColor")?.value) || 3;
+        const k = "pr_" + Date.now();
+        localStorage.setItem(k, JSON.stringify({ pages: p, price: p * r }));
+        this.cart[k] = 1; this.saveCart(); this.toast("Printout added to cart!");
       },
-
       toggleTheme() {
-        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", next);
-        document.getElementById("themeStatusLabel").textContent = `${next.toUpperCase()} ▾`;
+        const h = document.documentElement;
+        h.setAttribute("data-theme", h.getAttribute("data-theme") === "dark" ? "light" : "dark");
       },
-
-      toggleWishlist(id) {
+      toggleWish(id) {
         const u = Auth.getUser();
-        const i = u.wishlist.indexOf(id);
-        if (i >= 0) u.wishlist.splice(i, 1); else u.wishlist.push(id);
-        Auth.saveUser(u); this.saveCart();
+        const i = u.wish.indexOf(id);
+        if (i >= 0) u.wish.splice(i, 1); else u.wish.push(id);
+        Auth.saveUser(u); this.renderHome();
       },
-
-      openVariantModal(id) {
-        const p = PRODUCTS_DB.find(x => x.id === id);
-        if (!p) return;
-        document.getElementById("variantModalTitle").textContent = p.name;
-        document.getElementById("variantOptionsList").innerHTML = p.variants.map(v => `<div class="cart-row"><div><strong>${v.label}</strong><br><span>₹${v.price} <small style="text-decoration:line-through">₹${v.mrp}</small></span></div><button class="btn-add" onclick="App.addToCart(${p.id}); App.closeModal('variantModal')">ADD</button></div>`).join("");
-        document.getElementById("variantModal").classList.remove("hidden");
-      },
-
       openAddressModal() {
         const u = Auth.getUser();
-        this.openGenericModal("Select Delivery Address", `${u.addresses.map(a => `<div class="p-row" onclick="App.selectAddress('${a.replace(/'/g, "\\'")}')"><span>📍 ${a}</span><span>${u.activeAddress === a ? "✅" : "Select"}</span></div>`).join("")}<div style="margin-top:10px;"><input id="newAddrInput" class="text-input" placeholder="New address" /><button class="btn-primary full-width" onclick="App.addNewAddress()">Save Address</button></div>`);
+        this.openModal("Delivery Address", `${u.addrs.map(a => `<div class="row" onclick="App.setAddr('${a.replace(/'/g, "\\'")}')"><span>📍 ${a}</span><span>${u.addr === a ? "✅" : "Use"}</span></div>`).join("")}<input id="newAddrInp" class="inp" style="margin-top:8px;" placeholder="Enter new address" /><button class="btn-main" onclick="App.addAddr()">Save Address</button>`);
       },
-      selectAddress(a) { const u = Auth.getUser(); u.activeAddress = a; Auth.saveUser(u); this.closeModal("genericModal"); },
-      addNewAddress() { const v = document.getElementById("newAddrInput").value.trim(); if (!v) return; const u = Auth.getUser(); u.addresses.unshift(v); u.activeAddress = v; Auth.saveUser(u); this.closeModal("genericModal"); },
-
+      setAddr(a) { const u = Auth.getUser(); u.addr = a; Auth.saveUser(u); this.closeModal(); },
+      addAddr() { const v = ($("newAddrInp")?.value || "").trim(); if (!v) return; const u = Auth.getUser(); u.addrs.unshift(v); u.addr = v; Auth.saveUser(u); this.closeModal(); },
       openWalletModal() {
         const u = Auth.getUser();
-        this.openGenericModal("Blinkit Money", `<p style="margin-bottom:10px;">Balance: <strong>₹${u.walletBalance}</strong></p><div style="display:flex; gap:8px;"><button class="btn-add" onclick="App.addMoney(100)">+ ₹100</button><button class="btn-add" onclick="App.addMoney(500)">+ ₹500</button></div>`);
+        this.openModal("Wallet Balance", `<p style="margin-bottom:10px;">Available: <strong>₹${u.wallet}</strong></p><div style="display:flex; gap:8px;"><button class="btn-add" onclick="App.addMoney(100)">+ ₹100</button><button class="btn-add" onclick="App.addMoney(500)">+ ₹500</button></div>`);
       },
-      addMoney(amt) { const u = Auth.getUser(); u.walletBalance += amt; Auth.saveUser(u); this.openWalletModal(); },
-
-      openGiftCardModal() {
-        this.openGenericModal("Claim Gift Card", `<input id="giftCodeInput" class="text-input" value="BLINKIT100" /><button class="btn-primary full-width" onclick="App.claimGiftCard()">Claim ₹100</button>`);
+      addMoney(a) { const u = Auth.getUser(); u.wallet += a; Auth.saveUser(u); this.openWalletModal(); },
+      openWishlistModal() {
+        const items = PRODUCTS_DB.filter(p => Auth.getUser().wish.includes(p.id));
+        this.openModal("My Wishlist", items.length ? items.map(p => `<div class="row"><span>${p.icon} ${p.name} (₹${p.price})</span><button class="btn-add" onclick="App.add(${p.id})">ADD</button></div>`).join("") : "<p>Wishlist is empty.</p>");
       },
-      claimGiftCard() {
-        const c = document.getElementById("giftCodeInput").value.trim().toUpperCase();
-        const u = Auth.getUser();
-        if (c === "BLINKIT100" && !u.claimedGiftCodes.includes(c)) { u.claimedGiftCodes.push(c); u.walletBalance += 100; Auth.saveUser(u); this.closeModal("genericModal"); this.showToast("₹100 added!"); }
-        else this.showToast("Invalid or already used");
-      },
-
       openOrdersModal() {
         const u = Auth.getUser();
         const html = u.orders.length ? u.orders.map(o => {
-          const pStat = o.paymentStatus || "Pending Verification";
-          const pCol = pStat === "Payment Confirmed" ? "#0C831F" : (pStat === "Payment Not Confirmed" ? "#D32F2F" : "#B26A00");
-          return `<div style="border:1px solid var(--border-color); border-radius:10px; padding:10px; margin-bottom:8px;"><div style="display:flex; justify-content:space-between;"><strong>#${o.id}</strong><span style="color:#0C831F; font-weight:800; font-size:12px;">● ${o.status}</span></div><div style="font-size:11.5px; font-weight:700; color:${pCol};">Payment: ${pStat}</div><small>${o.date} • ₹${o.total}</small></div>`;
+          const ps = o.payStatus || "Pending Verification";
+          const col = ps === "Payment Confirmed" ? "#0C831F" : (ps === "Payment Not Confirmed" ? "#D32F2F" : "#B26A00");
+          return `<div class="admin-card"><div style="display:flex; justify-content:space-between;"><strong>#${o.id}</strong><span style="color:var(--green); font-weight:800;">● ${o.status}</span></div><div style="color:${col}; font-weight:700; margin:3px 0;">Payment: ${ps}</div><small>${o.date} • Total: ₹${o.total}</small></div>`;
         }).join("") : "<p>No orders placed yet.</p>";
-        this.openGenericModal("Your Orders", html);
+        this.openModal("My Orders (Live Status)", html);
       },
-
-      openWishlistModal() {
-        const items = PRODUCTS_DB.filter(p => Auth.getUser().wishlist.includes(p.id));
-        this.openGenericModal("Your Wishlist", items.length ? items.map(p => `<div class="cart-row"><span>${p.icon} ${p.name} (₹${p.price})</span><button class="btn-add" onclick="App.addToCart(${p.id})">ADD</button></div>`).join("") : "<p>Wishlist is empty.</p>");
+      openAdminLogin() {
+        this.openModal("🔐 Admin Access", `<p style="font-size:12.5px; margin-bottom:8px;">Enter Admin Key (<b>2411</b>):</p><input id="admKeyInp" type="password" class="inp" placeholder="Enter 2411" /><button class="btn-main" onclick="App.verifyAdmin()">Open Admin Panel</button>`);
       },
-
-      openAdminKeyPrompt() {
-        this.openGenericModal("⚙️ Settings & Admin Panel", `<p style="font-size:13px; margin-bottom:10px;">Enter 4-digit Admin Key (<b>2411</b>):</p><input type="password" id="adminSecretInput" maxlength="6" class="text-input" placeholder="Enter 2411" /><button class="btn-primary full-width" onclick="App.verifyAdminKey()">Unlock Admin Panel</button>`);
+      verifyAdmin() {
+        if (($("admKeyInp")?.value || "").trim() === this.ADMIN_KEY) this.openAdmin("orders");
+        else this.toast("❌ Wrong Admin Key!");
       },
-      verifyAdminKey() {
-        if (document.getElementById("adminSecretInput").value.trim() === this.ADMIN_SECRET_KEY) this.openAdminDashboard();
-        else this.showToast("❌ Wrong Admin Key!");
-      },
-      openAdminDashboard() {
-        const all = Auth.getAllGlobalOrders();
+      openAdmin(tab = "orders") {
+        if (tab === "products") return this.renderAdminProducts();
+        const all = Auth.getOrders();
         const rev = all.reduce((s, o) => s + (Number(o.total) || 0), 0);
-        const deliv = all.filter(o => o.status === "Delivered").length;
+        const del = all.filter(o => o.status === "Delivered").length;
         const cards = all.map(o => {
-          const pStat = o.paymentStatus || "Pending Verification";
-          let pBg = "#FFF3CD", pCol = "#856404";
-          if (pStat === "Payment Confirmed") { pBg = "#D4EDDA"; pCol = "#155724"; }
-          if (pStat === "Payment Not Confirmed") { pBg = "#F8D7DA"; pCol = "#721C24"; }
+          const ps = o.payStatus || "Pending Verification";
+          const bg = ps === "Payment Confirmed" ? "#D4EDDA" : (ps === "Payment Not Confirmed" ? "#F8D7DA" : "#FFF3CD");
+          const fg = ps === "Payment Confirmed" ? "#155724" : (ps === "Payment Not Confirmed" ? "#721C24" : "#856404");
           return `
-            <div class="admin-order-card">
-              <div class="admin-order-head"><strong>#${o.id} • ₹${o.total}</strong><span class="status-badge">${o.status}</span></div>
-              <div style="background:${pBg}; color:${pCol}; padding:5px 8px; border-radius:6px; font-size:11.5px; font-weight:800; margin-bottom:6px;">Payment: ${pStat}</div>
-              <div style="font-size:12px;">👤 <b>${o.customerName}</b> (${o.customerPhone})<br>📍 ${o.address}<br>💳 ${o.payment}</div>
-              <div class="admin-items-box">${o.items.map(it => `${it.icon || "•"} ${it.name} × <b>${it.qty}</b> = ₹${it.price * it.qty}`).join("<br>")}</div>
-              <div class="admin-btn-row">
-                <button class="admin-status-btn deliv-btn" onclick="App.updateAdminOrder('${o.id}', 'paymentStatus', 'Payment Confirmed')">✅ Payment Confirmed</button>
-                <button class="admin-status-btn" style="border-color:#D32F2F; color:#D32F2F;" onclick="App.updateAdminOrder('${o.id}', 'paymentStatus', 'Payment Not Confirmed')">❌ Not Confirmed</button>
-                <button class="admin-status-btn" onclick="App.updateAdminOrder('${o.id}', 'status', 'Packed')">📦 Mark Packed</button>
-                <button class="admin-status-btn ship-btn" onclick="App.updateAdminOrder('${o.id}', 'status', 'Shipped')">🚚 Mark Shipped</button>
-                <button class="admin-status-btn ship-btn" onclick="App.updateAdminOrder('${o.id}', 'status', 'Out for Delivery')">🛵 Out for Delivery</button>
-                <button class="admin-status-btn deliv-btn" onclick="App.updateAdminOrder('${o.id}', 'status', 'Delivered')">✅ Mark Delivered</button>
+            <div class="admin-card">
+              <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong>#${o.id} • ₹${o.total}</strong><span style="font-weight:800; color:var(--green);">${o.status}</span></div>
+              <div style="background:${bg}; color:${fg}; padding:5px 8px; border-radius:6px; font-weight:800; margin-bottom:6px;">Payment: ${ps}</div>
+              <div>👤 <b>${o.name}</b> (${o.phone})<br>📍 ${o.addr}<br>💳 ${o.pay}</div>
+              <div style="background:var(--card); padding:6px; border-radius:6px; margin:6px 0; border:1px solid var(--border);">${o.items.map(i => `${i.icon || "•"} ${i.name} × <b>${i.qty}</b> = ₹${i.price * i.qty}`).join("<br>")}</div>
+              <div class="admin-grid">
+                <button class="abtn ok" onclick="App.setOrd('${o.id}','payStatus','Payment Confirmed')">✅ Payment Confirmed</button>
+                <button class="abtn no" onclick="App.setOrd('${o.id}','payStatus','Payment Not Confirmed')">❌ Not Confirmed</button>
+                <button class="abtn blue" onclick="App.setOrd('${o.id}','status','Shipped')">🚚 Mark Shipped</button>
+                <button class="abtn ok" onclick="App.setOrd('${o.id}','status','Delivered')">✅ Mark Delivered</button>
               </div>
-            </div>
-          `;
+            </div>`;
         }).join("");
-        this.openGenericModal("🛡️ Blinkit Admin Panel", `<div class="admin-stats-grid"><div class="admin-stat-box"><strong>${all.length}</strong><small>Orders</small></div><div class="admin-stat-box"><strong>₹${rev}</strong><small>Revenue</small></div><div class="admin-stat-box"><strong>${deliv}</strong><small>Delivered</small></div></div>${cards}`);
+        this.openModal("🛡️ Admin Panel", `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><button class="btn-main" style="height:36px; font-size:12px;" onclick="App.openAdmin('orders')">📦 Orders (${all.length})</button><button class="btn-add" style="height:36px; font-size:12px;" onclick="App.openAdmin('products')">🛒 Product Control</button></div><div class="stats-3"><div class="stat"><strong>${all.length}</strong><small>Orders</small></div><div class="stat"><strong>₹${rev}</strong><small>Revenue</small></div><div class="stat"><strong>${del}</strong><small>Delivered</small></div></div>${cards}`);
       },
-      updateAdminOrder(id, field, val) {
-        const all = Auth.getAllGlobalOrders();
-        const t = all.find(o => o.id === id);
-        if (t) { t[field] = val; Auth.saveAllGlobalOrders(all); }
-        const u = Auth.getUser();
-        const uo = u.orders.find(o => o.id === id);
-        if (uo) { uo[field] = val; Auth.saveUser(u); }
-        this.showToast(`Updated #${id} →${val}`);
-        this.openAdminDashboard();
+      setOrd(id, key, val) {
+        const all = Auth.getOrders(); const t = all.find(x => x.id === id); if (t) { t[key] = val; Auth.saveOrders(all); }
+        const u = Auth.getUser(); const uo = u.orders.find(x => x.id === id); if (uo) { uo[key] = val; Auth.saveUser(u); }
+        this.toast(`Updated #${id} → ${val}`); this.openAdmin("orders");
       },
-
-      openHelpModal() { this.openGenericModal("24x7 Support", "<p>12-Minute Express Delivery • Support: support@blinkit-store.demo</p>"); },
-      openZomatoModal() { this.openGenericModal("Zomato", `<div style="text-align:center;"><h2 style="color:#E23744; font-style:italic;">zomato</h2><p style="margin:8px 0;">Order hot meals near <b>${Auth.getUser().activeA
-                                                                                                                                                                                                           /* ==================== ADMIN PRODUCT CONTROL EXTENSION ==================== */
-    App.PRODUCTS_STORAGE_KEY = "blinkit_custom_products_v1";
-    App.adminProdFilter = "all";
-    App.adminProdQuery = "";
-
-    App.syncProductsFromStorage = function () {
-      const raw = localStorage.getItem(this.PRODUCTS_STORAGE_KEY);
-      if (raw) {
-        try {
-          const saved = JSON.parse(raw);
-          if (Array.isArray(saved) && saved.length > 0) {
-            PRODUCTS_DB.splice(0, PRODUCTS_DB.length, ...saved);
-          }
-        } catch (e) {}
-      }
-    };
-
-    App.saveProductsToStorage = function () {
-      localStorage.setItem(this.PRODUCTS_STORAGE_KEY, JSON.stringify(PRODUCTS_DB));
-      this.renderHomeSections();
-    };
-
-    // Show OUT OF STOCK badge on customer product cards when stock <= 0
-    const _origRenderProductCard = App.renderProductCard.bind(App);
-    App.renderProductCard = function (p) {
-      if (Number(p.stock) <= 0) {
-        const isWished = Auth.getUser().wishlist.includes(p.id);
-        return `
-          <div class="product-card" style="opacity:0.72;" onclick="App.showToast('Ye product abhi Out of Stock hai!')">
-            <div>
-              <div class="p-img-box">
-                <span style="font-size:48px; filter:grayscale(0.6);">${p.icon}</span>
-                <button class="wish-btn" onclick="event.stopPropagation(); App.toggleWishlist(${p.id})">${isWished ? "❤️" : "🤍"}</button>
-                <span class="weight-pill">${p.weight}</span>
-                <div class="add-btn-wrap">
-                  <button class="btn-add" style="background:#F3F4F6; color:#9CA3AF; border-color:#D1D5DB; cursor:not-allowed;" onclick="event.stopPropagation(); App.showToast('Out of Stock!')">OUT OF STOCK</button>
+                      admProdQ: "",
+      admProdF: "all",
+      saveProds() { localStorage.setItem("req_products_v1", JSON.stringify(PRODUCTS_DB)); this.renderHome(); },
+      renderAdminProducts() {
+        const inS = PRODUCTS_DB.filter(p => Number(p.stock) > 0).length;
+        const outS = PRODUCTS_DB.length - inS;
+        const q = this.admProdQ.toLowerCase();
+        const list = PRODUCTS_DB.filter(p => (!q || p.name.toLowerCase().includes(q)) && (this.admProdF === "all" || (this.admProdF === "in" ? p.stock > 0 : p.stock <= 0))).slice(0, 40);
+        const rows = list.map(p => {
+          const av = Number(p.stock) > 0;
+          return `
+            <div class="admin-card">
+              <div style="display:flex; justify-content:space-between;">
+                <div>${p.icon} <strong>${p.name}</strong><br><small>${p.wt} • ₹${p.price} (MRP ₹${p.mrp})</small></div>
+                <span style="font-weight:800; color:${av ? "#0C831F" : "#D32F2F"};">${av ? "Stock: " + p.stock : "Out of Stock"}</span>
+              </div>
+              <div id="ed_${p.id}" class="hidden" style="margin-top:6px;">
+                <input id="en_${p.id}" class="inp" value="${p.name.replace(/"/g, "&quot;")}" />
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px;">
+                  <input id="ep_${p.id}" type="number" class="inp" value="${p.price}" />
+                  <input id="em_${p.id}" type="number" class="inp" value="${p.mrp}" />
+                  <input id="es_${p.id}" type="number" class="inp" value="${p.stock}" />
                 </div>
+                <button class="btn-main" style="height:34px; font-size:12px;" onclick="App.saveEdit(${p.id})">Save Changes</button>
               </div>
-              <div class="p-title">${p.name}</div>
-              <div class="p-meta"><span style="color:#D32F2F; font-weight:800;">● Out of Stock (Nahi Hai)</span></div>
-            </div>
-            <div class="p-price-row">
-              <span class="p-price">₹${p.price}</span>
-              <span class="p-mrp">₹${p.mrp}</span>
-            </div>
-          </div>
-        `;
-      }
-      return _origRenderProductCard(p);
-    };
-
-    // Upgrade Admin Dashboard with Tabs: Orders vs Product Control
-    const _origOpenAdminDashboard = App.openAdminDashboard.bind(App);
-    App.openAdminDashboard = function (tab = "orders") {
-      if (tab === "products") {
-        this.renderAdminProductControl();
-        return;
-      }
-      _origOpenAdminDashboard();
-      const body = document.getElementById("genericModalBody");
-      const tabBar = `
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
-          <button class="btn-primary" style="height:38px; font-size:12.5px;" onclick="App.openAdminDashboard('orders')">📦 Orders & Payments</button>
-          <button class="btn-add" style="height:38px; font-size:12.5px;" onclick="App.openAdminDashboard('products')">🛒 Product Control (${PRODUCTS_DB.length})</button>
-        </div>
-      `;
-      body.innerHTML = tabBar + body.innerHTML;
-    };
-        App.renderAdminProductControl = function () {
-      const inStockCount = PRODUCTS_DB.filter(p => Number(p.stock) > 0).length;
-      const outStockCount = PRODUCTS_DB.length - inStockCount;
-
-      const html = `
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;">
-          <button class="btn-add" style="height:38px; font-size:12.5px;" onclick="App.openAdminDashboard('orders')">📦 Orders & Payments</button>
-          <button class="btn-primary" style="height:38px; font-size:12.5px;" onclick="App.openAdminDashboard('products')">🛒 Product Control (${PRODUCTS_DB.length})</button>
-        </div>
-
-        <div class="admin-stats-grid">
-          <div class="admin-stat-box"><strong>${PRODUCTS_DB.length}</strong><small>Total Items</small></div>
-          <div class="admin-stat-box"><strong>${inStockCount}</strong><small>In Stock Hai</small></div>
-          <div class="admin-stat-box"><strong style="color:#D32F2F;">${outStockCount}</strong><small>Out of Stock</small></div>
-        </div>
-
-        <button class="btn-primary full-width" style="height:38px; font-size:13px; margin-bottom:10px;" onclick="document.getElementById('adminAddProdForm').classList.toggle('hidden')">
-          ➕ Add New Product
-        </button>
-
-        <div id="adminAddProdForm" class="hidden" style="background:var(--bg-soft); border:1px solid var(--border-color); border-radius:12px; padding:10px; margin-bottom:10px;">
-          <strong style="font-size:13px; display:block; margin-bottom:8px;">Naya Product Jodein</strong>
-          <input id="npName" class="text-input" placeholder="Product Name (e.g. Fresh Alphonso Mango)" />
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-            <select id="npCat" class="text-input">
-              <option value="Grocery & Kitchen">Grocery & Kitchen</option>
-              <option value="Snacks & Drinks">Snacks & Drinks</option>
-              <option value="Beauty & Personal Care">Beauty & Personal Care</option>
-              <option value="Household Essentials">Household Essentials</option>
-            </select>
-            <input id="npSub" class="text-input" value="Vegetables & Fruits" placeholder="Subcategory" />
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
-            <input id="npPrice" type="number" class="text-input" placeholder="Selling Price (₹)" />
-            <input id="npMrp" type="number" class="text-input" placeholder="MRP (₹)" />
-          </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
-            <input id="npWeight" class="text-input" value="500 g" placeholder="Weight" />
-            <input id="npStock" type="number" class="text-input" value="10" placeholder="Stock" />
-            <input id="npIcon" class="text-input" value="🥭" placeholder="Emoji" />
-          </div>
-          <button class="btn-primary full-width" style="height:38px;" onclick="App.adminCreateProduct()">Save Product</button>
-        </div>
-
-        <div style="display:flex; gap:6px; margin-bottom:10px;">
-          <input id="adminProdSearchInput" class="text-input" style="margin-bottom:0; flex:1;" value="${this.adminProdQuery}" placeholder="Search product name..." oninput="App.adminProdQuery=this.value; App.refreshAdminProductList()" />
-          <select id="adminProdFilterSelect" class="text-input" style="margin-bottom:0; width:125px;" onchange="App.adminProdFilter=this.value; App.refreshAdminProductList()">
-            <option value="all" ${this.adminProdFilter === "all" ? "selected" : ""}>All Items</option>
-            <option value="instock" ${this.adminProdFilter === "instock" ? "selected" : ""}>✅ In Stock</option>
-            <option value="outstock" ${this.adminProdFilter === "outstock" ? "selected" : ""}>❌ Nahi Hai</option>
-          </select>
-        </div>
-
-        <div id="adminProductListContainer"></div>
-      `;
-
-      this.openGenericModal("🛡️ Admin — Product Control", html);
-      this.refreshAdminProductList();
-    };
-
-    App.refreshAdminProductList = function () {
-      const q = (this.adminProdQuery || "").trim().toLowerCase();
-      let list = PRODUCTS_DB.filter(p => {
-        const matchQ = !q || p.name.toLowerCase().includes(q) || p.subCategory.toLowerCase().includes(q);
-        const matchStock = this.adminProdFilter === "all"
-          ? true
-          : (this.adminProdFilter === "instock" ? Number(p.stock) > 0 : Number(p.stock) <= 0);
-        return matchQ && matchStock;
-      });
-
-      const container = document.getElementById("adminProductListContainer");
-      if (!container) return;
-
-      container.innerHTML = list.slice(0, 50).map(p => {
-        const available = Number(p.stock) > 0;
-        return `
-          <div class="admin-order-card" style="padding:10px;">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
-              <div style="font-size:12.5px;">
-                <span style="font-size:18px;">${p.icon}</span> <strong>${p.name}</strong><br>
-                <small style="color:var(--text-secondary);">${p.subCategory} • ${p.weight} • <b>₹${p.price}</b> (MRP ₹${p.mrp})</small>
+              <div style="display:grid; grid-template-columns:1.4fr 1fr 0.6fr; gap:5px; margin-top:6px;">
+                <button class="abtn ${av ? "no" : "ok"}" onclick="App.togStock(${p.id})">${av ? "❌ Out of Stock" : "✅ In Stock"}</button>
+                <button class="abtn blue" onclick="document.getElementById('ed_${p.id}').classList.toggle('hidden')">✏️ Edit</button>
+                <button class="abtn no" onclick="App.delProd(${p.id})">🗑️</button>
               </div>
-              <span class="status-badge ${available ? "delivered" : ""}" style="${available ? "" : "background:#F8D7DA; color:#721C24;"}">
-                ${available ? `✅ Stock: ${p.stock}` : "❌ Out of Stock"}
-              </span>
-            </div>
-
-            <div id="editBox_${p.id}" class="hidden" style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border-color);">
-              <input id="edName_${p.id}" class="text-input" style="height:36px; font-size:12px;" value="${p.name.replace(/"/g, "&quot;")}" />
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px;">
-                <input id="edPrice_${p.id}" type="number" class="text-input" style="height:36px; font-size:12px;" value="${p.price}" placeholder="Price" />
-                <input id="edMrp_${p.id}" type="number" class="text-input" style="height:36px; font-size:12px;" value="${p.mrp}" placeholder="MRP" />
-                <input id="edStock_${p.id}" type="number" class="text-input" style="height:36px; font-size:12px;" value="${p.stock}" placeholder="Stock" />
-              </div>
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
-                <input id="edWeight_${p.id}" class="text-input" style="height:36px; font-size:12px;" value="${p.weight}" placeholder="Weight" />
-                <input id="edIcon_${p.id}" class="text-input" style="height:36px; font-size:12px;" value="${p.icon}" placeholder="Emoji" />
-              </div>
-              <button class="btn-primary full-width" style="height:34px; font-size:12px;" onclick="App.adminSaveEditProduct(${p.id})">💾 Save Changes</button>
-            </div>
-
-            <div style="display:grid; grid-template-columns:1.4fr 1fr 0.8fr; gap:5px; margin-top:8px;">
-              <button class="admin-status-btn ${available ? "" : "deliv-btn"}" onclick="App.adminToggleStock(${p.id})">
-                ${available ? "❌ Mark Out of Stock" : "✅ Mark In Stock"}
-              </button>
-              <button class="admin-status-btn ship-btn" onclick="document.getElementById('editBox_${p.id}').classList.toggle('hidden')">✏️ Edit</button>
-              <button class="admin-status-btn" style="border-color:#D32F2F; color:#D32F2F;" onclick="App.adminDeleteProduct(${p.id})">🗑️</button>
-            </div>
-          </div>
-        `;
-      }).join("") || `<p style="font-size:13px; text-align:center; padding:12px;">Koi matching product nahi mila.</p>`;
+            </div>`;
+        }).join("");
+        this.openModal("🛒 Product Control", `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><button class="btn-add" style="height:36px; font-size:12px;" onclick="App.openAdmin('orders')">📦 Orders</button><button class="btn-main" style="height:36px; font-size:12px;" onclick="App.openAdmin('products')">🛒 Products (${PRODUCTS_DB.length})</button></div><div class="stats-3"><div class="stat"><strong>${PRODUCTS_DB.length}</strong><small>Total</small></div><div class="stat"><strong>${inS}</strong><small>Hai (In)</small></div><div class="stat"><strong style="color:#D32F2F;">${outS}</strong><small>Nahi Hai</small></div></div><button class="btn-main" style="height:36px; font-size:12.5px; margin-bottom:8px;" onclick="document.getElementById('newPBox').classList.toggle('hidden')">➕ Add New Product</button><div id="newPBox" class="hidden admin-card"><input id="npN" class="inp" placeholder="Product Name" /><div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;"><input id="npP" type="number" class="inp" placeholder="Price ₹" /><input id="npM" type="number" class="inp" placeholder="MRP ₹" /></div><div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px;"><input id="npW" class="inp" value="500 g" /><input id="npS" type="number" class="inp" value="10" /><input id="npI" class="inp" value="🛍️" /></div><button class="btn-main" style="height:36px;" onclick="App.addNewProd()">Save New Product</button></div><div style="display:flex; gap:5px; margin-bottom:8px;"><input class="inp" style="margin:0; flex:1;" value="${this.admProdQ}" placeholder="Search item..." oninput="App.admProdQ=this.value; App.renderAdminProducts()" /><select class="inp" style="margin:0; width:110px;" onchange="App.admProdF=this.value; App.renderAdminProducts()"><option value="all" ${this.admProdF === "all" ? "selected" : ""}>All</option><option value="in" ${this.admProdF === "in" ? "selected" : ""}>In Stock</option><option value="out" ${this.admProdF === "out" ? "selected" : ""}>Nahi Hai</option></select></div>${rows}`);
+      },
+      togStock(id) { const p = PRODUCTS_DB.find(x => x.id === id); if (p) { p.stock = p.stock > 0 ? 0 : 10; this.saveProds(); this.renderAdminProducts(); } },
+      saveEdit(id) {
+        const p = PRODUCTS_DB.find(x => x.id === id); if (!p) return;
+        p.name = document.getElementById("en_" + id).value.trim() || p.name;
+        p.price = Math.max(1, Number(document.getElementById("ep_" + id).value) || p.price);
+        p.mrp = Math.max(p.price, Number(document.getElementById("em_" + id).value) || p.mrp);
+        p.stock = Math.max(0, Number(document.getElementById("es_" + id).value));
+        this.saveProds(); this.toast("Updated ✅"); this.renderAdminProducts();
+      },
+      addNewProd() {
+        const name = ($("npN")?.value || "").trim(), price = Number($("npP")?.value);
+        if (!name || !price) return this.toast("Enter name & price");
+        const mrp = Math.max(price, Number($("npM")?.value) || price + 15);
+        PRODUCTS_DB.unshift({ id: Date.now(), name, cat: "Atta, Rice & Dal", wt: $("npW")?.value || "500 g", price, mrp, icon: $("npI")?.value || "🛍️", tag: "New", stock: Number($("npS")?.value) || 10 });
+        this.saveProds(); this.toast("Product Added!"); this.renderAdminProducts();
+      },
+      delProd(id) { const i = PRODUCTS_DB.findIndex(x => x.id === id); if (i >= 0) { PRODUCTS_DB.splice(i, 1); this.saveProds(); this.renderAdminProducts(); } },
+      openModal(t, html) { setTxt(["gTitle", "genTitle"], t); setHtml(["gBody", "genBody"], html); $("gModal", "genModal")?.classList.remove("hidden"); },
+      closeModal() { $("gModal", "genModal")?.classList.add("hidden"); },
+      toast(m) { const t = $("toast"); if (!t) return; t.textContent = m; t.classList.remove("hidden"); clearTimeout(this._tm); this._tm = setTimeout(() => t.classList.add("hidden"), 2000); }
     };
-
-    App.adminToggleStock = function (id) {
-      const p = PRODUCTS_DB.find(x => x.id === id);
-      if (!p) return;
-      p.stock = Number(p.stock) > 0 ? 0 : 10;
-      this.saveProductsToStorage();
-      this.showToast(`${p.name} → ${p.stock > 0 ? "In Stock ✅" : "Out of Stock ❌"}`);
-      this.renderAdminProductControl();
-    };
-
-    App.adminSaveEditProduct = function (id) {
-      const p = PRODUCTS_DB.find(x => x.id === id);
-      if (!p) return;
-      p.name = document.getElementById(`edName_${id}`).value.trim() || p.name;
-      p.price = Math.max(1, Number(document.getElementById(`edPrice_${id}`).value) || p.price);
-      p.mrp = Math.max(p.price, Number(document.getElementById(`edMrp_${id}`).value) || p.mrp);
-      p.stock = Math.max(0, Number(document.getElementById(`edStock_${id}`).value));
-      p.weight = document.getElementById(`edWeight_${id}`).value.trim() || p.weight;
-      p.icon = document.getElementById(`edIcon_${id}`).value.trim() || p.icon;
-      p.discountPct = Math.round(((p.mrp - p.price) / p.mrp) * 100);
-      if (p.variants && p.variants[0]) {
-        p.variants[0] = { label: p.weight, price: p.price, mrp: p.mrp };
-      }
-      this.saveProductsToStorage();
-      this.showToast("Product updated ✅");
-      this.renderAdminProductControl();
-    };
-
-    App.adminCreateProduct = function () {
-      const name = document.getElementById("npName").value.trim();
-      const price = Number(document.getElementById("npPrice").value);
-      if (!name || !price) return this.showToast("Product name aur price dalein");
-      const mrp = Math.max(price, Number(document.getElementById("npMrp").value) || Math.round(price * 1.15));
-      const cat = document.getElementById("npCat").value;
-      const sub = document.getElementById("npSub").value.trim() || "Vegetables & Fruits";
-      const weight = document.getElementById("npWeight").value.trim() || "500 g";
-      const stock = Math.max(0, Number(document.getElementById("npStock").value) || 10);
-      const icon = document.getElementById("npIcon").value.trim() || "🛍️";
-      const newId = PRODUCTS_DB.reduce((m, x) => Math.max(m, x.id), 0) + 1;
-
-      PRODUCTS_DB.unshift({
-        id: newId, name, brand: "Store Special", category: cat, subCategory: sub, weight,
-        price, mrp, discountPct: Math.round(((mrp - price) / mrp) * 100), icon, tag: "New",
-        rating: "4.8", reviews: 15, eta: "12 mins", stock, isBestseller: true,
-        variants: [{ label: weight, price, mrp }]
-      });
-      this.saveProductsToStorage();
-      this.showToast("Naya product add ho gaya! 🎉");
-      this.renderAdminProductControl();
-    };
-
-    App.adminDeleteProduct = function (id) {
-      const idx = PRODUCTS_DB.findIndex(x => x.id === id);
-      if (idx >= 0) {
-        PRODUCTS_DB.splice(idx, 1);
-        this.saveProductsToStorage();
-        this.showToast("Product delete ho gaya");
-        this.renderAdminProductControl();
-      }
-    };
-
-    document.addEventListener("DOMContentLoaded", () => {
-      App.syncProductsFromStorage();
-      App.init();
-    });
+    document.addEventListener("DOMContentLoaded", () => App.init());
   </script>
 </body>
 </html>
