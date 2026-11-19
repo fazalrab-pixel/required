@@ -1,653 +1,1439 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REQUIRED - Because Life Needs It</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>REQUIRED — Because Life Needs It</title>
   <style>
     :root {
-      --teal-dark: #0e3f4e;
-      --teal-main: #135063;
-      --teal-mid: #1a6b82;
-      --cyan-glow: #29c5df;
-      --cyan-light: #e0f7fa;
-      --bg: #f0f6f8;
+      --primary: #0c831f;
+      --primary-dark: #086316;
+      --accent: #f8cb46;
+      --bg: #f4f6fb;
       --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
+      --text: #1c1c1c;
+      --muted: #666666;
+      --border: #e5e7eb;
+      --danger: #dc2626;
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+      --radius: 14px;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding-bottom: 95px; overflow-x: hidden; }
 
-    @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    @keyframes pulseRing { 0% { transform: scale(0.95); opacity: 0.9; } 70% { transform: scale(1.4); opacity: 0; } 100% { opacity: 0; } }
-    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-    @keyframes popIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes bump { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.04); } }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    /* LOGIN SCREEN */
-    .login-gate {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top right, #1b728a, var(--teal-dark) 75%);
-      z-index: 9999;
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding-bottom: 95px;
+    }
+
+    /* Top Brand Header */
+    .topbar {
+      background: linear-gradient(135deg, #0c831f 0%, #075914 100%);
+      color: #fff;
+      padding: 14px 16px 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 16px;
+      justify-content: space-between;
+      gap: 10px;
     }
-    .login-gate.hidden { display: none !important; }
-    .login-box {
-      background: #ffffff;
-      width: 100%;
-      max-width: 390px;
-      border-radius: 20px;
-      padding: 22px 18px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-      text-align: center;
-      border: 2px solid var(--cyan-glow);
-      animation: popIn 0.4s ease;
+
+    .brand-wrap {
+      display: flex;
+      flex-direction: column;
     }
-    .login-logo-banner {
-      background: linear-gradient(135deg, var(--teal-main), var(--teal-dark));
-      border-radius: 14px;
-      padding: 12px;
-      margin-bottom: 14px;
-      animation: floatSlow 3s ease-in-out infinite;
+
+    .brand-title {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 1.1;
+      color: var(--accent);
     }
-    .login-box h2 { font-size: 20px; color: var(--teal-dark); margin-bottom: 4px; }
-    .login-box p.sub { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
-    .login-input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 10px;
-      border: 1.5px solid #cbd5e1;
+
+    .brand-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: #e6f4ea;
+      margin-top: 2px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      background: rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      padding: 7px 11px;
       border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Sticky Search & Categories */
+    .sticky-controls {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #fff;
+      padding: 10px 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 11px 14px 11px 38px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: #f9fafb;
       font-size: 14px;
       outline: none;
+      transition: border-color 0.2s;
     }
-    .login-input:focus { border-color: var(--cyan-glow); }
-    .login-err { color: #dc2626; font-size: 13px; font-weight: 700; margin-bottom: 8px; min-height: 18px; }
-    .login-submit {
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+
+    .cat-strip {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-top: 10px;
+      scrollbar-width: none;
+    }
+
+    .cat-strip::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-pill {
+      white-space: nowrap;
+      padding: 7px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: #f3f4f6;
+      color: #374151;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .cat-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Product Grid */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 11px;
+    }
+
+    @media (min-width: 640px) {
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 900px) {
+      .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .p-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 10px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .p-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #ecfdf5;
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .p-img {
       width: 100%;
-      padding: 13px;
-      background: linear-gradient(135deg, var(--teal-main), #1d7a96);
-      color: #ffffff;
-      border: none;
+      height: 105px;
+      object-fit: contain;
+      background: #fafafa;
       border-radius: 10px;
-      font-size: 16px;
+      margin-bottom: 8px;
+      padding: 6px;
+    }
+
+    .p-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.25;
+      margin-bottom: 3px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .p-unit {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .p-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .p-price {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: #111;
+    }
+
+    .add-btn {
+      background: #f0fdf4;
+      color: var(--primary);
+      border: 1.5px solid var(--primary);
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-size: 12.5px;
       font-weight: 800;
       cursor: pointer;
     }
-    .admin-shortcut {
-      margin-top: 14px;
-      display: inline-block;
-      font-size: 13px;
-      color: var(--teal-main);
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: underline;
+
+    .qty-box {
+      display: flex;
+      align-items: center;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 9px;
+      overflow: hidden;
     }
 
-    /* LIVE TICKER & HEADER */
-    .live-ticker { background: #092c37; color: #a5f3fc; font-size: 12px; font-weight: 600; padding: 6px 0; overflow: hidden; white-space: nowrap; }
-    .ticker-track { display: inline-block; padding-left: 100%; animation: marquee 20s linear infinite; }
-    header { background: linear-gradient(135deg, var(--teal-dark), var(--teal-main)); color: white; padding: 10px 14px 12px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 14px rgba(14,63,78,0.25); }
-    .header-top { display: flex; justify-content: space-between; align-items: center; max-width: 920px; margin: 0 auto; gap: 8px; }
-    .brand-logo-box { width: 140px; height: 48px; display: flex; align-items: center; }
-    .brand-logo-box img { max-height: 46px; max-width: 140px; object-fit: contain; border-radius: 6px; }
-    .header-actions { display: flex; align-items: center; gap: 6px; }
-    .user-chip { background: rgba(41,197,223,0.2); border: 1px solid rgba(41,197,223,0.5); color: #e0f7fa; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .admin-btn { background: var(--cyan-glow); color: #062833; border: none; padding: 6px 11px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; }
-    .controls { max-width: 920px; margin: 8px auto 0; }
-    .search-box { width: 100%; padding: 9px 13px; border-radius: 10px; border: none; font-size: 14px; outline: none; }
+    .qty-box button {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
 
-    /* HERO BANNER */
-    .hero-banner { max-width: 920px; margin: 12px auto 4px; padding: 0 14px; }
-    .hero-card { background: linear-gradient(120deg, var(--teal-main), #1c7893, var(--teal-dark)); border-radius: 16px; padding: 14px 16px; color: white; display: flex; justify-content: space-between; align-items: center; }
-    .live-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.28); padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #67e8f9; margin-bottom: 5px; }
-    .pulse-dot { width: 8px; height: 8px; background: #22c55e; border-radius: 50%; position: relative; }
-    .pulse-dot::after { content: ""; position: absolute; inset: -3px; border-radius: 50%; background: #22c55e; animation: pulseRing 1.5s infinite; }
-    .hero-card h2 { font-size: 17px; font-weight: 800; }
-    .hero-card p { font-size: 12px; opacity: 0.9; }
-    .hero-icon { font-size: 36px; animation: floatSlow 2.6s ease-in-out infinite; }
+    .qty-box span {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 0 4px;
+    }
 
-    /* CATEGORIES & PRODUCTS */
-    .categories { display: flex; gap: 8px; overflow-x: auto; padding: 10px 14px 4px; max-width: 920px; margin: 0 auto; scrollbar-width: none; }
-    .categories::-webkit-scrollbar { display: none; }
-    .cat-btn { background: white; border: 1.5px solid #cbd5e1; padding: 7px 14px; border-radius: 20px; font-size: 13px; white-space: nowrap; cursor: pointer; font-weight: 700; color: var(--teal-dark); }
-    .cat-btn.active { background: var(--teal-main); color: white; border-color: var(--teal-main); }
+    /* Floating Cart Bar */
+    .cart-float {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(12, 131, 31, 0.35);
+      z-index: 90;
+      cursor: pointer;
+    }
 
-    .container { max-width: 920px; margin: 10px auto; padding: 0 14px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(156px, 1fr)); gap: 12px; }
-    .card { background: var(--card); border-radius: 14px; overflow: hidden; border: 1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 3px 10px rgba(15,23,42,0.04); animation: popIn 0.3s ease; }
-    .card-img-wrap { width: 100%; height: 124px; background: #f8fafc; position: relative; overflow: hidden; border-bottom: 1px solid #f1f5f9; }
-    .card-img { width: 100%; height: 100%; object-fit: cover; }
-    .live-badge { position: absolute; top: 6px; left: 6px; background: rgba(14,63,78,0.9); color: #67e8f9; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; }
-    .card-body { padding: 10px; display: flex; flex-direction: column; flex: 1; justify-content: space-between; }
-    .card-cat { font-size: 10px; color: var(--teal-mid); font-weight: 800; text-transform: uppercase; }
-    .card-title { font-size: 14px; font-weight: 700; margin: 3px 0; line-height: 1.25; }
-    .card-unit { font-size: 12px; color: var(--muted); }
-    .card-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 9px; }
-    .price { font-size: 16px; font-weight: 800; color: var(--teal-dark); }
-    .add-btn { background: linear-gradient(135deg, var(--teal-main), var(--teal-mid)); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; }
-    .qty-box { display: flex; align-items: center; gap: 6px; background: var(--cyan-light); padding: 2px 5px; border-radius: 8px; border: 1px solid #bae6fd; }
-    .qty-btn { background: var(--teal-main); color: white; border: none; width: 24px; height: 24px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+    .cart-float.show {
+      display: flex;
+    }
 
-    /* CHECKOUT */
-    .checkout-card { background: white; border-radius: 16px; padding: 18px; margin-top: 22px; border: 1.5px solid #bae6fd; }
-    .checkout-card h2 { font-size: 18px; color: var(--teal-dark); margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
-    .cart-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; font-size: 14px; }
-    .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 800; padding-top: 10px; color: var(--teal-main); margin-bottom: 12px; }
-    .form-group { margin-bottom: 11px; }
-    .form-group label { display: block; font-size: 13px; font-weight: 700; color: var(--teal-dark); margin-bottom: 4px; }
-    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 10px; font-size: 14px; }
-    .gps-btn { background: #e0f7fa; color: var(--teal-dark); border: 1px solid #67e8f9; padding: 9px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; width: 100%; margin-bottom: 8px; }
-    .upi-box { background: #ecfeff; border: 1px solid #22d3ee; padding: 12px; border-radius: 10px; margin-bottom: 12px; display: none; font-size: 13px; }
-    .submit-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--teal-main), #1a7a96); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 800; cursor: pointer; }
-    .submit-btn:disabled { background: #94a3b8; }
+    .cart-info {
+      display: flex;
+      flex-direction: column;
+    }
 
-    /* FLOATING BAR & TOAST */
-    .floating-bar { position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); width: calc(100% - 28px); max-width: 890px; background: var(--teal-dark); color: white; padding: 12px 16px; border-radius: 14px; display: none; justify-content: space-between; align-items: center; border: 1px solid var(--cyan-glow); z-index: 99; }
-    .floating-bar.bump { animation: bump 0.3s ease; }
-    .floating-bar a { background: var(--cyan-glow); color: #062833; text-decoration: none; padding: 8px 14px; border-radius: 9px; font-weight: 800; font-size: 14px; }
-    .toast-pop { position: fixed; top: 75px; right: 14px; background: var(--teal-dark); color: #67e8f9; border: 1px solid var(--cyan-glow); padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 700; z-index: 300; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
-    .toast-pop.show { opacity: 1; }
+    .cart-info small {
+      font-size: 11px;
+      opacity: 0.9;
+    }
 
-    /* MODALS */
-    .modal { display: none; position: fixed; inset: 0; background: rgba(9,44,55,0.75); z-index: 10000; align-items: center; justify-content: center; padding: 14px; }
-    .modal-content { background: white; border-radius: 16px; padding: 18px; width: 100%; max-width: 440px; max-height: 88vh; overflow-y: auto; }
-    .preview-img { width: 80px; height: 80px; object-fit: cover; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 6px; display: none; }
-    .admin-item-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
-    .admin-item-left { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
-    .admin-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
-    .mini-btn { padding: 5px 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .mini-del { background: #fee2e2; color: #b91c1c; border-color: #fecaca; }
+    .cart-info strong {
+      font-size: 15px;
+    }
+
+    .cart-btn {
+      font-weight: 800;
+      font-size: 14px;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 7px 12px;
+      border-radius: 10px;
+    }
+
+    /* Modals & Drawers */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 120;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    @media (min-width: 640px) {
+      .modal-backdrop {
+        align-items: center;
+        padding: 16px;
+      }
+    }
+
+    .modal-sheet {
+      background: #fff;
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: slideUp 0.2s ease-out;
+    }
+
+    @media (min-width: 640px) {
+      .modal-sheet {
+        border-radius: 18px;
+      }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .close-btn {
+      background: #f3f4f6;
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Cart, Checkout, Account & Admin Elements */
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--border);
+      gap: 8px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 13.5px;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--primary);
+    }
+
+    .gps-btn {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .pay-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .pay-tab {
+      padding: 9px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: #f9fafb;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .pay-tab.active {
+      border-color: var(--primary);
+      background: #ecfdf5;
+      color: var(--primary);
+    }
+
+    .upi-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12.5px;
+    }
+
+    .upi-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+      background: #fff;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+
+    .copy-mini {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .wa-submit-btn {
+      background: #25d366;
+      color: #fff;
+      border: none;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 14.5px;
+      font-weight: 800;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .danger-btn {
+      background: #fee2e2;
+      color: var(--danger);
+      border: 1px solid #fecaca;
+      padding: 5px 9px;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .order-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fafafa;
+      font-size: 12.5px;
+    }
+
+    .admin-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      gap: 8px;
+      font-size: 12.5px;
+    }
+
+    .toast {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111827;
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      z-index: 200;
+      display: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+    }
+
+    .toast.show {
+      display: block;
+    }
   </style>
 </head>
 <body>
+  <!-- Notification Toast -->
+  <div id="toast" class="toast"></div>
 
-<!-- LOGIN GATE -->
-<div class="login-gate" id="loginGate">
-  <div class="login-box">
-    <div class="login-logo-banner" id="loginLogoHolder"></div>
-    <h2>Swagat Hai! Login Karein</h2>
-    <p class="sub">Daily essentials order karne ke liye apna naam aur number daalein</p>
-    <input type="text" id="loginName" class="login-input" placeholder="Aapka Poora Naam *" />
-    <input type="tel" id="loginPhone" class="login-input" placeholder="Mobile Number (10 digits) *" />
-    <input type="text" id="loginAddress" class="login-input" placeholder="Area / Colony (Optional)" />
-    <div class="login-err" id="loginErr"></div>
-    <button type="button" class="login-submit" onclick="completeUserLogin()">Store Me Enter Karein &rarr;</button>
-    <div class="admin-shortcut" onclick="openPinBox()">Store Owner / Admin Login</div>
-  </div>
-</div>
+  <!-- Top Brand Header -->
+  <header class="topbar">
+    <div class="brand-wrap">
+      <div class="brand-title">REQUIRED</div>
+      <div class="brand-tag">Because Life Needs It • Fast Local Delivery</div>
+    </div>
+    <div class="top-actions">
+      <button class="icon-btn" id="accountBtn" onclick="openAccountModal()">👤 Login / Orders</button>
+      <button class="icon-btn" onclick="openAdminPrompt()">⚙️ Admin</button>
+    </div>
+  </header>
 
-<div class="toast-pop" id="liveToast">✅ Basket me add ho gaya!</div>
-
-<div class="live-ticker">
-  <div class="ticker-track">⚡ REQUIRED - Because Life Needs It &nbsp;&bull;&nbsp; 🟢 Store Live &amp; Taking Orders &nbsp;&bull;&nbsp; 🚚 Fast Home Delivery &nbsp;&bull;&nbsp; 💳 FamPay UPI &amp; Cash on Delivery Available &nbsp;&bull;&nbsp; 🛒 Fresh Daily Base Essentials</div>
-</div>
-
-<header>
-  <div class="header-top">
-    <div class="brand-logo-box" id="headerLogoHolder"></div>
-    <div class="header-actions">
-      <button class="user-chip" id="userBadge" onclick="logoutUser()">👤 Guest</button>
-      <button class="admin-btn" onclick="openPinBox()">Admin</button>
+  <!-- Sticky Search & Category Filters -->
+  <div class="sticky-controls">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search atta, rice, oil, milk, snacks, soap..."
+        oninput="renderProducts()"
+      />
+    </div>
+    <div class="cat-strip" id="catStrip">
+      <button class="cat-pill active" onclick="selectCategory('All', this)">All</button>
+      <button class="cat-pill" onclick="selectCategory('Atta, Rice & Dal', this)">Atta, Rice & Dal</button>
+      <button class="cat-pill" onclick="selectCategory('Oil, Ghee & Masala', this)">Oil, Ghee & Masala</button>
+      <button class="cat-pill" onclick="selectCategory('Dairy & Bakery', this)">Dairy & Bakery</button>
+      <button class="cat-pill" onclick="selectCategory('Snacks & Biscuits', this)">Snacks & Biscuits</button>
+      <button class="cat-pill" onclick="selectCategory('Tea, Coffee & Drinks', this)">Tea, Coffee & Drinks</button>
+      <button class="cat-pill" onclick="selectCategory('Personal Care', this)">Personal Care</button>
+      <button class="cat-pill" onclick="selectCategory('Household & Cleaning', this)">Household & Cleaning</button>
     </div>
   </div>
-  <div class="controls">
-    <input type="text" id="searchInput" class="search-box" placeholder="Daily items search karein (Atta, Dal, Oil, Milk, Soap)..." oninput="renderProducts()" />
+
+  <!-- Main Product Catalog -->
+  <main class="container">
+    <div class="section-head">
+      <span id="gridTitle">All Grocery Items</span>
+      <span id="gridCount">100 items</span>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </main>
+
+  <!-- Floating Cart Summary Bar -->
+  <div class="cart-float" id="cartFloat" onclick="openCartModal()">
+    <div class="cart-info">
+      <small id="floatCount">0 items added</small>
+      <strong id="floatTotal">₹0</strong>
+    </div>
+    <div class="cart-btn">View Cart & Checkout →</div>
   </div>
-</header>
+    <!-- 1. Cart & Checkout Modal -->
+  <div class="modal-backdrop" id="cartModal" onclick="backdropClose(event, 'cartModal')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <span>🛒 Cart & Checkout</span>
+        <button class="close-btn" onclick="closeModal('cartModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="cartItemsList"></div>
 
-<div class="hero-banner">
-  <div class="hero-card">
-    <div>
-      <div class="live-pill"><span class="pulse-dot"></span> LIVE STORE OPEN</div>
-      <h2>Daily Base Essentials</h2>
-      <p>"Because Life Needs It" — Ghar baithe seedha order karein</p>
-    </div>
-    <div class="hero-icon">🛍️</div>
-  </div>
-</div>
+        <!-- Bill Summary -->
+        <div class="upi-box" id="billBox">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <span>Items Total</span>
+            <strong id="billSubtotal">₹0</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+            <span>Delivery Charge</span>
+            <strong id="billDelivery">₹0</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-top:1px solid #cbd5e1; padding-top:6px; font-size:14px;">
+            <strong>Grand Total</strong>
+            <strong style="color:var(--primary);" id="billTotal">₹0</strong>
+          </div>
+        </div>
 
-<div class="categories" id="categoryBar"></div>
+        <!-- Delivery Details -->
+        <div class="form-group">
+          <label>Customer Name *</label>
+          <input type="text" id="custName" class="form-input" placeholder="Apna poora naam likhein" />
+        </div>
 
-<div class="container">
-  <div class="grid" id="productGrid"></div>
+        <div class="form-group">
+          <label>Mobile / WhatsApp Number *</label>
+          <input type="tel" id="custPhone" class="form-input" placeholder="10-digit mobile number" maxlength="10" />
+        </div>
 
-  <div class="checkout-card" id="checkoutSection">
-    <h2>Aapka Basket &amp; Delivery Details</h2>
-    <div id="cartSummary"><p style="color:var(--muted); margin-bottom:10px;">Abhi basket khali hai. Upar se daily items add karein.</p></div>
+        <div class="form-group">
+          <label>Complete Delivery Address *</label>
+          <input type="text" id="custAddress" class="form-input" placeholder="House/Flat No, Colony, Landmark..." />
+        </div>
 
-    <div class="form-group">
-      <label>Customer ka Naam *</label>
-      <input type="text" id="custName" placeholder="Apna poora naam likhein" />
-    </div>
-    <div class="form-group">
-      <label>Mobile Number *</label>
-      <input type="tel" id="custPhone" placeholder="10-digit mobile number" />
-    </div>
-    <div class="form-group">
-      <label>Delivery Address *</label>
-      <button type="button" class="gps-btn" id="gpsBtn" onclick="getLiveLocation()">📍 Live GPS Location Auto-Fill Karein</button>
-      <textarea id="custAddress" rows="2" placeholder="Ghar ka pata, gali, landmark likhein"></textarea>
-      <input type="hidden" id="gpsLink" value="Not shared" />
-    </div>
-    <div class="form-group">
-      <label>Payment Mode</label>
-      <select id="paymentMode" onchange="toggleUpiBox()">
-        <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-        <option value="FamPay / UPI Online">FamPay / UPI Payment</option>
-      </select>
-    </div>
-    <div class="upi-box" id="upiBox">
-      <p><strong>FamPay / UPI ID:</strong> <span id="displayUpiId">yourname@fam</span></p>
-      <p style="margin-top:4px;">Upar di gayi UPI ID par pay karke Transaction ID niche daalein (optional):</p>
-      <input type="text" id="upiTxnId" placeholder="UPI Transaction / UTR Number" style="margin-top:6px; width:100%; padding:8px; border:1px solid #22d3ee; border-radius:8px;" />
-    </div>
+        <button type="button" class="gps-btn" onclick="captureGPS()">📍 Attach Live GPS Location (Faster Delivery)</button>
+        <div id="gpsStatus" style="font-size:11.5px; color:#0c831f; font-weight:600; display:none;"></div>
 
-    <button type="button" class="submit-btn" id="placeOrderBtn" onclick="submitOrderDirectly()">Confirm Order</button>
-    <p id="statusMsg" style="margin-top:10px; font-weight:700; text-align:center;"></p>
-  </div>
-</div>
+        <!-- Payment Method -->
+        <div class="form-group">
+          <label>Payment Option</label>
+          <div class="pay-tabs">
+            <div class="pay-tab active" id="tabCOD" onclick="setPaymentMethod('COD')">💵 Cash on Delivery</div>
+            <div class="pay-tab" id="tabUPI" onclick="setPaymentMethod('UPI')">📲 FamPay / UPI</div>
+          </div>
+        </div>
 
-<div class="floating-bar" id="floatingBar">
-  <div><strong id="floatCount">0 Items</strong> | <span id="floatTotal" style="color:#67e8f9; font-weight:800;">Rs. 0</span></div>
-  <a href="#checkoutSection">Checkout &rarr;</a>
-</div>
+        <!-- FamPay / UPI Box -->
+        <div class="upi-box" id="upiDetailsBox" style="display:none;">
+          <div style="font-weight:700; color:#111;">Pay via FamPay / Any UPI App:</div>
+          <div class="upi-row">
+            <span id="displayUpiId" style="font-weight:700; color:var(--primary);">required@fam</span>
+            <button type="button" class="copy-mini" onclick="copyUpiId()">Copy UPI</button>
+          </div>
+          <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">
+            <a id="upiDeepLink" href="#" class="primary-btn" style="text-decoration:none; text-align:center; flex:1;">Open UPI App to Pay</a>
+          </div>
+          <div class="form-group" style="margin-top:8px;">
+            <label>UPI Transaction / UTR ID (Optional)</label>
+            <input type="text" id="upiRefInput" class="form-input" placeholder="Payment ke baad 12-digit UTR dalen" />
+          </div>
+        </div>
 
-<!-- PIN MODAL (PIN: 2411) -->
-<div class="modal" id="pinModal">
-  <div class="modal-content" style="max-width:340px; text-align:center;">
-    <h3 style="color:var(--teal-dark); margin-bottom:8px;">Admin PIN Daalein</h3>
-    <input type="password" id="pinInput" class="login-input" placeholder="4-Digit PIN" maxlength="6" style="text-align:center; font-size:18px; letter-spacing:4px;" />
-    <div class="login-err" id="pinErr"></div>
-    <div style="display:flex; gap:8px;">
-      <button onclick="closeModal('pinModal')" style="flex:1; padding:10px; border-radius:8px; border:1px solid #cbd5e1; background:white; font-weight:700;">Cancel</button>
-      <button onclick="verifyAdminPin()" style="flex:1; padding:10px; border-radius:8px; border:none; background:var(--teal-main); color:white; font-weight:700;">Open</button>
-    </div>
-  </div>
-</div>
-
-<!-- SUCCESS MODAL -->
-<div class="modal" id="successModal">
-  <div class="modal-content" style="text-align:center;">
-    <div style="font-size:44px;">✅</div>
-    <h2 style="color:var(--teal-main); margin:6px 0;">Order Confirm Ho Gaya!</h2>
-    <p style="font-size:14px; color:#334155;">Aapka order REQUIRED store ko bhej diya gaya hai.</p>
-    <div style="background:#ecfeff; border:1px solid #67e8f9; padding:12px; border-radius:10px; margin:14px 0;">
-      <p style="font-size:12px;">Order ID</p>
-      <strong id="modalOrderId" style="font-size:21px; color:var(--teal-main);">REQ-0000</strong>
-    </div>
-    <button onclick="closeModal('successModal')" style="background:var(--teal-main); color:white; border:none; padding:11px 26px; border-radius:10px; font-weight:700;">Theek Hai</button>
-  </div>
-</div>
-
-<!-- ADMIN MODAL -->
-<div class="modal" id="adminModal">
-  <div class="modal-content">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="color:var(--teal-dark);">REQUIRED Admin Panel</h3>
-      <button onclick="closeModal('adminModal')" style="border:none; background:none; font-size:24px; cursor:pointer;">&times;</button>
-    </div>
-    <div class="form-group">
-      <label>Store Logo Image Update Karein (Optional)</label>
-      <input type="file" accept="image/*" onchange="handleLogoUpload(event)" />
-    </div>
-    <div class="form-group">
-      <label>FamPay / UPI ID Update Karein</label>
-      <div style="display:flex; gap:6px;">
-        <input type="text" id="adminUpiInput" placeholder="e.g. 9876543210@fam" />
-        <button onclick="saveUpiSettings()" style="background:var(--teal-dark); color:white; border:none; padding:0 14px; border-radius:8px; font-weight:700;">Save</button>
+        <button type="button" class="wa-submit-btn" onclick="placeWhatsAppOrder()">
+          ✅ Place Order on WhatsApp
+        </button>
       </div>
     </div>
-    <hr style="margin:12px 0; border:none; border-top:1px solid #e2e8f0;" />
-    <h4 style="margin-bottom:8px; color:var(--teal-dark);">Naya Product + Real Photo Add Karein</h4>
-    <div class="form-group">
-      <input type="text" id="newProdName" placeholder="Product Name" style="margin-bottom:6px;" />
-      <input type="text" id="newProdCat" placeholder="Category (e.g. Oil & Masala)" style="margin-bottom:6px;" />
-      <div style="display:flex; gap:6px; margin-bottom:6px;">
-        <input type="text" id="newProdUnit" placeholder="Weight/Unit (e.g. 1 Kg)" />
-        <input type="number" id="newProdPrice" placeholder="Price Rs." />
-      </div>
-      <label>Phone Gallery / Camera se Real Photo:</label>
-      <input type="file" id="newProdFile" accept="image/*" onchange="handleNewImageUpload(event)" />
-      <img id="newProdPreview" class="preview-img" alt="Preview" />
-      <input type="text" id="newProdUrl" placeholder="Ya Image URL Paste Karein (Optional)" style="margin-top:6px;" oninput="handleUrlPreview(this.value)" />
-      <button onclick="addNewProduct()" style="margin-top:10px; width:100%; background:var(--teal-main); color:white; border:none; padding:11px; border-radius:10px; font-weight:700;">+ Product Add Karein</button>
-    </div>
-    <hr style="margin:12px 0; border:none; border-top:1px solid #e2e8f0;" />
-    <h4 style="margin-bottom:6px; color:var(--teal-dark);">Products ki Photo Badlein / Hatayein</h4>
-    <input type="file" id="editProdFile" accept="image/*" style="display:none;" onchange="handleExistingImageChange(event)" />
-    <div id="adminProductList"></div>
   </div>
-</div>
 
-<script>
-  const STORE_EMAIL = "Fazalrab56@gmail.com";
-  const ADMIN_PIN = "2411";
+  <!-- 2. Login / Signup & Order History Modal -->
+  <div class="modal-backdrop" id="accountModal" onclick="backdropClose(event, 'accountModal')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <span>👤 Account & Order History</span>
+        <button class="close-btn" onclick="closeModal('accountModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Login / Signup Form -->
+        <div id="authSection" style="display:flex; flex-direction:column; gap:10px;">
+          <p style="font-size:12.5px; color:var(--muted);">
+            Login ya naya account banayein taaki aapke purane orders aur reorder history save rahein.
+          </p>
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" id="authName" class="form-input" placeholder="Enter your name" />
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="tel" id="authPhone" class="form-input" placeholder="10-digit mobile number" maxlength="10" />
+          </div>
+          <div class="form-group">
+            <label>4-Digit PIN</label>
+            <input type="password" id="authPin" class="form-input" placeholder="Create or enter 4-digit PIN" maxlength="4" />
+          </div>
+          <button type="button" class="primary-btn" onclick="handleAuth()">Login / Create Account</button>
+        </div>
 
-  const brandSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 125" style="width:100%;height:auto;display:block;"><polygon points="58,12 12,48 24,48 58,21 92,48 104,48" fill="#fff"/><rect x="24" y="48" width="68" height="62" rx="4" fill="rgba(255,255,255,0.18)" stroke="#fff" stroke-width="2.5"/><rect x="43" y="56" width="28" height="24" rx="2" fill="#135063" stroke="#fff" stroke-width="2"/><line x1="57" y1="56" x2="57" y2="80" stroke="#fff" stroke-width="1.8"/><line x1="43" y1="68" x2="71" y2="68" stroke="#fff" stroke-width="1.8"/><rect x="28" y="62" width="10" height="20" rx="2" fill="#fff"/><rect x="76" y="60" width="11" height="22" rx="3" fill="#fff"/><circle cx="35" cy="96" r="8" fill="#fff"/><rect x="48" y="87" width="18" height="19" rx="2" fill="#fff"/><rect x="72" y="88" width="14" height="18" rx="2" fill="#fff"/><text x="118" y="58" font-family="Arial,sans-serif" font-size="36" font-weight="900" fill="#fff">RE<tspan fill="#38d9f5">Q</tspan>UIRED</text><path d="M138,68 L162,88 C205,74 265,64 335,62 C265,72 205,84 160,97 L132,74 Z" fill="#67e8f9"/><text x="232" y="112" font-family="Arial,sans-serif" font-size="13.5" font-weight="700" fill="#e0f7fa" text-anchor="middle">"Because Life Needs It"</text></svg>';
+        <!-- Logged-In Profile & Orders -->
+        <div id="profileSection" style="display:none; flex-direction:column; gap:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; background:#ecfdf5; padding:10px 12px; border-radius:10px;">
+            <div>
+              <strong id="userWelcome" style="color:var(--primary); font-size:14px;">Welcome!</strong>
+              <div id="userPhoneDisplay" style="font-size:12px; color:#374151;"></div>
+            </div>
+            <button type="button" class="danger-btn" onclick="logoutUser()">Logout</button>
+          </div>
+          <div style="font-weight:800; font-size:13.5px;">Past Orders (Tap Reorder to Add Again)</div>
+          <div id="orderHistoryList" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  function safeGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function safeSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-  function safeDel(k) { try { localStorage.removeItem(k); } catch (e) {} }
+  <!-- 3. Admin Panel Modal (PIN: 2411) -->
+  <div class="modal-backdrop" id="adminModal" onclick="backdropClose(event, 'adminModal')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <span>⚙️ Admin Panel — REQUIRED</span>
+        <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <!-- Store Configuration -->
+        <div class="upi-box" style="display:flex; flex-direction:column; gap:8px;">
+          <strong style="font-size:13px;">Store Payment & WhatsApp Settings</strong>
+          <div class="form-group">
+            <label>WhatsApp Order Number (with 91, e.g. 919876543210)</label>
+            <input type="text" id="adminWaInput" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>FamPay / Merchant UPI ID</label>
+            <input type="text" id="adminUpiInput" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>Delivery Charge (₹)</label>
+            <input type="number" id="adminDelFeeInput" class="form-input" />
+          </div>
+          <button type="button" class="primary-btn" onclick="saveStoreSettings()">Save Store Settings</button>
+        </div>
 
-  function makePackImg(title, sub, c1, c2) {
-    const s = '<svg xmlns="http://www.w3.org/2000/svg" width="300" height="220" viewBox="0 0 300 220"><rect width="300" height="220" fill="#eef6f8"/><rect x="60" y="16" width="180" height="188" rx="16" fill="' + c1 + '"/><rect x="60" y="110" width="180" height="94" rx="16" fill="' + c2 + '"/><text x="150" y="88" font-family="sans-serif" font-size="20" font-weight="800" fill="#fff" text-anchor="middle">' + title + '</text><text x="150" y="115" font-family="sans-serif" font-size="13" font-weight="600" fill="#e0f7fa" text-anchor="middle">' + sub + '</text><rect x="95" y="152" width="110" height="24" rx="6" fill="#fff"/><text x="150" y="168" font-family="sans-serif" font-size="11" font-weight="800" fill="' + c2 + '" text-anchor="middle">REQUIRED</text></svg>';
-    return "data:image/svg+xml;utf8," + encodeURIComponent(s);
-  }
+        <!-- Add New Product -->
+        <div class="upi-box" style="display:flex; flex-direction:column; gap:8px;">
+          <strong style="font-size:13px;">+ Add New Grocery Product</strong>
+          <input type="text" id="newProdName" class="form-input" placeholder="Product Name (e.g. Aashirvaad Atta)" />
+          <select id="newProdCat" class="form-input">
+            <option value="Atta, Rice & Dal">Atta, Rice & Dal</option>
+            <option value="Oil, Ghee & Masala">Oil, Ghee & Masala</option>
+            <option value="Dairy & Bakery">Dairy & Bakery</option>
+            <option value="Snacks & Biscuits">Snacks & Biscuits</option>
+            <option value="Tea, Coffee & Drinks">Tea, Coffee & Drinks</option>
+            <option value="Personal Care">Personal Care</option>
+            <option value="Household & Cleaning">Household & Cleaning</option>
+          </select>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <input type="text" id="newProdUnit" class="form-input" placeholder="Unit (e.g. 5 kg)" />
+            <input type="number" id="newProdPrice" class="form-input" placeholder="Price ₹" />
+          </div>
+          <input type="text" id="newProdImg" class="form-input" placeholder="Image URL (optional)" />
+          <button type="button" class="primary-btn" onclick="adminAddProduct()">Add Item to Store</button>
+        </div>
 
-  const baseItems = [
-    [1,"Aashirvaad Chakki Atta","Atta & Rice","5 Kg",245,"#d97706","#92400e"],
-    [2,"India Gate Basmati Rice","Atta & Rice","1 Kg",115,"#0d9488","#115e59"],
-    [3,"Toor / Arhar Dal","Atta & Rice","1 Kg",165,"#eab308","#a16207"],
-    [4,"Moong Dal Yellow","Atta & Rice","1 Kg",135,"#ca8a04","#854d0e"],
-    [5,"Chana Dal Super","Atta & Rice","1 Kg",98,"#d97706","#78350f"],
-    [6,"Fortune Thick Poha","Atta & Rice","500g",42,"#0284c7","#075985"],
-    [7,"Fortune Sunlite Oil","Oil & Masala","1 Litre",138,"#f59e0b","#b45309"],
-    [8,"Kachi Ghani Mustard Oil","Oil & Masala","1 Litre",155,"#eab308","#713f12"],
-    [9,"Amul Pure Cow Ghee","Oil & Masala","500 ml",325,"#f59e0b","#92400e"],
-    [10,"Tata Salt Iodized","Oil & Masala","1 Kg",28,"#0284c7","#1e3a8a"],
-    [11,"MDH Haldi Powder","Oil & Masala","200g",64,"#eab308","#a16207"],
-    [12,"Everest Mirchi Powder","Oil & Masala","200g",88,"#dc2626","#991b1b"],
-    [13,"Whole Jeera / Cumin","Oil & Masala","100g",55,"#78350f","#451a03"],
-    [14,"Refined White Sugar","Oil & Masala","1 Kg",48,"#0891b2","#164e63"],
-    [15,"Amul Taaza Milk","Dairy & Tea","500 ml",28,"#2563eb","#1d4ed8"],
-    [16,"Amul Pasteurised Butter","Dairy & Tea","100g",58,"#facc15","#ca8a04"],
-    [17,"Amul Fresh Paneer","Dairy & Tea","200g",92,"#0284c7","#0369a1"],
-    [18,"Fresh Sandwich Bread","Dairy & Tea","400g",40,"#d97706","#92400e"],
-    [19,"Tata Tea Gold","Dairy & Tea","250g",140,"#15803d","#14532d"],
-    [20,"Nescafe Classic Coffee","Dairy & Tea","50g",165,"#7f1d1d","#450a0a"],
-    [21,"Maggi Masala Noodles","Snacks & Drinks","Pack of 4",56,"#eab308","#b91c1c"],
-    [22,"Parle-G Gold Biscuits","Snacks & Drinks","250g",30,"#f97316","#9a3412"],
-    [23,"Britannia Good Day","Snacks & Drinks","200g",40,"#2563eb","#1e40af"],
-    [24,"Haldiram Aloo Bhujia","Snacks & Drinks","200g",55,"#dc2626","#7f1d1d"],
-    [25,"Real Mixed Fruit Juice","Snacks & Drinks","1 Litre",115,"#16a34a","#14532d"],
-    [26,"Surf Excel Easy Wash","Home & Care","1 Kg",135,"#0ea5e9","#0369a1"],
-    [27,"Vim Dishwash Gel","Home & Care","750 ml",155,"#eab308","#854d0e"],
-    [28,"Lizol Floor Cleaner","Home & Care","500 ml",105,"#0891b2","#155e75"],
-    [29,"Colgate Strong Teeth","Home & Care","200g",112,"#dc2626","#991b1b"],
-    [30,"Lifebuoy Soap Pack","Home & Care","4 x 125g",136,"#e11d48","#881337"]
-  ];
+        <!-- Manage Existing Catalog -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:13px;">Manage Catalog Items</strong>
+          <button type="button" class="danger-btn" onclick="resetCatalog()">Reset Default 100</button>
+        </div>
+        <input type="text" id="adminSearchInput" class="form-input" placeholder="Search item to edit price or delete..." oninput="renderAdminProducts()" />
+        <div id="adminProductList" style="display:flex; flex-direction:column; gap:6px;"></div>
+      </div>
+    </div>
+  </div>
+    <script>
+    // ==========================================
+    // STORE CONFIGURATION & STORAGE KEYS
+    // ==========================================
+    const ADMIN_PIN = "2411";
 
-  const defaultProducts = baseItems.map(x => ({
-    id: x[0], name: x[1], cat: x[2], unit: x[3], price: x[4],
-    image: makePackImg(x[1].slice(0,14).toUpperCase(), x[3], x[5], x[6])
-  }));
-
-  let products = JSON.parse(safeGet("req_prods_v4") || "null") || defaultProducts;
-  let storeUpi = safeGet("req_upi") || "yourname@fam";
-  let customLogo = safeGet("req_logo") || "";
-  let currentUser = JSON.parse(safeGet("req_user") || "null");
-  let cart = {};
-  let activeCategory = "All";
-  let uploadedBase64 = "";
-  let editingProductId = null;
-
-  document.getElementById("displayUpiId").innerText = storeUpi;
-
-  function renderLogos() {
-    const l1 = document.getElementById("loginLogoHolder");
-    const l2 = document.getElementById("headerLogoHolder");
-    if (customLogo) {
-      l1.innerHTML = '<img src="' + customLogo + '" style="max-height:90px;max-width:100%;border-radius:10px;" />';
-      l2.innerHTML = '<img src="' + customLogo + '" />';
-    } else {
-      l1.innerHTML = brandSvg;
-      l2.innerHTML = brandSvg;
-    }
-  }
-
-  function initLogin() {
-    renderLogos();
-    if (currentUser && currentUser.name) {
-      document.getElementById("loginGate").classList.add("hidden");
-      applyUser(currentUser);
-    }
-  }
-
-  function completeUserLogin() {
-    const name = document.getElementById("loginName").value.trim();
-    const rawPhone = document.getElementById("loginPhone").value.replace(/\D/g, "");
-    const address = document.getElementById("loginAddress").value.trim();
-    const errEl = document.getElementById("loginErr");
-
-    if (!name) {
-      errEl.innerText = "Kripya apna naam likhein!";
-      return;
-    }
-    if (rawPhone.length < 10) {
-      errEl.innerText = "Kripya sahi 10-digit mobile number daalein!";
-      return;
-    }
-    errEl.innerText = "";
-    const phone = rawPhone.slice(-10);
-    currentUser = { name, phone, address };
-    safeSet("req_user", JSON.stringify(currentUser));
-    applyUser(currentUser);
-    document.getElementById("loginGate").classList.add("hidden");
-    showToast("Welcome " + name + "!");
-  }
-
-  function applyUser(u) {
-    document.getElementById("userBadge").innerText = "👤 " + u.name.split(" ")[0] + " (Logout)";
-    document.getElementById("custName").value = u.name;
-    document.getElementById("custPhone").value = u.phone;
-    if (u.address && !document.getElementById("custAddress").value) {
-      document.getElementById("custAddress").value = u.address;
-    }
-  }
-
-  function logoutUser() {
-    safeDel("req_user");
-    currentUser = null;
-    document.getElementById("loginGate").classList.remove("hidden");
-  }
-    let toastT = null;
-  function showToast(msg) {
-    const t = document.getElementById("liveToast");
-    t.innerText = msg;
-    t.classList.add("show");
-    clearTimeout(toastT);
-    toastT = setTimeout(() => t.classList.remove("show"), 1600);
-  }
-
-  function compressImg(file, maxSide, cb) {
-    const r = new FileReader();
-    r.onload = function(e) {
-      const img = new Image();
-      img.onload = function() {
-        const c = document.createElement("canvas");
-        let w = img.width, h = img.height;
-        if (w > h && w > maxSide) { h = Math.round(h * maxSide / w); w = maxSide; }
-        else if (h > maxSide) { w = Math.round(w * maxSide / h); h = maxSide; }
-        c.width = w; c.height = h;
-        c.getContext("2d").drawImage(img, 0, 0, w, h);
-        cb(c.toDataURL("image/jpeg", 0.78));
-      };
-      img.src = e.target.result;
+    const STORAGE_KEYS = {
+      CONFIG: "required_store_config_v1",
+      PRODUCTS: "required_store_products_v1",
+      CART: "required_store_cart_v1",
+      USER: "required_store_user_v1",
+      USERS_DB: "required_store_users_db_v1",
+      ORDERS: "required_store_orders_v1"
     };
-    r.readAsDataURL(file);
-  }
 
-  function handleLogoUpload(ev) {
-    if (!ev.target.files[0]) return;
-    compressImg(ev.target.files[0], 340, function(url) {
-      customLogo = url;
-      safeSet("req_logo", url);
-      renderLogos();
-      alert("Logo update ho gaya!");
-    });
-  }
+    const DEFAULT_CONFIG = {
+      storeName: "REQUIRED",
+      whatsappNumber: "919876543210", // Admin Panel se apna WhatsApp number update karein
+      upiId: "required@fam",
+      deliveryFee: 20,
+      freeDeliveryAbove: 499
+    };
 
-  function handleNewImageUpload(ev) {
-    if (!ev.target.files[0]) return;
-    compressImg(ev.target.files[0], 380, function(url) {
-      uploadedBase64 = url;
-      const p = document.getElementById("newProdPreview");
-      p.src = url; p.style.display = "block";
-    });
-  }
-
-  function handleUrlPreview(url) {
-    if (url.trim()) {
-      const p = document.getElementById("newProdPreview");
-      p.src = url.trim(); p.style.display = "block";
+    // SVG Fallback Generator (Taaki bina internet image links ke bhi har item saaf dikhe)
+    function makeItemSVG(emoji, bg) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="120" viewBox="0 0 160 120">
+        <rect width="160" height="120" rx="14" fill="${bg || '#f0fdf4'}"/>
+        <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle" font-size="48">${emoji}</text>
+      </svg>`;
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
     }
-  }
 
-  function renderCategories() {
-    const cats = ["All", ...new Set(products.map(p => p.cat))];
-    document.getElementById("categoryBar").innerHTML = cats.map(c =>
-      '<button class="cat-btn ' + (c === activeCategory ? 'active' : '') + '" onclick="setCategory(\'' + c + '\')">' + c + '</button>'
-    ).join("");
-  }
-
-  function setCategory(c) { activeCategory = c; renderCategories(); renderProducts(); }
-
-  function renderProducts() {
-    const q = document.getElementById("searchInput").value.toLowerCase();
-    const list = products.filter(p => (activeCategory === "All" || p.cat === activeCategory) && (p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)));
-    document.getElementById("productGrid").innerHTML = list.map(p => {
-      const qty = cart[p.id] || 0;
-      const btnHtml = qty === 0
-        ? '<button class="add-btn" onclick="updateQty(' + p.id + ',1)">+ Add</button>'
-        : '<div class="qty-box"><button class="qty-btn" onclick="updateQty(' + p.id + ',-1)">-</button><strong>' + qty + '</strong><button class="qty-btn" onclick="updateQty(' + p.id + ',1)">+</button></div>';
-      return '<div class="card"><div class="card-img-wrap"><span class="live-badge">⚡ Daily</span><img class="card-img" src="' + p.image + '" alt="' + p.name + '" /></div><div class="card-body"><div><div class="card-cat">' + p.cat + '</div><div class="card-title">' + p.name + '</div><div class="card-unit">' + p.unit + '</div></div><div class="card-bottom"><span class="price">Rs.' + p.price + '</span>' + btnHtml + '</div></div></div>';
-    }).join("");
+    function getProductImage(item) {
+      if (item.img && item.img.trim().startsWith("http")) {
+        return item.img.trim();
       }
-
-  function updateQty(id, d) {
-    const n = (cart[id] || 0) + d;
-    if (n <= 0) delete cart[id];
-    else {
-      cart[id] = n;
-      const p = products.find(x => x.id === id);
-      if (d > 0 && p) showToast("✅ " + p.name + " (" + n + ") added!");
+      return makeItemSVG(item.emoji || "🛒", item.bg || "#f3f4f6");
     }
-    renderProducts(); renderCart(d > 0);
-  }
 
-  function getCart() {
-    let items = [], total = 0, count = 0;
-    for (const [id, qty] of Object.entries(cart)) {
-      const p = products.find(x => x.id == id);
-      if (p) { total += p.price * qty; count += qty; items.push({ name: p.name, unit: p.unit, qty, sub: p.price * qty }); }
+    // ==========================================
+    // COMPLETE 100-ITEM GROCERY CATALOG
+    // ==========================================
+    const DEFAULT_PRODUCTS = [
+      // 1. Atta, Rice & Dal (1 - 16)
+      { id: 1, name: "Aashirvaad Shudh Chakki Atta", cat: "Atta, Rice & Dal", unit: "5 kg", price: 245, badge: "Bestseller", emoji: "🌾", bg: "#fef3c7", img: "" },
+      { id: 2, name: "Fortune Chakki Fresh Atta", cat: "Atta, Rice & Dal", unit: "10 kg", price: 440, badge: "Value Pack", emoji: "🌾", bg: "#fef3c7", img: "" },
+      { id: 3, name: "India Gate Basmati Rice Dubar", cat: "Atta, Rice & Dal", unit: "1 kg", price: 115, badge: "", emoji: "🍚", bg: "#f3f4f6", img: "" },
+      { id: 4, name: "Daawat Rozana Basmati Rice", cat: "Atta, Rice & Dal", unit: "5 kg", price: 365, badge: "Popular", emoji: "🍚", bg: "#f3f4f6", img: "" },
+      { id: 5, name: "Daily Kolam Steam Rice", cat: "Atta, Rice & Dal", unit: "5 kg", price: 290, badge: "", emoji: "🍚", bg: "#f3f4f6", img: "" },
+      { id: 6, name: "Toor / Arhar Dal Unpolished", cat: "Atta, Rice & Dal", unit: "1 kg", price: 168, badge: "Fresh Stock", emoji: "🫘", bg: "#fef9c3", img: "" },
+      { id: 7, name: "Moong Dal Yellow Split", cat: "Atta, Rice & Dal", unit: "1 kg", price: 132, badge: "", emoji: "🟡", bg: "#fef9c3", img: "" },
+      { id: 8, name: "Chana Dal Premium", cat: "Atta, Rice & Dal", unit: "1 kg", price: 98, badge: "", emoji: "🟡", bg: "#fef3c7", img: "" },
+      { id: 9, name: "Masoor Dal Red Split", cat: "Atta, Rice & Dal", unit: "1 kg", price: 108, badge: "", emoji: "🟠", bg: "#ffedd5", img: "" },
+      { id: 10, name: "Urad Dal White Split", cat: "Atta, Rice & Dal", unit: "1 kg", price: 145, badge: "", emoji: "⚪", bg: "#f3f4f6", img: "" },
+      { id: 11, name: "Kabuli Chana / Safed Chole", cat: "Atta, Rice & Dal", unit: "1 kg", price: 148, badge: "", emoji: "🫘", bg: "#fef3c7", img: "" },
+      { id: 12, name: "Rajma Chitra Premium", cat: "Atta, Rice & Dal", unit: "1 kg", price: 155, badge: "", emoji: "🫘", bg: "#fee2e2", img: "" },
+      { id: 13, name: "Mota Poha / Thick Flattened Rice", cat: "Atta, Rice & Dal", unit: "1 kg", price: 58, badge: "", emoji: "🥣", bg: "#f3f4f6", img: "" },
+      { id: 14, name: "Sooji / Rava Fine", cat: "Atta, Rice & Dal", unit: "500 g", price: 32, badge: "", emoji: "🌾", bg: "#fef9c3", img: "" },
+      { id: 15, name: "Fortune Besan Gram Flour", cat: "Atta, Rice & Dal", unit: "1 kg", price: 95, badge: "", emoji: "🟡", bg: "#fef3c7", img: "" },
+      { id: 16, name: "Sabudana / Sago Pearls", cat: "Atta, Rice & Dal", unit: "500 g", price: 48, badge: "", emoji: "⚪", bg: "#f3f4f6", img: "" },
+
+      // 2. Oil, Ghee & Masala (17 - 32)
+      { id: 17, name: "Fortune Sunlite Sunflower Oil", cat: "Oil, Ghee & Masala", unit: "1 L", price: 138, badge: "Top Pick", emoji: "🌻", bg: "#fef9c3", img: "" },
+      { id: 18, name: "Fortune Kachi Ghani Mustard Oil", cat: "Oil, Ghee & Masala", unit: "1 L", price: 155, badge: "", emoji: "🧴", bg: "#fef3c7", img: "" },
+      { id: 19, name: "Saffola Gold Blended Oil", cat: "Oil, Ghee & Masala", unit: "1 L", price: 165, badge: "", emoji: "🛢️", bg: "#fef9c3", img: "" },
+      { id: 20, name: "Amul Pure Cow Ghee Pouch", cat: "Oil, Ghee & Masala", unit: "1 L", price: 615, badge: "Pure Ghee", emoji: "🧈", bg: "#fef3c7", img: "" },
+      { id: 21, name: "Patanjali Cow Ghee Jar", cat: "Oil, Ghee & Masala", unit: "500 ml", price: 330, badge: "", emoji: "🍯", bg: "#fef3c7", img: "" },
+      { id: 22, name: "Tata Sampann Turmeric Powder", cat: "Oil, Ghee & Masala", unit: "200 g", price: 68, badge: "", emoji: "🟡", bg: "#fef08a", img: "" },
+      { id: 23, name: "Everest Tikhalal Chilli Powder", cat: "Oil, Ghee & Masala", unit: "200 g", price: 88, badge: "", emoji: "🌶️", bg: "#fee2e2", img: "" },
+      { id: 24, name: "MDH Deggi Mirch Powder", cat: "Oil, Ghee & Masala", unit: "100 g", price: 86, badge: "", emoji: "🌶️", bg: "#fee2e2", img: "" },
+      { id: 25, name: "Catch Coriander / Dhaniya Powder", cat: "Oil, Ghee & Masala", unit: "200 g", price: 62, badge: "", emoji: "🌿", bg: "#dcfce7", img: "" },
+      { id: 26, name: "Everest Garam Masala", cat: "Oil, Ghee & Masala", unit: "100 g", price: 84, badge: "", emoji: "🧂", bg: "#ffedd5", img: "" },
+      { id: 27, name: "MDH Kitchen King Masala", cat: "Oil, Ghee & Masala", unit: "100 g", price: 82, badge: "", emoji: "🍛", bg: "#ffedd5", img: "" },
+      { id: 28, name: "Tata Iodized Salt", cat: "Oil, Ghee & Masala", unit: "1 kg", price: 28, badge: "Essential", emoji: "🧂", bg: "#e0f2fe", img: "" },
+      { id: 29, name: "Whole Jeera / Cumin Seeds", cat: "Oil, Ghee & Masala", unit: "200 g", price: 96, badge: "", emoji: "🌱", bg: "#fef3c7", img: "" },
+      { id: 30, name: "Rai / Black Mustard Seeds", cat: "Oil, Ghee & Masala", unit: "200 g", price: 34, badge: "", emoji: "⚫", bg: "#f3f4f6", img: "" },
+      { id: 31, name: "Refined White Sugar / Cheeni", cat: "Oil, Ghee & Masala", unit: "1 kg", price: 46, badge: "", emoji: "🧊", bg: "#f3f4f6", img: "" },
+      { id: 32, name: "Desi Jaggery / Gud Cubes", cat: "Oil, Ghee & Masala", unit: "500 g", price: 45, badge: "", emoji: "🟫", bg: "#ffedd5", img: "" },
+
+      // 3. Dairy & Bakery (33 - 45)
+      { id: 33, name: "Amul Taaza Toned Milk", cat: "Dairy & Bakery", unit: "1 L", price: 72, badge: "Daily", emoji: "🥛", bg: "#e0f2fe", img: "" },
+      { id: 34, name: "Amul Gold Full Cream Milk", cat: "Dairy & Bakery", unit: "500 ml", price: 34, badge: "", emoji: "🥛", bg: "#fee2e2", img: "" },
+      { id: 35, name: "Amul Pasteurised Butter", cat: "Dairy & Bakery", unit: "100 g", price: 58, badge: "Bestseller", emoji: "🧈", bg: "#fef9c3", img: "" },
+      { id: 36, name: "Amul Fresh Malai Paneer", cat: "Dairy & Bakery", unit: "200 g", price: 92, badge: "Fresh", emoji: "🧀", bg: "#f3f4f6", img: "" },
+      { id: 37, name: "Amul Cheese Slices (10 pcs)", cat: "Dairy & Bakery", unit: "200 g", price: 140, badge: "", emoji: "🧀", bg: "#fef3c7", img: "" },
+      { id: 38, name: "Amul Masti Dahi Cup", cat: "Dairy & Bakery", unit: "400 g", price: 38, badge: "", emoji: "🥣", bg: "#e0f2fe", img: "" },
+      { id: 39, name: "Harvest Gold White Bread", cat: "Dairy & Bakery", unit: "400 g", price: 45, badge: "", emoji: "🍞", bg: "#fef3c7", img: "" },
+      { id: 40, name: "Britannia 100% Whole Wheat Bread", cat: "Dairy & Bakery", unit: "400 g", price: 55, badge: "Healthy", emoji: "🍞", bg: "#ffedd5", img: "" },
+      { id: 41, name: "Fresh Farm White Eggs (6 pcs)", cat: "Dairy & Bakery", unit: "6 pcs", price: 48, badge: "", emoji: "🥚", bg: "#f3f4f6", img: "" },
+      { id: 42, name: "Fresh Farm White Eggs Tray", cat: "Dairy & Bakery", unit: "30 pcs", price: 210, badge: "Saver", emoji: "🥚", bg: "#fef3c7", img: "" },
+      { id: 43, name: "Britannia Toastea Rusk", cat: "Dairy & Bakery", unit: "300 g", price: 52, badge: "", emoji: "🥖", bg: "#ffedd5", img: "" },
+      { id: 44, name: "Amul Kool Elaichi Milk Bottle", cat: "Dairy & Bakery", unit: "180 ml", price: 25, badge: "", emoji: "🍼", bg: "#dcfce7", img: "" },
+      { id: 45, name: "Nestle Milkmaid Condensed Milk", cat: "Dairy & Bakery", unit: "380 g", price: 144, badge: "", emoji: "🥫", bg: "#e0f2fe", img: "" },
+
+      // 4. Snacks & Biscuits (46 - 60)
+      { id: 46, name: "Maggi 2-Minute Masala Noodles (4 Pack)", cat: "Snacks & Biscuits", unit: "280 g", price: 56, badge: "Hot", emoji: "🍜", bg: "#fef08a", img: "" },
+      { id: 47, name: "Sunfeast YiPPee! Magic Masala (4 Pack)", cat: "Snacks & Biscuits", unit: "240 g", price: 48, badge: "", emoji: "🍜", bg: "#ffedd5", img: "" },
+      { id: 48, name: "Parle-G Gold Family Pack", cat: "Snacks & Biscuits", unit: "1 kg", price: 95, badge: "Value", emoji: "🍪", bg: "#fef3c7", img: "" },
+      { id: 49, name: "Britannia Good Day Cashew", cat: "Snacks & Biscuits", unit: "200 g", price: 40, badge: "", emoji: "🍪", bg: "#fef9c3", img: "" },
+      { id: 50, name: "Cadbury Oreo Vanilla Creme", cat: "Snacks & Biscuits", unit: "120 g", price: 35, badge: "", emoji: "🍪", bg: "#dbeafe", img: "" },
+      { id: 51, name: "Sunfeast Dark Fantasy Choco Fills", cat: "Snacks & Biscuits", unit: "75 g", price: 40, badge: "", emoji: "🍫", bg: "#ffedd5", img: "" },
+      { id: 52, name: "Lay's India's Magic Masala Chips", cat: "Snacks & Biscuits", unit: "50 g", price: 20, badge: "", emoji: "🥔", bg: "#dbeafe", img: "" },
+      { id: 53, name: "Kurkure Masala Munch", cat: "Snacks & Biscuits", unit: "75 g", price: 20, badge: "", emoji: "🌶️", bg: "#ffedd5", img: "" },
+      { id: 54, name: "Haldiram's Aloo Bhujia", cat: "Snacks & Biscuits", unit: "200 g", price: 55, badge: "Popular", emoji: "🥨", bg: "#fee2e2", img: "" },
+      { id: 55, name: "Haldiram's Khatta Meetha Mixture", cat: "Snacks & Biscuits", unit: "200 g", price: 50, badge: "", emoji: "🥜", bg: "#fef3c7", img: "" },
+      { id: 56, name: "Kissan Fresh Tomato Ketchup", cat: "Snacks & Biscuits", unit: "950 g", price: 125, badge: "", emoji: "🍅", bg: "#fee2e2", img: "" },
+      { id: 57, name: "Ching's Dark Soy Sauce", cat: "Snacks & Biscuits", unit: "200 g", price: 45, badge: "", emoji: "🍾", bg: "#f3f4f6", img: "" },
+      { id: 58, name: "Kellogg's Corn Flakes Original", cat: "Snacks & Biscuits", unit: "250 g", price: 105, badge: "", emoji: "🥣", bg: "#fef9c3", img: "" },
+      { id: 59, name: "Saffola Masala Oats Classic", cat: "Snacks & Biscuits", unit: "500 g", price: 165, badge: "", emoji: "🥣", bg: "#dcfce7", img: "" },
+      { id: 60, name: "Cadbury Dairy Milk Silk Chocolate", cat: "Snacks & Biscuits", unit: "60 g", price: 85, badge: "", emoji: "🍫", bg: "#ede9fe", img: "" },
+
+      // 5. Tea, Coffee & Drinks (61 - 72)
+      { id: 61, name: "Tata Tea Gold Leaf Tea", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 265, badge: "Bestseller", emoji: "🍵", bg: "#fef3c7", img: "" },
+      { id: 62, name: "Brooke Bond Red Label Tea", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 235, badge: "", emoji: "🍵", bg: "#fee2e2", img: "" },
+      { id: 63, name: "Taj Mahal Rich Tea Box", cat: "Tea, Coffee & Drinks", unit: "250 g", price: 165, badge: "", emoji: "☕", bg: "#ffedd5", img: "" },
+      { id: 64, name: "Nescafe Classic Instant Coffee Jar", cat: "Tea, Coffee & Drinks", unit: "50 g", price: 160, badge: "", emoji: "☕", bg: "#fee2e2", img: "" },
+      { id: 65, name: "Bru Instant Coffee Pouch", cat: "Tea, Coffee & Drinks", unit: "50 g", price: 115, badge: "", emoji: "☕", bg: "#dcfce7", img: "" },
+      { id: 66, name: "Cadbury Bournvita Jar", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 235, badge: "", emoji: "🥤", bg: "#ffedd5", img: "" },
+      { id: 67, name: "Horlicks Classic Malt Refill", cat: "Tea, Coffee & Drinks", unit: "500 g", price: 245, badge: "", emoji: "🥛", bg: "#dbeafe", img: "" },
+      { id: 68, name: "Real Fruit Power Mixed Fruit", cat: "Tea, Coffee & Drinks", unit: "1 L", price: 115, badge: "", emoji: "🧃", bg: "#ffedd5", img: "" },
+      { id: 69, name: "Tropicana 100% Orange Juice", cat: "Tea, Coffee & Drinks", unit: "1 L", price: 130, badge: "", emoji: "🍊", bg: "#fef3c7", img: "" },
+      { id: 70, name: "Coca-Cola Soft Drink Bottle", cat: "Tea, Coffee & Drinks", unit: "750 ml", price: 40, badge: "Chilled", emoji: "🥤", bg: "#fee2e2", img: "" },
+      { id: 71, name: "Sprite Lemon-Lime Soft Drink", cat: "Tea, Coffee & Drinks", unit: "750 ml", price: 40, badge: "", emoji: "🍋", bg: "#dcfce7", img: "" },
+      { id: 72, name: "Hamdard Rooh Afza Sharbat", cat: "Tea, Coffee & Drinks", unit: "750 ml", price: 175, badge: "", emoji: "🍷", bg: "#fce7f3", img: "" },
+
+      // 6. Personal Care (73 - 86)
+      { id: 73, name: "Dettol Original Soap (Pack of 4)", cat: "Personal Care", unit: "4 x 125 g", price: 165, badge: "Protection", emoji: "🧼", bg: "#dcfce7", img: "" },
+      { id: 74, name: "Dove Cream Beauty Bar (Pack of 3)", cat: "Personal Care", unit: "3 x 100 g", price: 175, badge: "", emoji: "🧼", bg: "#e0f2fe", img: "" },
+      { id: 75, name: "Lifebuoy Total 10 Soap (Pack of 4)", cat: "Personal Care", unit: "4 x 125 g", price: 132, badge: "", emoji: "🧼", bg: "#fee2e2", img: "" },
+      { id: 76, name: "Colgate Strong Teeth Toothpaste", cat: "Personal Care", unit: "200 g", price: 118, badge: "Bestseller", emoji: "🪥", bg: "#fee2e2", img: "" },
+      { id: 77, name: "Pepsodent Germicheck Toothpaste", cat: "Personal Care", unit: "200 g", price: 108, badge: "", emoji: "🪥", bg: "#dbeafe", img: "" },
+      { id: 78, name: "Sensodyne Fresh Mint Toothpaste", cat: "Personal Care", unit: "75 g", price: 135, badge: "", emoji: "🦷", bg: "#e0f2fe", img: "" },
+      { id: 79, name: "Clinic Plus Strong & Long Shampoo", cat: "Personal Care", unit: "340 ml", price: 195, badge: "", emoji: "🧴", bg: "#dbeafe", img: "" },
+      { id: 80, name: "Head & Shoulders Cool Menthol", cat: "Personal Care", unit: "340 ml", price: 295, badge: "", emoji: "🧴", bg: "#e0f2fe", img: "" },
+      { id: 81, name: "Parachute 100% Pure Coconut Oil", cat: "Personal Care", unit: "250 ml", price: 110, badge: "", emoji: "🥥", bg: "#dbeafe", img: "" },
+      { id: 82, name: "Nivea Soft Light Moisturizing Cream", cat: "Personal Care", unit: "100 ml", price: 165, badge: "", emoji: "🫙", bg: "#f3f4f6", img: "" },
+      { id: 83, name: "Vaseline Intensive Care Body Lotion", cat: "Personal Care", unit: "200 ml", price: 170, badge: "", emoji: "🧴", bg: "#fef9c3", img: "" },
+      { id: 84, name: "Dettol Antiseptic Liquid Bottle", cat: "Personal Care", unit: "250 ml", price: 125, badge: "First Aid", emoji: "🩹", bg: "#ffedd5", img: "" },
+      { id: 85, name: "Gillette Guard Razor + 2 Blades", cat: "Personal Care", unit: "1 Pack", price: 65, badge: "", emoji: "🪒", bg: "#e0f2fe", img: "" },
+      { id: 86, name: "Whisper Ultra Clean Sanitary Pads", cat: "Personal Care", unit: "15 Pads", price: 175, badge: "", emoji: "📦", bg: "#dcfce7", img: "" },
+
+      // 7. Household & Cleaning (87 - 100)
+      { id: 87, name: "Surf Excel Easy Wash Detergent", cat: "Household & Cleaning", unit: "1.5 kg", price: 210, badge: "Top Pick", emoji: "🧺", bg: "#dbeafe", img: "" },
+      { id: 88, name: "Tide Plus Double Power Jasmine", cat: "Household & Cleaning", unit: "1 kg", price: 135, badge: "", emoji: "🧺", bg: "#ffedd5", img: "" },
+      { id: 89, name: "Ariel Matic Top Load Liquid", cat: "Household & Cleaning", unit: "1 L", price: 225, badge: "", emoji: "🧴", bg: "#dcfce7", img: "" },
+      { id: 90, name: "Rin Detergent Bar (Pack of 4)", cat: "Household & Cleaning", unit: "4 x 250 g", price: 92, badge: "", emoji: "🧼", bg: "#e0f2fe", img: "" },
+      { id: 91, name: "Vim Dishwash Gel Lemon Pouch", cat: "Household & Cleaning", unit: "750 ml", price: 155, badge: "", emoji: "🍋", bg: "#fef08a", img: "" },
+      { id: 92, name: "Vim Dishwash Bar (Pack of 3)", cat: "Household & Cleaning", unit: "3 x 200 g", price: 65, badge: "", emoji: "🧽", bg: "#dcfce7", img: "" },
+      { id: 93, name: "Harpic Power Plus Toilet Cleaner", cat: "Household & Cleaning", unit: "1 L", price: 185, badge: "", emoji: "🚽", bg: "#dbeafe", img: "" },
+      { id: 94, name: "Lizol Disinfectant Floor Cleaner", cat: "Household & Cleaning", unit: "975 ml", price: 195, badge: "", emoji: "🧹", bg: "#fce7f3", img: "" },
+      { id: 95, name: "Colin Glass & Surface Cleaner", cat: "Household & Cleaning", unit: "500 ml", price: 98, badge: "", emoji: "🪟", bg: "#e0f2fe", img: "" },
+      { id: 96, name: "Good Knight Gold Flash Machine + Refill", cat: "Household & Cleaning", unit: "1 Unit", price: 95, badge: "", emoji: "🦟", bg: "#fee2e2", img: "" },
+      { id: 97, name: "Hit Flying Insect Killer Spray", cat: "Household & Cleaning", unit: "400 ml", price: 195, badge: "", emoji: "スプレー", bg: "#fee2e2", img: "" },
+      { id: 98, name: "Scotch-Brite Scrub Pad (Pack of 3)", cat: "Household & Cleaning", unit: "3 pcs", price: 45, badge: "", emoji: "🧽", bg: "#dcfce7", img: "" },
+      { id: 99, name: "Medium Garbage Bags Roll (30 Bags)", cat: "Household & Cleaning", unit: "1 Roll", price: 65, badge: "", emoji: "🗑️", bg: "#f3f4f6", img: "" },
+      { id: 100, name: "Odonil Bathroom Air Freshener (4 Pack)", cat: "Household & Cleaning", unit: "4 x 50 g", price: 148, badge: "", emoji: "🌸", bg: "#ede9fe", img: "" }
+    ];
+
+    // ==========================================
+    // APP STATE INITIALIZATION
+    // ==========================================
+    let storeConfig = JSON.parse(localStorage.getItem(STORAGE_KEYS.CONFIG)) || { ...DEFAULT_CONFIG };
+    let products = JSON.parse(localStorage.getItem(STORAGE_KEYS.PRODUCTS)) || JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+    let cart = JSON.parse(localStorage.getItem(STORAGE_KEYS.CART)) || {};
+    let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.USER)) || null;
+
+    let selectedCategory = "All";
+    let paymentMethod = "COD";
+    let capturedGPS = "";
+          // ==========================================
+    // UI HELPERS & TOAST NOTIFICATIONS
+    // ==========================================
+    let toastTimer = null;
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove("show"), 2500);
     }
-    return { items, total, count };
-  }
 
-  function renderCart(anim) {
-    const { items, total, count } = getCart();
-    const s = document.getElementById("cartSummary");
-    const bar = document.getElementById("floatingBar");
-    if (count === 0) {
-      s.innerHTML = '<p style="color:var(--muted);margin-bottom:10px;">Abhi basket khali hai. Upar se daily items add karein.</p>';
-      bar.style.display = "none";
-      return;
+    function openModal(id) {
+      document.getElementById(id).classList.add("open");
     }
-    bar.style.display = "flex";
-    if (anim) { bar.classList.remove("bump"); void bar.offsetWidth; bar.classList.add("bump"); }
-    document.getElementById("floatCount").innerText = count + " Items";
-    document.getElementById("floatTotal").innerText = "Rs. " + total;
-    s.innerHTML = items.map(i => '<div class="cart-row"><span>' + i.name + ' (' + i.unit + ') x ' + i.qty + '</span><strong>Rs. ' + i.sub + '</strong></div>').join("") + '<div class="total-row"><span>Total Bill</span><span>Rs. ' + total + '</span></div>';
-  }
 
-  function toggleUpiBox() {
-    document.getElementById("upiBox").style.display = document.getElementById("paymentMode").value.includes("UPI") ? "block" : "none";
-  }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+    }
 
-  function getLiveLocation() {
-    const btn = document.getElementById("gpsBtn");
-    if (!navigator.geolocation) { alert("GPS support nahi hai."); return; }
-    btn.innerText = "Location fetch ho rahi hai...";
-    navigator.geolocation.getCurrentPosition(pos => {
-      const lat = pos.coords.latitude.toFixed(6), lng = pos.coords.longitude.toFixed(6);
-      document.getElementById("gpsLink").value = "https://maps.google.com/?q=" + lat + "," + lng;
-      const a
-        async function submitOrderDirectly() {
-    const { items, total, count } = getCart();
-    const name = document.getElementById("custName").value.trim();
-    const phone = document.getElementById("custPhone").value.trim();
-    const address = document.getElementById("custAddress").value.trim();
-    const gps = document.getElementById("gpsLink").value;
-    const payment = document.getElementById("paymentMode").value;
-    const txn = document.getElementById("upiTxnId").value.trim();
-    const btn = document.getElementById("placeOrderBtn");
-    const msg = document.getElementById("statusMsg");
-    if (count === 0) { alert("Pehle basket me item add karein."); return; }
-    if (!name || !phone || !address) { alert("Naam, Mobile Number aur Address bharein."); return; }
-    const orderId = "REQ-" + Math.floor(10000 + Math.random() * 90000);
-    btn.disabled = true; btn.innerText = "Order Bheja Ja Raha Hai..."; msg.innerText = "";
-    try {
-      const res = await fetch("https://formsubmit.co/ajax/" + STORE_EMAIL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          _subject: "Naya Order " + orderId + " - " + name + " (Rs." + total + ")",
-          _template: "table", _captcha: "false", Order_ID: orderId,
-          Customer_Name: name, Mobile_Number: phone, Delivery_Address: address, Google_Maps_GPS: gps,
-          Payment_Method: txn ? payment + " (Txn: " + txn + ")" : payment,
-          Ordered_Items: items.map((i, k) => (k + 1) + ". " + i.name + " (" + i.unit + ") x" + i.qty + " = Rs." + i.sub).join("\n"),
-          Total_Amount: "Rs. " + total
-        })
+    function backdropClose(e, id) {
+      if (e.target.id === id) closeModal(id);
+    }
+
+    // ==========================================
+    // SEARCH, CATEGORY FILTER & PRODUCT GRID
+    // ==========================================
+    function selectCategory(cat, btnEl) {
+      selectedCategory = cat;
+      document.querySelectorAll(".cat-pill").forEach(b => b.classList.remove("active"));
+      if (btnEl) btnEl.classList.add("active");
+      renderProducts();
+    }
+
+    function renderProducts() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const grid = document.getElementById("productGrid");
+      const titleEl = document.getElementById("gridTitle");
+      const countEl = document.getElementById("gridCount");
+
+      const filtered = products.filter(item => {
+        const matchCat = selectedCategory === "All" || item.cat === selectedCategory;
+        const matchQuery =
+          !query ||
+          item.name.toLowerCase().includes(query) ||
+          item.cat.toLowerCase().includes(query) ||
+          item.unit.toLowerCase().includes(query);
+        return matchCat && matchQuery;
       });
-      const data = await res.json();
-      if (data.success === "true" || data.success === true) {
-        cart = {}; renderProducts(); renderCart(false);
-        document.getElementById("modalOrderId").innerText = orderId;
-        document.getElementById("successModal").style.display = "flex";
-      } else { msg.style.color = "red"; msg.innerText = "Order send nahi ho paya, dobara try karein."; }
-    } catch (e) { msg.style.color = "red"; msg.innerText = "Network error! Internet check karein."; }
-    finally { btn.disabled = false; btn.innerText = "Confirm Order"; }
-  }
 
-  function openPinBox() { document.getElementById("pinInput").value = ""; document.getElementById("pinErr").innerText = ""; document.getElementById("pinModal").style.display = "flex"; }
-  function verifyAdminPin() {
-    if (document.getElementById("pinInput").value.trim() === ADMIN_PIN) {
-      closeModal("pinModal"); document.getElementById("adminUpiInput").value = storeUpi; renderAdminList(); document.getElementById("adminModal").style.display = "flex";
-    } else { document.getElementById("pinErr").innerText = "Galat PIN!"; }
-  }
-  function closeModal(id) { document.getElementById(id).style.display = "none"; }
-  function saveUpiSettings() { const v = document.getElementById("adminUpiInput").value.trim(); if (v) { storeUpi = v; safeSet("req_upi", v); document.getElementById("displayUpiId").innerText = v; alert("UPI ID saved!"); } }
+      titleEl.textContent = selectedCategory === "All" ? "All Grocery Items" : selectedCategory;
+      countEl.textContent = `${filtered.length} items`;
 
-  function addNewProduct() {
-    const name = document.getElementById("newProdName").value.trim();
-    const cat = document.getElementById("newProdCat").value.trim() || "Daily Needs";
-    const unit = document.getElementById("newProdUnit").value.trim() || "1 Pc";
-    const price = parseFloat(document.getElementById("newProdPrice").value);
-    const url = document.getElementById("newProdUrl").value.trim();
-    if (!name || !price) { alert("Product naam aur price bharein."); return; }
-    const img = uploadedBase64 || url || makePackImg(name.slice(0,14).toUpperCase(), unit, "#135063", "#0e3f4e");
-    products.unshift({ id: Date.now(), name, cat, unit, price, image: img });
-    safeSet("req_prods_v4", JSON.stringify(products));
-    renderCategories(); renderProducts(); renderAdminList();
-    uploadedBase64 = ""; document.getElementById("newProdName").value = ""; document.getElementById("newProdUnit").value = ""; document.getElementById("newProdPrice").value = ""; document.getElementById("newProdUrl").value = ""; document.getElementById("newProdPreview").style.display = "none";
-    alert("Product add ho gaya!");
-  }
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:30px 10px; color:#666;">
+          Koi item nahi mila. Doosra naam search karein.
+        </div>`;
+        return;
+      }      grid.innerHTML = filtered
+        .map(item => {
+          const qty = cart[item.id] || 0;
+          const badgeHtml = item.badge ? `<span class="p-badge">${item.badge}</span>` : "";
+          const actionHtml =
+            qty > 0
+              ? `<div class="qty-box">
+                  <button onclick="changeQty(${item.id}, -1)">−</button>
+                  <span>${qty}</span>
+                  <button onclick="changeQty(${item.id}, 1)">+</button>
+                </div>`
+              : `<button class="add-btn" onclick="changeQty(${item.id}, 1)">ADD</button>`;
 
-  function renderAdminList() {
-    document.getElementById("adminProductList").innerHTML = products.map(p =>
-      '<div class="admin-item-row"><div class="admin-item-left"><img class="admin-thumb" src="' + p.image + '" /><div><strong>' + p.name + '</strong><div style="font-size:11px;color:#64748b;">' + p.unit + ' • Rs.' + p.price + '</div></div></div><div style="display:flex;gap:4px;"><button class="mini-btn" onclick="editPhoto(' + p.id + ')">📷 Photo</button><button class="mini-btn mini-del" onclick="delProd(' + p.id + ')">Del</button></div></div>'
-    ).join("");
-  }
-  function editPhoto(id) { editingProductId = id; document.getElementById("editProdFile").click(); }
-  function handleExistingImageChange(ev) {
-    if (!ev.target.files[0] || !editingProductId) return;
-    compressImg(ev.target.files[0], 380, function(url) {
-      const i = products.findIndex(p => p.id === editingProductId);
-      if (i !== -1) { products[i].image = url; safeSet("req_prods_v4", JSON.stringify(products)); renderProducts(); renderAdminList(); alert("Photo update ho gayi!"); }
-      ev.target.value = ""; editingProductId = null;
-    });
-  }
-  function delProd(id) { products = products.filter(p => p.id !== id); delete cart[id]; safeSet("req_prods_v4", JSON.stringify(products)); renderCategories(); renderProducts(); renderCart(false); renderAdminList(); }
+          return `
+            <div class="p-card">
+              ${badgeHtml}
+              <img class="p-img" src="${getProductImage(item)}" alt="${item.name}" loading="lazy" />
+              <div>
+                <div class="p-title">${item.name}</div>
+                <div class="p-unit">${item.unit}</div>
+              </div>
+              <div class="p-bottom">
+                <div class="p-price">₹${item.price}</div>
+                ${actionHtml}
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    }
 
-  initLogin();
-  renderCategories();
-  renderProducts();
-</script>
+    // ==========================================
+    // CART LOGIC & BILLING
+    // ==========================================
+    function saveCart() {
+      localStorage.setItem(STORAGE_KEYS.CART, JSON.stringify(cart));
+    }
+
+    function changeQty(productId, delta) {
+      const nextQty = (cart[productId] || 0) + delta;
+      if (nextQty <= 0) {
+        delete cart[productId];
+      } else {
+        cart[productId] = nextQty;
+      }
+      saveCart();
+      renderProducts();
+      updateCartUI();
+
+      if (document.getElementById("cartModal").classList.contains("open")) {
+        renderCartModal();
+      }
+    }
+
+    function getCartTotals() {
+      let totalItems = 0;
+      let subtotal = 0;
+      const itemsList = [];
+
+      Object.keys(cart).forEach(idStr => {
+        const id = Number(idStr);
+        const qty = cart[id];
+        const prod = products.find(p => p.id === id);
+        if (prod && qty > 0) {
+          totalItems += qty;
+          subtotal += prod.price * qty;
+          itemsList.push({ ...prod, qty, lineTotal: prod.price * qty });
+        }
+      });
+
+      const delFee = Number(storeConfig.deliveryFee) || 0;
+      const freeLimit = Number(storeConfig.freeDeliveryAbove) || 499;
+      const delivery = subtotal === 0 ? 0 : subtotal >= freeLimit ? 0 : delFee;
+      const grandTotal = subtotal + delivery;
+
+      return { totalItems, subtotal, delivery, grandTotal, itemsList };
+    }
+
+    function updateCartUI() {
+      const { totalItems, grandTotal } = getCartTotals();
+      const floatBar = document.getElementById("cartFloat");
+      if (totalItems > 0) {
+        document.getElementById("floatCount").textContent = `${totalItems} item${totalItems > 1 ? "s" : ""} added`;
+        document.getElementById("floatTotal").textContent = `₹${grandTotal}`;
+        floatBar.classList.add("show");
+      } else {
+        floatBar.classList.remove("show");
+      }
+    }
+          function openCartModal() {
+      const { totalItems } = getCartTotals();
+      if (totalItems === 0) {
+        showToast("Pehle cart mein kuch items add karein!");
+        return;
+      }
+      if (currentUser) {
+        const nameEl = document.getElementById("custName");
+        const phoneEl = document.getElementById("custPhone");
+        if (!nameEl.value) nameEl.value = currentUser.name || "";
+        if (!phoneEl.value) phoneEl.value = currentUser.phone || "";
+      }
+      renderCartModal();
+      openModal("cartModal");
+    }
+
+    function renderCartModal() {
+      const { itemsList, subtotal, delivery, grandTotal } = getCartTotals();
+      const listEl = document.getElementById("cartItemsList");
+      if (itemsList.length === 0) {
+        closeModal("cartModal");
+        return;
+      }
+      listEl.innerHTML = itemsList
+        .map(item => `
+          <div class="cart-item">
+            <div style="flex:1;">
+              <div style="font-weight:700; font-size:13px;">${item.name}</div>
+              <div style="font-size:11.5px; color:#666;">${item.unit} × ₹${item.price} = <strong>₹${item.lineTotal}</strong></div>
+            </div>
+            <div class="qty-box">
+              <button onclick="changeQty(${item.id}, -1)">−</button>
+              <span>${item.qty}</span>
+              <button onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          </div>`)
+        .join("");
+
+      document.getElementById("billSubtotal").textContent = `₹${subtotal}`;
+      document.getElementById("billDelivery").textContent = delivery === 0 ? "FREE" : `₹${delivery}`;
+      document.getElementById("billTotal").textContent = `₹${grandTotal}`;
+      if (typeof updateUpiLinks === "function") updateUpiLinks();
+    }
+
+    // ==========================================
+    // USER LOGIN, ORDER HISTORY & REORDER
+    // ==========================================
+    function updateAccountHeader() {
+      const btn = document.getElementById("accountBtn");
+      btn.textContent = currentUser && currentUser.name ? `👤 ${currentUser.name.split(" ")[0]}` : "👤 Login / Orders";
+    }
+
+    function openAccountModal() {
+      const authSec = document.getElementById("authSection");
+      const profSec = document.getElementById("profileSection");
+      if (currentUser) {
+        authSec.style.display = "none";
+        profSec.style.display = "flex";
+        document.getElementById("userWelcome").textContent = `Namaste, ${currentUser.name}!`;
+        document.getElementById("userPhoneDisplay").textContent = `Mobile: ${currentUser.phone}`;
+        renderOrderHistory();
+      } else {
+        authSec.style.display = "flex";
+        profSec.style.display = "none";
+      }
+      openModal("accountModal");
+    }
+
+    function handleAuth() {
+      const name = document.getElementById("authName").value.trim();
+      const phone = document.getElementById("authPhone").value.trim();
+      const pin = document.getElementById("authPin").value.trim();
+      if (!name || phone.length !== 10 || pin.length !== 4) {
+        showToast("Sahi Name, 10-digit Mobile aur 4-digit PIN dalen");
+        return;
+      }
+      const usersDb = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS_DB)) || {};
+      if (usersDb[phone] && usersDb[phone].pin !== pin) {
+        showToast("Galat PIN! Sahi 4-digit PIN dalen.");
+        return;
+      }
+      usersDb[phone] = { name, phone, pin };
+      localStorage.setItem(STORAGE_KEYS.USERS_DB, JSON.stringify(usersDb));
+      currentUser = { name, phone };
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(currentUser));
+      updateAccountHeader();
+      showToast("Login successful!");
+      openAccountModal();
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      localStorage.removeItem(STORAGE_KEYS.USER);
+      updateAccountHeader();
+      showToast("Logged out");
+      openAccountModal();
+    }
+          function renderOrderHistory() {
+      const listEl = document.getElementById("orderHistoryList");
+      const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
+      const userOrders = currentUser ? allOrders.filter(o => o.phone === currentUser.phone) : [];
+      if (userOrders.length === 0) {
+        listEl.innerHTML = `<div style="font-size:12.5px; color:#666; padding:10px 0;">Abhi tak koi order nahi kiya gaya hai.</div>`;
+        return;
+      }
+      listEl.innerHTML = userOrders.slice().reverse().map(ord => `
+        <div class="order-card">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <strong>Order #${ord.id}</strong>
+            <span style="color:var(--primary); font-weight:700;">₹${ord.total} (${ord.payment})</span>
+          </div>
+          <div style="font-size:11px; color:#666; margin-bottom:6px;">${ord.date} • ${ord.items.length} items</div>
+          <div style="font-size:11.5px; color:#333; margin-bottom:8px;">${ord.items.map(i => `${i.name} (${i.qty})`).join(", ")}</div>
+          <button type="button" class="primary-btn" style="padding:6px 10px; font-size:11.5px;" onclick="reorderPastOrder('${ord.id}')">🔄 Reorder Items</button>
+        </div>`).join("");
+    }
+
+    function reorderPastOrder(orderId) {
+      const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
+      const found = allOrders.find(o => String(o.id) === String(orderId));
+      if (!found) return;
+      found.items.forEach(item => {
+        if (products.some(p => p.id === item.id)) cart[item.id] = (cart[item.id] || 0) + item.qty;
+      });
+      saveCart();
+      renderProducts();
+      updateCartUI();
+      closeModal("accountModal");
+      showToast("Purane items cart mein add ho gaye!");
+      openCartModal();
+    }
+
+    // ==========================================
+    // GPS, FAMPAY UPI & WHATSAPP CHECKOUT
+    // ==========================================
+        function captureGPS() {
+      const st = document.getElementById("gpsStatus");
+      if (!navigator.geolocation) return showToast("GPS support nahi hai");
+      st.style.display = "block";
+      st.textContent = "⏳ Location fetch ho rahi hai...";
+      navigator.geolocation.getCurrentPosition(
+        p => {
+          capturedGPS = `https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}`;
+          st.textContent = "✅ Live GPS Location attached!";
+          showToast("GPS Location attach ho gayi!");
+        },
+        () => { st.textContent = "⚠️ Location allow karein ya address likhein."; },
+        { enableHighAccuracy: true, timeout: 10000 }
+      );
+    }
+
+    function setPaymentMethod(m) {
+      paymentMethod = m;
+      document.getElementById("tabCOD").classList.toggle("active", m === "COD");
+      document.getElementById("tabUPI").classList.toggle("active", m === "UPI");
+      document.getElementById("upiDetailsBox").style.display = m === "UPI" ? "block" : "none";
+      if (m === "UPI") updateUpiLinks();
+    }
+
+    function updateUpiLinks() {
+      const { grandTotal } = getCartTotals();
+      const upi = storeConfig.upiId || "required@fam";
+      document.getElementById("displayUpiId").textContent = upi;
+      document.getElementById("upiDeepLink").href = `upi://pay?pa=${encodeURIComponent(upi)}&pn=REQUIRED&am=${grandTotal}&cu=INR`;
+    }
+
+    function copyUpiId() {
+      const upi = storeConfig.upiId || "required@fam";
+      if (navigator.clipboard) navigator.clipboard.writeText(upi);
+      showToast(`UPI ID copied: ${upi}`);
+      }
+          async function placeWhatsAppOrder() {
+      const OWNER_GMAIL = storeConfig.whatsappNumber && storeConfig.whatsappNumber.includes("@")
+        ? storeConfig.whatsappNumber.trim()
+        : "Fazalrab56@gmail.com";
+
+      const name = document.getElementById("custName").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const utr = document.getElementById("upiRefInput").value.trim();
+      const { itemsList, subtotal, delivery, grandTotal } = getCartTotals();
+
+      if (!name || phone.length < 10 || !address) return showToast("Name, Mobile aur Address bharein");
+      if (!itemsList.length) return;
+
+      const btn = document.querySelector(".wa-submit-btn");
+      btn.disabled = true;
+      btn.textContent = "⏳ Order place ho raha hai...";
+
+      const orderId = String(Date.now()).slice(-6);
+      const orderDate = new Date().toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+      const payText = paymentMethod === "UPI" ? `UPI${utr ? " (UTR:" + utr + ")" : ""}` : "COD";
+      const itemsText = itemsList.map((i, idx) => `${idx + 1}. ${i.name} (${i.unit}) x${i.qty} = Rs.${i.lineTotal}`).join("\n");
+
+      const allOrders = JSON.parse(localStorage.getItem(STORAGE_KEYS.ORDERS)) || [];
+      allOrders.push({ id: orderId, date: orderDate, name, phone, address, payment: payText, total: grandTotal, items: itemsList });
+      localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(allOrders));
+
+      try {
+        await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(OWNER_GMAIL)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            _subject: `New Order #${orderId} - Rs.${grandTotal}`,
+            Customer: `${name} | ${phone}`,
+            Address: `${address} | GPS: ${capturedGPS || "N/A"}`,
+            Items: itemsText,
+            Total: `Sub Rs.${subtotal} + Del Rs.${delivery} = Rs.${grandTotal} (${payText})`
+          })
+        });
+        cart = {}; saveCart(); renderProducts(); updateCartUI(); closeModal("cartModal");
+        alert(`✅ Order Placed! Order ID: #${orderId}\nTotal: ₹${grandTotal}`);
+      } catch (e) { showToast("Network error! Dobara try karein."); }
+      btn.disabled = false;
+      btn.textContent = "✅ Place Order";
+          }
+          // ==========================================
+    // ADMIN PANEL (PIN: 2411) & APP START
+    // ==========================================
+    function openAdminPrompt() {
+      const pin = prompt("Enter Admin PIN:");
+      if (pin !== ADMIN_PIN) return showToast("Galat Admin PIN!");
+      document.getElementById("adminWaInput").value = storeConfig.whatsappNumber || "Fazalrab56@gmail.com";
+      document.getElementById("adminUpiInput").value = storeConfig.upiId || "required@fam";
+      document.getElementById("adminDelFeeInput").value = storeConfig.deliveryFee ?? 20;
+      renderAdminProducts();
+      openModal("adminModal");
+    }
+
+    function saveStoreSettings() {
+      storeConfig.whatsappNumber = document.getElementById("adminWaInput").value.trim() || "Fazalrab56@gmail.com";
+      storeConfig.upiId = document.getElementById("adminUpiInput").value.trim() || "required@fam";
+      storeConfig.deliveryFee = Number(document.getElementById("adminDelFeeInput").value) || 0;
+      localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(storeConfig));
+      showToast("Store settings saved!");
+    }
+
+    function adminAddProduct() {
+      const name = document.getElementById("newProdName").value.trim();
+      const cat = document.getElementById("newProdCat").value;
+      const unit = document.getElementById("newProdUnit").value.trim() || "1 Pack";
+      const price = Number(document.getElementById("newProdPrice").value);
+      const img = document.getElementById("newProdImg").value.trim();
+      if (!name || !price) return showToast("Product Name aur Price dalen");
+      products.unshift({ id: Date.now(), name, cat, unit, price, badge: "New", emoji: "🛒", bg: "#f0fdf4", img });
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+      ["newProdName", "newProdUnit", "newProdPrice", "newProdImg"].forEach(id => (document.getElementById(id).value = ""));
+      renderProducts();
+      renderAdminProducts();
+      showToast("New item added!");
+    }
+
+    function renderAdminProducts() {
+      const q = (document.getElementById("adminSearchInput").value || "").toLowerCase();
+      const list = products.filter(p => p.name.toLowerCase().includes(q));
+      document.getElementById("adminProductList").innerHTML = list.map(p => `
+        <div class="admin-row">
+          <div style="flex:1;"><strong>${p.name}</strong><div style="font-size:11px;color:#666;">${p.unit} • ₹${p.price}</div></div>
+          <button class="copy-mini" onclick="editProdPrice(${p.id})">Edit ₹</button>
+          <button class="danger-btn" onclick="deleteProd(${p.id})">Del</button>
+        </div>`).join("");
+    }
+
+    function editProdPrice(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+      const val = prompt(`Naya price likhein (${p.name}):`, p.price);
+      if (val !== null && Number(val) > 0) {
+        p.price = Number(val);
+        localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+        renderProducts();
+        renderAdminProducts();
+        showToast("Price updated!");
+      }
+    }
+
+    function deleteProd(id) {
+      products = products.filter(p => p.id !== id);
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+      renderProducts();
+      renderAdminProducts();
+      showToast("Item deleted");
+    }
+
+    function resetCatalog() {
+      if (!confirm("Kya aap saare 100 default items reset karna chahte hain?")) return;
+      products = JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
+      localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
+      renderProducts();
+      renderAdminProducts();
+      showToast("100 items reset!");
+    }
+
+    const orderBtn = document.querySelector(".wa-submit-btn");
+    if (orderBtn) orderBtn.textContent = "✅ Place Order";
+    renderProducts();
+    updateCartUI();
+    updateAccountHeader();
+  </script>
 </body>
 </html>
