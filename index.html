@@ -1334,18 +1334,24 @@
       allOrders.push({ id: orderId, date: orderDate, name, phone, address, payment: payText, total: grandTotal, items: itemsList });
       localStorage.setItem(STORAGE_KEYS.ORDERS, JSON.stringify(allOrders));
 
-      try {
-        await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(OWNER_GMAIL)}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
-          body: JSON.stringify({
-            _subject: `New Order #${orderId} - Rs.${grandTotal}`,
-            Customer: `${name} | ${phone}`,
-            Address: `${address} | GPS: ${capturedGPS || "N/A"}`,
-            Items: itemsText,
-            Total: `Sub Rs.${subtotal} + Del Rs.${delivery} = Rs.${grandTotal} (${payText})`
-          })
-        });
+      try }
+            const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          access_key: "1380f4ad-246d-4617-a192-2f5063a2028e",
+          subject: `New Order #${orderId} - Rs.${grandTotal}`,
+          from_name: "Online Store",
+          Customer: `${name} | ${phone}`,
+          Address: `${address} | GPS: ${capturedGPS || "N/A"}`,
+          Items: itemsText,
+          Total: `Sub Rs.${subtotal} + Del Rs.${delivery} = Rs.${grandTotal}`,
+          Payment: payText,
+          Date: orderDate
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || "Email failed")
         cart = {}; saveCart(); renderProducts(); updateCartUI(); closeModal("cartModal");
         alert(`✅ Order Placed! Order ID: #${orderId}\nTotal: ₹${grandTotal}`);
       } catch (e) { showToast("Network error! Dobara try karein."); }
@@ -1367,7 +1373,7 @@
 
     function saveStoreSettings() {
       storeConfig.whatsappNumber = document.getElementById("adminWaInput").value.trim() || "Fazalrab56@gmail.com";
-      storeConfig.upiId = document.getElementById("adminUpiInput").value.trim() || "required@fam";
+      storeConfig.upiId = document.getElementById("adminUpiInput").value.trim() || "9329736019@fam";
       storeConfig.deliveryFee = Number(document.getElementById("adminDelFeeInput").value) || 0;
       localStorage.setItem(STORAGE_KEYS.CONFIG, JSON.stringify(storeConfig));
       showToast("Store settings saved!");
