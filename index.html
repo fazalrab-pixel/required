@@ -1,705 +1,364 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>REQUIRED — Daily Essentials in 12 Minutes</title>
-  <style>
-    :root {
-      --bg: #F4F6FB;
-      --card: #FFFFFF;
-      --soft: #F8F9FC;
-      --text: #1C1C1C;
-      --muted: #666666;
-      --border: #E5E8EF;
-      --yellow: #F8CB46;
-      --grad: linear-gradient(180deg, #FFF1B8 0%, #FFFFFF 100%);
-      --green: #0C831F;
-      --green-bg: #F1FFF4;
-      --red: #E23744;
-    }
-    [data-theme="dark"] {
-      --bg: #111214;
-      --card: #1C1D21;
-      --soft: #26282E;
-      --text: #F5F5F7;
-      --muted: #A0A4AB;
-      --border: #32343B;
-      --grad: linear-gradient(180deg, #3A2F0D 0%, #1C1D21 100%);
-      --green-bg: #122B17;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: #DCE1EB; color: var(--text); display: flex; justify-content: center; min-height: 100vh; }
-    .app { width: 100%; max-width: 480px; background: var(--bg); min-height: 100vh; position: relative; padding-bottom: 135px; box-shadow: 0 0 28px rgba(0,0,0,0.12); }
-    .hidden { display: none !important; }
-    .header { position: sticky; top: 0; z-index: 50; background: var(--grad); border-bottom: 1px solid var(--border); padding: 10px 12px 8px; }
-    .h-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .brand-badge { display: inline-flex; align-items: center; gap: 5px; background: #1C1C1C; color: #F8CB46; padding: 3px 9px; border-radius: 7px; font-size: 12px; font-weight: 900; letter-spacing: 0.6px; }
-    .brand-badge span { color: #4ADE80; }
-    .eta { font-size: 19px; font-weight: 900; line-height: 1.15; margin-top: 2px; }
-    .addr { font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; }
-    .h-btns { display: flex; align-items: center; gap: 7px; }
-    .pill-btn { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 6px 10px; font-size: 12.5px; font-weight: 800; color: var(--text); cursor: pointer; }
-    .icon-round { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .p-name { font-size: 12.5px; font-weight: 700; line-height: 1.25; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .p-tag { display: inline-block; font-size: 10px; background: #EEF6FF; color: #1565C0; padding: 1px 6px; border-radius: 4px; font-weight: 700; margin-bottom: 4px; }
-    .p-meta { font-size: 10.5px; color: var(--muted); margin-bottom: 5px; }
-    .p-prices { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
-    .price { font-size: 14px; font-weight: 900; }
-    .mrp { font-size: 11px; color: var(--muted); text-decoration: line-through; }
-    .off { font-size: 10px; color: #1976D2; font-weight: 800; }
-    .load-btn { width: 100%; margin-top: 12px; padding: 10px; border-radius: 10px; border: 1px solid var(--green); background: var(--green-bg); color: var(--green); font-weight: 800; font-size: 13px; cursor: pointer; }
-    .cart-pill { position: fixed; bottom: 64px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 456px; background: var(--green); color: #fff; border-radius: 14px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; z-index: 60; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
-    .bnav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; height: 56px; background: var(--card); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; z-index: 55; }
-    .bitem { background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; font-size: 10.5px; font-weight: 700; cursor: pointer; }
-    .bitem.active { color: var(--green); }
-    .bitem span:first-child { font-size: 18px; }
-    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 12px; }
-    .overlay.bottom { align-items: flex-end; padding: 0; }
-    .sheet { width: 100%; max-width: 480px; max-height: 90vh; background: var(--bg); border-radius: 20px 20px 0 0; display: flex; flex-direction: column; overflow: hidden; }
-    .modal { width: 100%; max-width: 430px; max-height: 86vh; background: var(--card); border-radius: 18px; padding: 16px; display: flex; flex-direction: column; overflow: hidden; }
-    .m-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
-    .m-body { overflow-y: auto; padding-top: 10px; flex: 1; }
-    .close-btn { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--soft); color: var(--text); font-weight: 800; cursor: pointer; }
-        .inp { width: 100%; height: 40px; border: 1px solid var(--border); border-radius: 10px; padding: 0 12px; margin-bottom: 8px; background: var(--card); color: var(--text); font-size: 13.5px; }
-    .btn-main { width: 100%; height: 42px; background: var(--green); color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 800; cursor: pointer; }
-    .btn-sub { width: 100%; height: 36px; background: transparent; color: var(--muted); border: none; font-weight: 700; cursor: pointer; margin-top: 4px; }
-    .card-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 10px; }
-    .row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
-    .row:last-child { border-bottom: none; }
-    .qr-box { background: #141414; color: #fff; border: 1.5px solid #0C831F; border-radius: 14px; padding: 12px; text-align: center; margin-top: 8px; }
-    .qr-box img { width: 190px; height: 190px; object-fit: contain; border-radius: 10px; background: #222; padding: 6px; margin: 8px auto; display: block; }
-    .admin-card { background: var(--soft); border: 1px solid var(--border); border-radius: 12px; padding: 10px; margin-bottom: 10px; font-size: 12.5px; }
-    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
-    .abtn { padding: 7px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 11px; font-weight: 700; cursor: pointer; }
-    .abtn.ok { background: var(--green); color: #fff; border-color: var(--green); }
-    .abtn.no { border-color: #D32F2F; color: #D32F2F; }
-    .abtn.blue { border-color: #006FCF; color: #006FCF; }
-    .stats-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 10px; }
-    .stat { background: var(--soft); border: 1px solid var(--border); border-radius: 10px; padding: 8px; text-align: center; }
-    .stat strong { display: block; font-size: 15px; color: var(--green); }
-    .toast { position: fixed; top: 68px; left: 50%; transform: translateX(-50%); background: #1C1C1C; color: #fff; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 700; z-index: 200; }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REQUIRED — Coming Soon to Baikunthpur</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- LOGIN / OTP MODAL -->
-  <div id="authModal" class="overlay hidden">
-    <div class="modal">
-      <div style="text-align:center; margin-bottom:10px;">
-        <div class="brand-badge" style="font-size:16px; padding:5px 14px;">REQUIRED <span>STORE</span></div>
-        <h3 style="margin-top:8px;">12-Minute Daily Essentials</h3>
-      </div>
-      <div id="stepPhone">
-        <input id="inPhone" class="inp" type="tel" maxlength="10" value="9329736019" placeholder="Mobile Number" />
-        <input id="inName" class="inp" type="text" value="Rizwan Khan" placeholder="Your Name" />
-        <input id="inAddr" class="inp" type="text" value="HOME - pratappur" placeholder="Delivery Address" />
-        <button class="btn-main" onclick="Auth.sendOtp()">Send OTP</button>
-        <button class="btn-sub" onclick="Auth.guest()">Continue as Guest</button>
-      </div>
-      <div id="stepOtp" class="hidden">
-        <p style="font-size:12.5px; text-align:center; margin-bottom:8px;">Demo OTP: <b>1234</b></p>
-        <input id="inOtp" class="inp" type="text" maxlength="4" value="1234" style="text-align:center; font-weight:900; letter-spacing:6px;" />
-        <button class="btn-main" onclick="Auth.verify()">Verify & Login</button>
-        <button class="btn-sub" onclick="Auth.back()">Change Number</button>
-      </div>
-    </div>
-  </div>
 
-  <div class="app">
-    <!-- STICKY HEADER WITH REQUIRED LOGO -->
-    <header class="header">
-      <div class="h-top">
-        <div onclick="App.openAddressModal()">
-          <div class="brand-badge">🛒 REQUIRED <span>• 12 MINS</span></div>
-          <div class="eta">Delivery in 12 minutes</div>
-          <div class="addr">📍 <span id="hdrAddr">HOME - pratappur</span> ▾</div>
-        </div>
-        <div class="h-btns">
-          <button class="pill-btn" onclick="App.openWalletModal()">₹<span id="hdrWallet">0</span></button>
-          <button class="icon-round" onclick="App.switchTab('profileView')" title="Profile & Admin">👤</button>
-        </div>
-      </div>
-      <div class="search-box">
-        <span>🔍</span>
-        <input id="searchInp" type="text" placeholder='Search "atta, dal, milk, orange, soap..."' oninput="App.onSearch(this.value)" />
-        <button id="clearBtn" class="hidden" style="border:none; background:none; cursor:pointer;" onclick="App.clearSearch()">✕</button>
-      </div>
-    </header>
-        <!-- 1. HOME VIEW (DIRECT REQUIRED PRODUCTS + CATEGORIES) -->
-    <main id="homeView" class="view">
-      <div class="cat-pills" id="homeCatPills"></div>
+  <canvas id="bg-canvas"></canvas>
 
-      <div class="hero">
-        <div>
-          <span class="hero-tag">REQUIRED DAILY STORE</span>
-          <h2>Ghar Ka Saara Saman</h2>
-          <p>Atta, Dal, Sabzi, Milk & 500+ Items in 12 Mins</p>
-        </div>
-        <div class="hero-icon">🛍️⚡</div>
-      </div>
-
-      <!-- DIRECT HOME PRODUCTS GRID -->
-      <section class="sec">
-        <div class="sec-head">
-          <h3 class="sec-title" id="homeGridHeading">Most Required Daily Items</h3>
-          <span style="font-size:11.5px; color:var(--green); font-weight:800;" id="homeCountBadge">500 Items</span>
-        </div>
-        <div class="prod-grid" id="homeProdGrid"></div>
-        <button id="loadMoreBtn" class="load-btn" onclick="App.loadMoreHome()">Show More Products (+20)</button>
-      </section>
-
-      <!-- SHOP BY CATEGORY -->
-      <section class="sec">
-        <div class="sec-head"><h3 class="sec-title">Shop by Category</h3></div>
-        <div class="cat-grid" id="homeCatGrid"></div>
-      </section>
-    </main>
-
-    <!-- 2. ORDER AGAIN VIEW -->
-    <section id="ordersTabView" class="view hidden">
-      <div class="sec">
-        <div class="sec-head">
-          <h3 class="sec-title">Your Orders & Quick Re-Order</h3>
-          <button class="pill-btn" onclick="App.switchTab('homeView')">← Home</button>
-        </div>
-        <div id="ordersTabBody"></div>
-      </div>
-    </section>
-
-    <!-- 3. PRINT STORE VIEW -->
-    <section id="printView" class="view hidden">
-      <div class="sec">
-        <div class="sec-head">
-          <h3 class="sec-title">🖨️ Blinkit / Required Print Store</h3>
-          <button class="pill-btn" onclick="App.switchTab('homeView')">← Home</button>
-        </div>
-        <p style="font-size:12.5px; color:var(--muted); margin-bottom:10px;">PDF ya Photo upload karein — 12 minute mein printout ghar par.</p>
-        <input type="file" class="inp" style="padding-top:8px;" />
-        <input id="pPages" type="number" class="inp" value="5" min="1" placeholder="Pages" oninput="App.calcPrint()" />
-        <select id="pColor" class="inp" onchange="App.calcPrint()">
-          <option value="3">Black & White (₹3/page)</option>
-          <option value="10">Color Print (₹10/page)</option>
-        </select>
-        <div class="row"><strong>Total Print Charge:</strong><strong id="pTotal">₹15</strong></div>
-        <button class="btn-main" style="margin-top:8px;" onclick="App.addPrint()">Add Printout to Cart</button>
-      </div>
-    </section>
-        <!-- 4. PROFILE & SETTINGS / ADMIN VIEW -->
-    <section id="profileView" class="view hidden">
-      <div class="sec" style="background:var(--grad); text-align:center;">
-        <div style="display:flex; justify-content:space-between;">
-          <button class="pill-btn" onclick="App.switchTab('homeView')">← Back</button>
-          <button class="pill-btn" onclick="App.toggleTheme()">🌓 Theme</button>
-        </div>
-        <div style="font-size:44px; margin:8px 0;">👤</div>
-        <h3 id="profName">Rizwan Khan</h3>
-        <p style="font-size:12.5px; color:var(--muted);" id="profPhone">9329736019</p>
-      </div>
-
-      <div style="padding:10px 12px;">
-        <div class="card-box">
-          <div class="row" onclick="App.openOrdersModal()"><span>🛍️ My Orders & Live Status</span><span>›</span></div>
-          <div class="row" onclick="App.openAddressModal()"><span>📍 Saved Addresses</span><span>›</span></div>
-          <div class="row" onclick="App.openWishlistModal()"><span>❤️ My Wishlist (<b id="wishCount">0</b>)</span><span>›</span></div>
-          <div class="row" onclick="App.openWalletModal()"><span>💰 Wallet Balance</span><span>₹<b id="profWallet">0</b> ›</span></div>
-        </div>
-
-        <div class="card-box">
-          <div class="row" style="color:var(--green); font-weight:800;" onclick="App.openAdminLogin()">
-            <span>⚙️ Settings & Admin Panel (Key: 2411)</span><span>🔐 ›</span>
-          </div>
-          <div class="row" style="color:#D32F2F; font-weight:700;" onclick="Auth.logout()">
-            <span>🚪 Log Out</span><span>›</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FLOATING GREEN VIEW CART BAR -->
-    <div id="cartBar" class="cart-pill hidden" onclick="App.openCart()">
-      <div>
-        <div style="font-size:13.5px; font-weight:900;">🛒 View Cart (<span id="barCount">0</span> items)</div>
-        <div style="font-size:11.5px; opacity:0.95;">Total: <strong id="barTotal">₹0</strong> • 12 mins delivery</div>
-      </div>
-      <div style="font-size:16px; font-weight:900;">Checkout ▸</div>
+  <main class="container">
+    <div class="location-badge">
+      <span class="pulse-dot"></span>
+      Baikunthpur • Coming Soon
     </div>
 
-    <!-- BOTTOM 4-TAB NAVIGATION -->
-    <nav class="bnav">
-      <button class="bitem active" data-t="homeView" onclick="App.switchTab('homeView')"><span>🏠</span><span>Home</span></button>
-      <button class="bitem" data-t="ordersTabView" onclick="App.switchTab('ordersTabView')"><span>🛍️</span><span>Orders</span></button>
-      <button class="bitem" data-t="printView" onclick="App.switchTab('printView')"><span>🖨️</span><span>Print</span></button>
-      <button class="bitem" data-t="profileView" onclick="App.switchTab('profileView')"><span>⚙️</span><span>Account/Admin</span></button>
-    </nav>
-  </div>
-    <!-- CART & QR SCANNER CHECKOUT DRAWER -->
-  <div id="cartDrawer" class="overlay bottom hidden">
-    <div class="sheet">
-      <div class="m-head" style="padding:12px 14px; background:var(--card);">
-        <div><strong>Delivery in 12 minutes</strong><br><small id="cartSubTxt">Your items</small></div>
-        <button class="close-btn" onclick="App.closeCart()">✕</button>
+    <h1 class="brand-title">REQUIRED</h1>
+    <p class="tagline">Because Life Needs It</p>
+
+    <p class="subtitle">
+      Ab aapke apne shehar <strong>Baikunthpur</strong> mein aa raha hai ek naya aur fast shopping experience. Hum jald hi live ho rahe hain!
+    </p>
+
+    <div class="countdown">
+      <div class="time-box">
+        <span id="days">15</span>
+        <small>Days</small>
       </div>
-      <div class="m-body" style="padding:12px;">
-        <div id="freeBar" style="background:#E8F5E9; color:#1B5E20; padding:8px 10px; border-radius:10px; font-size:12px; font-weight:700; margin-bottom:10px;">
-          Add ₹199 for FREE delivery
-        </div>
-        <div id="cartItemsList" class="card-box"></div>
-        <div style="display:flex; gap:6px; margin-bottom:10px;">
-          <input id="coupInp" class="inp" style="margin:0; flex:1;" placeholder="Coupon: MEGA49 or AXIS150" />
-          <button class="btn-add" style="padding:0 16px;" onclick="App.applyCoupon()">Apply</button>
-        </div>
-        <div class="card-box">
-          <div class="row"><span>Items Total</span><span id="bItem">₹0</span></div>
-          <div class="row"><span>Delivery Fee</span><span id="bDel">₹25</span></div>
-          <div class="row"><span>Handling Charge</span><span>₹2</span></div>
-          <div class="row hidden" id="bDiscRow" style="color:var(--green); font-weight:800;"><span>Coupon Discount</span><span id="bDisc">-₹0</span></div>
-          <div class="row" style="font-weight:900; font-size:15px;"><span>Grand Total</span><span id="bGrand">₹0</span></div>
-        </div>
-        <div class="card-box">
-          <strong style="font-size:13px; display:block; margin-bottom:6px;">Payment Mode</strong>
-          <select id="paySelect" class="inp" onchange="App.toggleQr()">
-            <option value="QR_SCANNER">📲 Scan & Pay (UPI QR Scanner)</option>
-            <option value="WALLET">💰 Store Wallet</option>
-            <option value="COD">💵 Cash on Delivery</option>
-          </select>
-          <div id="qrBox" class="qr-box">
-            <div style="font-size:11.5px; font-weight:800; color:#F8CB46;">SCAN & PAY USING ANY UPI APP</div>
-            <div style="font-size:13px; margin-top:3px;">Payable: <strong id="qrAmt" style="color:#4ADE80; font-size:16px;">₹0</strong></div>
-            <img src="5846.png" alt="UPI QR Scanner" onerror="this.alt='Upload 5846.png in GitHub repo';" />
-            <div style="font-size:11px; color:#BBB;">GPay • PhonePe • Paytm • FamPay • BHIM</div>
-            <input id="utrInp" class="inp" style="margin-top:8px; margin-bottom:0; background:#222; color:#fff; border-color:#444;" placeholder="Enter 12-digit UTR / Ref No." />
-          </div>
-        </div>
+      <div class="time-box">
+        <span id="hours">00</span>
+        <small>Hours</small>
       </div>
-      <div style="padding:10px 14px; background:var(--card); border-top:1px solid var(--border);">
-        <button class="btn-main" style="display:flex; justify-content:space-between; align-items:center; padding:0 16px;" onclick="App.placeOrder()">
-          <span id="payBtnTot">₹0</span><span>Place Order ▸</span>
-        </button>
+      <div class="time-box">
+        <span id="minutes">00</span>
+        <small>Mins</small>
+      </div>
+      <div class="time-box">
+        <span id="seconds">00</span>
+        <small>Secs</small>
       </div>
     </div>
-  </div>
 
-  <!-- GENERIC MODAL & TOAST -->
-  <div id="gModal" class="overlay hidden">
-    <div class="modal">
-      <div class="m-head"><strong id="gTitle">Details</strong><button class="close-btn" onclick="App.closeModal()">✕</button></div>
-      <div id="gBody" class="m-body"></div>
+    <form class="notify-form" id="notifyForm">
+      <input type="text" id="userContact" placeholder="Apna WhatsApp number ya Email dalein..." required />
+      <button type="submit">Notify Me</button>
+    </form>
+    <p class="status-msg" id="statusMsg"></p>
+
+    <div class="footer-note">
+      &copy; 2026 REQUIRED • Baikunthpur. All Rights Reserved.
     </div>
-    </div>
-  <div id="toast" class="toast hidden"></div>
+  </main>
 
-  <script>
-    const $ = (...ids) => { for (const id of ids) { const e = document.getElementById(id); if (e) return e; } return null; };
-    const setTxt = (ids, v) => { const e = $(...[].concat(ids)); if (e) e.textContent = v; };
-    const setHtml = (ids, v) => { const e = $(...[].concat(ids)); if (e) e.innerHTML = v; };
-
-    const CATS = [
-      { name: "All", icon: "🛍️" },
-      { name: "Atta, Rice & Dal", icon: "🌾" },
-      { name: "Vegetables & Fruits", icon: "🍊" },
-      { name: "Dairy & Bread", icon: "🥛" },
-      { name: "Oil & Masala", icon: "🫙" },
-      { name: "Snacks & Biscuits", icon: "🍪" },
-      { name: "Cold Drinks & Tea", icon: "🥤" },
-      { name: "Bath & Personal", icon: "🧼" },
-      { name: "Home & Cleaners", icon: "🧹" }
-    ];
-
-    const BASE_ITEMS = [
-      { name: "Aashirvaad Shudh Chakki Atta", cat: "Atta, Rice & Dal", wt: "5 kg", price: 245, mrp: 285, icon: "🌾", tag: "Most Required", stock: 15 },
-      { name: "Tata Sampann Unpolished Toor Dal", cat: "Atta, Rice & Dal", wt: "1 kg", price: 168, mrp: 199, icon: "🫘", tag: "Daily Essential", stock: 12 },
-      { name: "India Gate Classic Basmati Rice", cat: "Atta, Rice & Dal", wt: "1 kg", price: 135, mrp: 165, icon: "🍚", tag: "Bestseller", stock: 10 },
-      { name: "Amul Taaza Toned Fresh Milk", cat: "Dairy & Bread", wt: "1 L", price: 56, mrp: 58, icon: "🥛", tag: "Fresh Daily", stock: 20 },
-      { name: "Harvest Gold Whole Wheat Bread", cat: "Dairy & Bread", wt: "400 g", price: 50, mrp: 55, icon: "🍞", tag: "Zero Maida", stock: 14 },
-      { name: "Farm Fresh White Eggs (6 pcs)", cat: "Dairy & Bread", wt: "6 pcs", price: 54, mrp: 65, icon: "🥚", tag: "High Protein", stock: 18 },
-      { name: "Fortune Sunlite Refined Sunflower Oil", cat: "Oil & Masala", wt: "1 L", price: 142, mrp: 165, icon: "🫙", tag: "Daily Use", stock: 16 },
-      { name: "Amul Pure Desi Cow Ghee", cat: "Oil & Masala", wt: "500 ml", price: 315, mrp: 345, icon: "🧈", tag: "Pure Ghee", stock: 9 },
-      { name: "Tata Iodized Crystal Salt", cat: "Oil & Masala", wt: "1 kg", price: 28, mrp: 30, icon: "🧂", tag: "Essential", stock: 25 },
-      { name: "Nagpur Fresh Oranges", cat: "Vegetables & Fruits", wt: "500 g", price: 59, mrp: 67, icon: "🍊", tag: "Vitamin C", stock: 6 },
-      { name: "Red Potato (Aloo)", cat: "Vegetables & Fruits", wt: "1 kg", price: 29, mrp: 35, icon: "🥔", tag: "Fresh Farm", stock: 22 },
-      { name: "Fresh Onion (Pyaz)", cat: "Vegetables & Fruits", wt: "1 kg", price: 38, mrp: 45, icon: "🧅", tag: "Daily Need", stock: 19 },
-      { name: "Britannia NutriChoice Digestive", cat: "Snacks & Biscuits", wt: "100 g", price: 25, mrp: 30, icon: "🍪", tag: "No Maida", stock: 14 },
-      { name: "Lay's India's Magic Masala Chips", cat: "Snacks & Biscuits", wt: "50 g", price: 20, mrp: 20, icon: "🥔", tag: "Crispy", stock: 30 },
-      { name: "Tata Tea Gold Leaf Pack", cat: "Cold Drinks & Tea", wt: "250 g", price: 145, mrp: 165, icon: "☕", tag: "Morning Tea", stock: 11 },
-      { name: "Coca-Cola Original Soft Drink", cat: "Cold Drinks & Tea", wt: "750 ml", price: 40, mrp: 45, icon: "🥤", tag: "Chilled", stock: 17 },
-      { name: "Dove Cream Beauty Bathing Bar", cat: "Bath & Personal", wt: "100 g", price: 65, mrp: 75, icon: "🧼", tag: "Moisturizing", stock: 13 },
-      { name: "Harpic Power Plus Toilet Cleaner", cat: "Home & Cleaners", wt: "500 ml", price: 105, mrp: 118, icon: "🧹", tag: "99.9% Germs", stock: 8 }
-    ];
-
-    const PRODUCTS_DB = (function () {
-      const saved = localStorage.getItem("req_products_v1");
-      if (saved) { try { const p = JSON.parse(saved); if (p.length) return p; } catch (e) {} }
-      const packs = ["250 g", "500 g", "1 kg", "2 kg", "Pack of 2", "Family Pack", "Value Pack", "Combo", "Mini Pack", "Jumbo Pack", "Classic", "Premium", "Organic", "Daily Pack", "Saver Pack", "Gold", "Fresh", "Super Saver", "Lite", "Special", "Regular", "XL Pack", "Smart Pack", "Eco Pack", "Deluxe", "Mega Pack", "Fresh Batch", "Home Pack"];
-      const list = [];
-      let id = 1;
-      for (let r = 0; r < 28; r++) {
-        for (let i = 0; i < BASE_ITEMS.length && list.length < 500; i++) {
-        const Auth = {
-      UKEY: "req_user_v1",
-      OKEY: "req_orders_v1",
-      getUser() {
-        const raw = localStorage.getItem(this.UKEY);
-        if (!raw) {
-          const def = { logged: true, name: "Rizwan Khan", phone: "9329736019", addr: "HOME - pratappur", addrs: ["HOME - pratappur", "OFFICE - Korba Market"], wallet: 0, wish: [1, 4, 10], orders: [] };
-          this.saveUser(def);
-          return def;
-        }
-        return JSON.parse(raw);
-      },
-      saveUser(u) { localStorage.setItem(this.UKEY, JSON.stringify(u)); this.sync(); },
-      getOrders() {
-        const raw = localStorage.getItem(this.OKEY);
-        if (!raw) {
-          const demo = [{ id: "REQ84921", name: "Aman Verma", phone: "9826100421", addr: "Pratappur Main Road", date: new Date().toLocaleString(), items: [{ name: "Aashirvaad Shudh Chakki Atta", wt: "5 kg", price: 245, qty: 1, icon: "🌾" }], total: 247, pay: "QR Scanner (UTR: 4329812049)", payStatus: "Pending Verification", status: "Order Placed" }];
-          localStorage.setItem(this.OKEY, JSON.stringify(demo));
-          return demo;
-        }
-        return JSON.parse(raw);
-      },
-      saveOrders(list) { localStorage.setItem(this.OKEY, JSON.stringify(list)); },
-      sendOtp() {
-        const ph = $("inPhone");
-        if (ph && ph.value.trim().length < 10) return App.toast("Enter 10-digit number");
-        $("stepPhone")?.classList.add("hidden");
-        $("stepOtp")?.classList.remove("hidden");
-        App.toast("OTP sent: 1234");
-      },
-      back() { $("stepOtp")?.classList.add("hidden"); $("stepPhone")?.classList.remove("hidden"); },
-      verify() {
-        const u = this.getUser();
-        u.logged = true;
-        u.phone = $("inPhone")?.value.trim() || "9329736019";
-        u.name = $("inName")?.value.trim() || "Rizwan Khan";
-        u.addr = $("inAddr")?.value.trim() || "HOME - pratappur";
-        if (!u.addrs.includes(u.addr)) u.addrs.unshift(u.addr);
-        this.saveUser(u);
-        $("authModal")?.classList.add("hidden");
-        App.toast("Welcome " + u.name + "!");
-      },
-      guest() { const u = this.getUser(); u.logged = true; this.saveUser(u); $("authModal")?.classList.add("hidden"); },
-      logout() { const u = this.getUser(); u.logged = false; this.saveUser(u); this.back(); $("authModal")?.classList.remove("hidden"); },
-      sync() {
-        const u = this.getUser();
-        setTxt("hdrAddr", u.addr);
-        setTxt("hdrWallet", u.wallet);
-        setTxt("profName", u.name);
-        setTxt("profPhone", u.phone);
-        setTxt("profWallet", u.wallet);
-        setTxt("wishCount", u.wish.length);
-      }
-    };
-              const App = {
-      cart: JSON.parse(localStorage.getItem("req_cart_v1") || "{}"),
-      activeCat: "All",
-      visibleLimit: 24,
-      searchTerm: "",
-      coupon: null,
-      ADMIN_KEY: "2411",
-
-      init() {
-        if (!Auth.getUser().logged) $("authModal")?.classList.remove("hidden");
-        Auth.sync();
-        this.renderCats();
-        this.renderHome();
-        this.updateBar();
-      },
-
-      renderCats() {
-        setHtml("homeCatPills", CATS.map(c =>
-          `<button class="cpill ${this.activeCat === c.name ? "active" : ""}" onclick="App.selectCat('${c.name}')">${c.icon} ${c.name}</button>`
-        ).join(""));
-        setHtml("homeCatGrid", CATS.slice(1).map(c =>
-          `<div class="cat-box" onclick="App.selectCat('${c.name}'); window.scrollTo(0,180);"><div class="cat-ico">${c.icon}</div><span>${c.name}</span></div>`
-        ).join(""));
-      },
-
-      selectCat(cat) { this.activeCat = cat; this.visibleLimit = 24; this.renderCats(); this.renderHome(); },
-
-      onSearch(val) {
-        this.searchTerm = val.trim().toLowerCase();
-        $("clearBtn", "clrBtn")?.classList.toggle("hidden", !this.searchTerm);
-        this.visibleLimit = 30;
-        this.renderHome();
-      },
-
-      clearSearch() { const s = $("searchInp"); if (s) s.value = ""; this.onSearch(""); },
-      loadMoreHome() { this.visibleLimit += 24; this.renderHome(); },
-
-      renderHome() {
-        let list = PRODUCTS_DB;
-        if (this.activeCat !== "All") list = list.filter(p => p.cat === this.activeCat);
-        if (this.searchTerm) list = list.filter(p => p.name.toLowerCase().includes(this.searchTerm) || p.cat.toLowerCase().includes(this.searchTerm));
-        setTxt("homeGridHeading", this.searchTerm ? `Results for "${this.searchTerm}"` : (this.activeCat === "All" ? "Most Required Daily Items" : this.activeCat));
-        setTxt("homeCountBadge", `${list.length} Items`);
-        const shown = list.slice(0, this.visibleLimit);
-        setHtml("homeProdGrid", shown.length ? shown.map(p => this.cardHtml(p)).join("") : `<p style="grid-column:1/-1; padding:16px; text-align:center;">No matching products found.</p>`);
-        $("loadMoreBtn")?.classList.toggle("hidden", shown.length >= list.length);
-      },
-
-      cardHtml(p) {
-        const out = Number(p.stock) <= 0;
-        const q = this.cart[p.id] || 0;
-        const wished = Auth.getUser().wish.includes(p.id);
-        const off = Math.max(0, Math.round(((p.mrp - p.price) / p.mrp) * 100));
-        const btn = out
-          ? `<button class="btn-add" style="background:#EEE; color:#888; border-color:#CCC;" onclick="App.toast('Out of Stock!')">OUT OF STOCK</button>`
-          : (q === 0
-              ? `<button class="btn-add" onclick="App.add(${p.id})">ADD</button>`
-              : `<div class="stepper"><button onclick="App.qty(${p.id},-1)">−</button><span>${q}</span><button onclick="App.qty(${p.id},1)">+</button></div>`);
-        return `
-          <div class="p-card" style="${out ? "opacity:0.72;" : ""}">
-            <div>
-              <div class="p-top">
-                <span style="${out ? "filter:grayscale(1);" : ""}">${p.icon}</span>
-                <button class="wish" onclick="App.toggleWish(${p.id})">${wished ? "❤️" : "🤍"}</button>
-                <span class="wt">${p.wt}</span>
-                <div class="add-wrap">${btn}</div>
-              </div>
-              <div class="p-name">${p.name}</div>
-              <div class="p-tag">${out ? "Out of Stock" : p.tag}</div>
-              <div class="p-meta">⏱ 12 mins ${!out && p.stock <= 5 ? `• <b style="color:#E65100;">${p.stock} left</b>` : ""}</div>
-            </div>
-            <div class="p-prices"><span class="price">₹${p.price}</span><span class="mrp">₹${p.mrp}</span>${off > 0 ? `<span class="off">${off}% OFF</span>` : ""}</div>
-          </div>`;
-      },
-                      add(id) { this.cart[id] = (this.cart[id] || 0) + 1; this.saveCart(); this.toast("Added to cart"); },
-      qty(id, d) {
-        const n = (this.cart[id] || 0) + d;
-        if (n <= 0) delete this.cart[id]; else this.cart[id] = n;
-        this.saveCart();
-      },
-      saveCart() {
-        localStorage.setItem("req_cart_v1", JSON.stringify(this.cart));
-        this.updateBar();
-        this.renderHome();
-        const cd = $("cartDrawer");
-        if (cd && !cd.classList.contains("hidden")) this.renderCart();
-      },
-      summary() {
-        let count = 0, itemsTotal = 0;
-        const items = [];
-        Object.keys(this.cart).forEach(k => {
-          const q = this.cart[k];
-          if (k.startsWith("pr_")) {
-            const meta = JSON.parse(localStorage.getItem(k) || "{}");
-            count += q; itemsTotal += (meta.price || 15) * q;
-            items.push({ id: k, name: "Document Printout", wt: `${meta.pages || 5} pages`, price: meta.price || 15, icon: "🖨️", qty: q });
-          } else {
-            const p = PRODUCTS_DB.find(x => x.id === Number(k));
-            if (p) { count += q; itemsTotal += p.price * q; items.push({ ...p, qty: q }); }
-          }
-        });
-        const del = itemsTotal >= 199 || itemsTotal === 0 ? 0 : 25;
-        const hand = itemsTotal > 0 ? 2 : 0;
-        let disc = 0;
-        if (this.coupon === "MEGA49" && itemsTotal >= 149) disc = 49;
-        if (this.coupon === "AXIS150" && itemsTotal >= 1799) disc = 150;
-        const grand = Math.max(0, itemsTotal + del + hand - disc);
-        return { count, itemsTotal, del, hand, disc, grand, items };
-      },
-      updateBar() {
-        const s = this.summary();
-        $("cartBar")?.classList.toggle("hidden", s.count === 0);
-        setTxt("barCount", s.count);
-        setTxt("barTotal", "₹" + s.grand);
-      },
-      openCart() { $("cartDrawer")?.classList.remove("hidden"); this.renderCart(); },
-      closeCart() { $("cartDrawer")?.classList.add("hidden"); },
-      toggleQr() {
-        const sel = $("paySelect", "payMode");
-        $("qrBox")?.classList.toggle("hidden", sel && sel.value !== "QR_SCANNER");
-      },
-      renderCart() {
-        const s = this.summary();
-        setTxt("cartSub", `${s.count} items`);
-        setTxt("freeDelMsg", s.itemsTotal >= 199 ? "🎉 FREE Delivery Unlocked!" : `Add ₹${199 - s.itemsTotal} more for FREE delivery`);
-        setHtml("cartList", s.items.length ? s.items.map(it =>
-          `<div class="row"><div><strong>${it.icon} ${it.name}</strong><br><small>${it.wt} • ₹${it.price}</small></div><div class="stepper"><button onclick="App.qty('${it.id}',-1)">−</button><span>${it.qty}</span><button onclick="App.qty('${it.id}',1)">+</button></div></div>`
-        ).join("") : "<p>Cart is empty.</p>");
-        setTxt("bItems", "₹" + s.itemsTotal);
-        setTxt("bDel", s.del === 0 ? "FREE" : "₹" + s.del);
-        $("bDiscRow")?.classList.toggle("hidden", s.disc === 0);
-        setTxt("bDisc", "-₹" + s.disc);
-        setTxt("bGrand", "₹" + s.grand);
-        setTxt(["payBtnTot", "btnPayTotal"], "₹" + s.grand);
-        setTxt("qrAmt", "₹" + s.grand);
-        this.toggleQr();
-      },
-      applyCoupon() {
-        const c = ($("coupInp")?.value || "").trim().toUpperCase();
-        if (!["MEGA49", "AXIS150"].includes(c)) return this.toast("Use MEGA49 or AXIS150");
-        this.coupon = c; this.renderCart(); this.updateBar(); this.toast("Coupon Applied!");
-      },
-      placeOrder() {
-        const s = this.summary();
-        if (!s.count) return;
-        const mode = $("paySelect", "payMode")?.value || "QR_SCANNER";
-        const utr = ($("utrInp")?.value || "").trim();
-        const u = Auth.getUser();
-        if (mode === "WALLET") {
-          if (u.wallet < s.grand) return this.toast("Low Wallet Balance!");
-          u.wallet -= s.grand;
-        }
-        const payLabel = mode === "QR_SCANNER" ? (utr ? `QR Scanner (UTR: ${utr})` : "QR Scanner (Scan & Pay)") : mode;
-        const ord = { id: "REQ" + Math.floor(10000 + Math.random() * 90000), name: u.name, phone: u.phone, addr: u.addr, date: new Date().toLocaleString(), items: s.items, total: s.grand, pay: payLabel, payStatus: "Pending Verification", status: "Order Placed" };
-        u.orders.unshift(ord); Auth.saveUser(u);
-        const all = Auth.getOrders(); all.unshift(ord); Auth.saveOrders(all);
-        this.cart = {}; this.coupon = null;
-        if ($("utrInp")) $("utrInp").value = "";
-        this.saveCart(); this.closeCart();
-        this.openModal("🎉 Order Placed!", `<div style="text-align:center; padding:10px;"><div style="font-size:44px;">🛵💨</div><h3>Order #${ord.id}</h3><p style="color:var(--green); font-weight:800; margin:6px 0;">Arriving in 12 minutes</p><p style="font-size:12.5px;">Delivering to: <b>${ord.addr}</b><br>Paid ₹${ord.total} via ${ord.pay}</p></div>`);
-      },
-                      switchTab(id) {
-        document.querySelectorAll(".view").forEach(v => v.classList.add("hidden"));
-        $(id)?.classList.remove("hidden");
-        document.querySelectorAll(".bitem").forEach(b => b.classList.toggle("active", b.dataset.t === id));
-        if (id === "ordersTabView") {
-          const u = Auth.getUser();
-          const past = u.orders.length ? u.orders.flatMap(o => o.items).filter(i => typeof i.id === "number") : PRODUCTS_DB.slice(0, 8);
-          setHtml("ordersTabBody", `<div class="prod-grid">${past.map(p => this.cardHtml(p)).join("")}</div>`);
-        }
-        if (id === "profileView") Auth.sync();
-        window.scrollTo(0, 0);
-      },
-      calcPrint() {
-        const p = Math.max(1, Number($("pPages")?.value) || 1);
-        const r = Number($("pColor")?.value) || 3;
-        setTxt("pTotal", "₹" + (p * r));
-      },
-      addPrint() {
-        const p = Math.max(1, Number($("pPages")?.value) || 1);
-        const r = Number($("pColor")?.value) || 3;
-        const k = "pr_" + Date.now();
-        localStorage.setItem(k, JSON.stringify({ pages: p, price: p * r }));
-        this.cart[k] = 1; this.saveCart(); this.toast("Printout added to cart!");
-      },
-      toggleTheme() {
-        const h = document.documentElement;
-        h.setAttribute("data-theme", h.getAttribute("data-theme") === "dark" ? "light" : "dark");
-      },
-      toggleWish(id) {
-        const u = Auth.getUser();
-        const i = u.wish.indexOf(id);
-        if (i >= 0) u.wish.splice(i, 1); else u.wish.push(id);
-        Auth.saveUser(u); this.renderHome();
-      },
-      openAddressModal() {
-        const u = Auth.getUser();
-        this.openModal("Delivery Address", `${u.addrs.map(a => `<div class="row" onclick="App.setAddr('${a.replace(/'/g, "\\'")}')"><span>📍 ${a}</span><span>${u.addr === a ? "✅" : "Use"}</span></div>`).join("")}<input id="newAddrInp" class="inp" style="margin-top:8px;" placeholder="Enter new address" /><button class="btn-main" onclick="App.addAddr()">Save Address</button>`);
-      },
-      setAddr(a) { const u = Auth.getUser(); u.addr = a; Auth.saveUser(u); this.closeModal(); },
-      addAddr() { const v = ($("newAddrInp")?.value || "").trim(); if (!v) return; const u = Auth.getUser(); u.addrs.unshift(v); u.addr = v; Auth.saveUser(u); this.closeModal(); },
-      openWalletModal() {
-        const u = Auth.getUser();
-        this.openModal("Wallet Balance", `<p style="margin-bottom:10px;">Available: <strong>₹${u.wallet}</strong></p><div style="display:flex; gap:8px;"><button class="btn-add" onclick="App.addMoney(100)">+ ₹100</button><button class="btn-add" onclick="App.addMoney(500)">+ ₹500</button></div>`);
-      },
-      addMoney(a) { const u = Auth.getUser(); u.wallet += a; Auth.saveUser(u); this.openWalletModal(); },
-      openWishlistModal() {
-        const items = PRODUCTS_DB.filter(p => Auth.getUser().wish.includes(p.id));
-        this.openModal("My Wishlist", items.length ? items.map(p => `<div class="row"><span>${p.icon} ${p.name} (₹${p.price})</span><button class="btn-add" onclick="App.add(${p.id})">ADD</button></div>`).join("") : "<p>Wishlist is empty.</p>");
-      },
-      openOrdersModal() {
-        const u = Auth.getUser();
-        const html = u.orders.length ? u.orders.map(o => {
-          const ps = o.payStatus || "Pending Verification";
-          const col = ps === "Payment Confirmed" ? "#0C831F" : (ps === "Payment Not Confirmed" ? "#D32F2F" : "#B26A00");
-          return `<div class="admin-card"><div style="display:flex; justify-content:space-between;"><strong>#${o.id}</strong><span style="color:var(--green); font-weight:800;">● ${o.status}</span></div><div style="color:${col}; font-weight:700; margin:3px 0;">Payment: ${ps}</div><small>${o.date} • Total: ₹${o.total}</small></div>`;
-        }).join("") : "<p>No orders placed yet.</p>";
-        this.openModal("My Orders (Live Status)", html);
-      },
-      openAdminLogin() {
-        this.openModal("🔐 Admin Access", `<p style="font-size:12.5px; margin-bottom:8px;">Enter Admin Key (<b>2411</b>):</p><input id="admKeyInp" type="password" class="inp" placeholder="Enter 2411" /><button class="btn-main" onclick="App.verifyAdmin()">Open Admin Panel</button>`);
-      },
-      verifyAdmin() {
-        if (($("admKeyInp")?.value || "").trim() === this.ADMIN_KEY) this.openAdmin("orders");
-        else this.toast("❌ Wrong Admin Key!");
-      },
-      openAdmin(tab = "orders") {
-        if (tab === "products") return this.renderAdminProducts();
-        const all = Auth.getOrders();
-        const rev = all.reduce((s, o) => s + (Number(o.total) || 0), 0);
-        const del = all.filter(o => o.status === "Delivered").length;
-        const cards = all.map(o => {
-          const ps = o.payStatus || "Pending Verification";
-          const bg = ps === "Payment Confirmed" ? "#D4EDDA" : (ps === "Payment Not Confirmed" ? "#F8D7DA" : "#FFF3CD");
-          const fg = ps === "Payment Confirmed" ? "#155724" : (ps === "Payment Not Confirmed" ? "#721C24" : "#856404");
-          return `
-            <div class="admin-card">
-              <div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong>#${o.id} • ₹${o.total}</strong><span style="font-weight:800; color:var(--green);">${o.status}</span></div>
-              <div style="background:${bg}; color:${fg}; padding:5px 8px; border-radius:6px; font-weight:800; margin-bottom:6px;">Payment: ${ps}</div>
-              <div>👤 <b>${o.name}</b> (${o.phone})<br>📍 ${o.addr}<br>💳 ${o.pay}</div>
-              <div style="background:var(--card); padding:6px; border-radius:6px; margin:6px 0; border:1px solid var(--border);">${o.items.map(i => `${i.icon || "•"} ${i.name} × <b>${i.qty}</b> = ₹${i.price * i.qty}`).join("<br>")}</div>
-              <div class="admin-grid">
-                <button class="abtn ok" onclick="App.setOrd('${o.id}','payStatus','Payment Confirmed')">✅ Payment Confirmed</button>
-                <button class="abtn no" onclick="App.setOrd('${o.id}','payStatus','Payment Not Confirmed')">❌ Not Confirmed</button>
-                <button class="abtn blue" onclick="App.setOrd('${o.id}','status','Shipped')">🚚 Mark Shipped</button>
-                <button class="abtn ok" onclick="App.setOrd('${o.id}','status','Delivered')">✅ Mark Delivered</button>
-              </div>
-            </div>`;
-        }).join("");
-        this.openModal("🛡️ Admin Panel", `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><button class="btn-main" style="height:36px; font-size:12px;" onclick="App.openAdmin('orders')">📦 Orders (${all.length})</button><button class="btn-add" style="height:36px; font-size:12px;" onclick="App.openAdmin('products')">🛒 Product Control</button></div><div class="stats-3"><div class="stat"><strong>${all.length}</strong><small>Orders</small></div><div class="stat"><strong>₹${rev}</strong><small>Revenue</small></div><div class="stat"><strong>${del}</strong><small>Delivered</small></div></div>${cards}`);
-      },
-      setOrd(id, key, val) {
-        const all = Auth.getOrders(); const t = all.find(x => x.id === id); if (t) { t[key] = val; Auth.saveOrders(all); }
-        const u = Auth.getUser(); const uo = u.orders.find(x => x.id === id); if (uo) { uo[key] = val; Auth.saveUser(u); }
-        this.toast(`Updated #${id} → ${val}`); this.openAdmin("orders");
-      },
-                      admProdQ: "",
-      admProdF: "all",
-      saveProds() { localStorage.setItem("req_products_v1", JSON.stringify(PRODUCTS_DB)); this.renderHome(); },
-      renderAdminProducts() {
-        const inS = PRODUCTS_DB.filter(p => Number(p.stock) > 0).length;
-        const outS = PRODUCTS_DB.length - inS;
-        const q = this.admProdQ.toLowerCase();
-        const list = PRODUCTS_DB.filter(p => (!q || p.name.toLowerCase().includes(q)) && (this.admProdF === "all" || (this.admProdF === "in" ? p.stock > 0 : p.stock <= 0))).slice(0, 40);
-        const rows = list.map(p => {
-          const av = Number(p.stock) > 0;
-          return `
-            <div class="admin-card">
-              <div style="display:flex; justify-content:space-between;">
-                <div>${p.icon} <strong>${p.name}</strong><br><small>${p.wt} • ₹${p.price} (MRP ₹${p.mrp})</small></div>
-                <span style="font-weight:800; color:${av ? "#0C831F" : "#D32F2F"};">${av ? "Stock: " + p.stock : "Out of Stock"}</span>
-              </div>
-              <div id="ed_${p.id}" class="hidden" style="margin-top:6px;">
-                <input id="en_${p.id}" class="inp" value="${p.name.replace(/"/g, "&quot;")}" />
-                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px;">
-                  <input id="ep_${p.id}" type="number" class="inp" value="${p.price}" />
-                  <input id="em_${p.id}" type="number" class="inp" value="${p.mrp}" />
-                  <input id="es_${p.id}" type="number" class="inp" value="${p.stock}" />
-                </div>
-                <button class="btn-main" style="height:34px; font-size:12px;" onclick="App.saveEdit(${p.id})">Save Changes</button>
-              </div>
-              <div style="display:grid; grid-template-columns:1.4fr 1fr 0.6fr; gap:5px; margin-top:6px;">
-                <button class="abtn ${av ? "no" : "ok"}" onclick="App.togStock(${p.id})">${av ? "❌ Out of Stock" : "✅ In Stock"}</button>
-                <button class="abtn blue" onclick="document.getElementById('ed_${p.id}').classList.toggle('hidden')">✏️ Edit</button>
-                <button class="abtn no" onclick="App.delProd(${p.id})">🗑️</button>
-              </div>
-            </div>`;
-        }).join("");
-        this.openModal("🛒 Product Control", `<div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px;"><button class="btn-add" style="height:36px; font-size:12px;" onclick="App.openAdmin('orders')">📦 Orders</button><button class="btn-main" style="height:36px; font-size:12px;" onclick="App.openAdmin('products')">🛒 Products (${PRODUCTS_DB.length})</button></div><div class="stats-3"><div class="stat"><strong>${PRODUCTS_DB.length}</strong><small>Total</small></div><div class="stat"><strong>${inS}</strong><small>Hai (In)</small></div><div class="stat"><strong style="color:#D32F2F;">${outS}</strong><small>Nahi Hai</small></div></div><button class="btn-main" style="height:36px; font-size:12.5px; margin-bottom:8px;" onclick="document.getElementById('newPBox').classList.toggle('hidden')">➕ Add New Product</button><div id="newPBox" class="hidden admin-card"><input id="npN" class="inp" placeholder="Product Name" /><div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;"><input id="npP" type="number" class="inp" placeholder="Price ₹" /><input id="npM" type="number" class="inp" placeholder="MRP ₹" /></div><div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px;"><input id="npW" class="inp" value="500 g" /><input id="npS" type="number" class="inp" value="10" /><input id="npI" class="inp" value="🛍️" /></div><button class="btn-main" style="height:36px;" onclick="App.addNewProd()">Save New Product</button></div><div style="display:flex; gap:5px; margin-bottom:8px;"><input class="inp" style="margin:0; flex:1;" value="${this.admProdQ}" placeholder="Search item..." oninput="App.admProdQ=this.value; App.renderAdminProducts()" /><select class="inp" style="margin:0; width:110px;" onchange="App.admProdF=this.value; App.renderAdminProducts()"><option value="all" ${this.admProdF === "all" ? "selected" : ""}>All</option><option value="in" ${this.admProdF === "in" ? "selected" : ""}>In Stock</option><option value="out" ${this.admProdF === "out" ? "selected" : ""}>Nahi Hai</option></select></div>${rows}`);
-      },
-      togStock(id) { const p = PRODUCTS_DB.find(x => x.id === id); if (p) { p.stock = p.stock > 0 ? 0 : 10; this.saveProds(); this.renderAdminProducts(); } },
-      saveEdit(id) {
-        const p = PRODUCTS_DB.find(x => x.id === id); if (!p) return;
-        p.name = document.getElementById("en_" + id).value.trim() || p.name;
-        p.price = Math.max(1, Number(document.getElementById("ep_" + id).value) || p.price);
-        p.mrp = Math.max(p.price, Number(document.getElementById("em_" + id).value) || p.mrp);
-        p.stock = Math.max(0, Number(document.getElementById("es_" + id).value));
-        this.saveProds(); this.toast("Updated ✅"); this.renderAdminProducts();
-      },
-      addNewProd() {
-        const name = ($("npN")?.value || "").trim(), price = Number($("npP")?.value);
-        if (!name || !price) return this.toast("Enter name & price");
-        const mrp = Math.max(price, Number($("npM")?.value) || price + 15);
-        PRODUCTS_DB.unshift({ id: Date.now(), name, cat: "Atta, Rice & Dal", wt: $("npW")?.value || "500 g", price, mrp, icon: $("npI")?.value || "🛍️", tag: "New", stock: Number($("npS")?.value) || 10 });
-        this.saveProds(); this.toast("Product Added!"); this.renderAdminProducts();
-      },
-      delProd(id) { const i = PRODUCTS_DB.findIndex(x => x.id === id); if (i >= 0) { PRODUCTS_DB.splice(i, 1); this.saveProds(); this.renderAdminProducts(); } },
-      openModal(t, html) { setTxt(["gTitle", "genTitle"], t); setHtml(["gBody", "genBody"], html); $("gModal", "genModal")?.classList.remove("hidden"); },
-      closeModal() { $("gModal", "genModal")?.classList.add("hidden"); },
-      toast(m) { const t = $("toast"); if (!t) return; t.textContent = m; t.classList.remove("hidden"); clearTimeout(this._tm); this._tm = setTimeout(() => t.classList.add("hidden"), 2000); }
-    };
-    document.addEventListener("DOMContentLoaded", () => App.init());
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(circle at top right, #0f2922, #070b0e 65%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  width: 92%;
+  text-align: center;
+  padding: 44px 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  backdrop-filter: blur(14px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
+  animation: cardEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.pulse-dot {
+  width: 9px;
+  height: 9px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #10b981;
+  animation: pulse 1.6s infinite;
+}
+
+.brand-title {
+  font-size: clamp(2.8rem, 8vw, 4.8rem);
+  font-weight: 900;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, #ffffff 20%, #34d399 60%, #fbbf24 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
+.tagline {
+  font-size: 1.05rem;
+  color: #a7f3d0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+  opacity: 0.9;
+}
+
+.subtitle {
+  font-size: 1.05rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  max-width: 540px;
+  margin: 0 auto 34px;
+}
+
+.subtitle strong {
+  color: #ffffff;
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 480px;
+  margin: 0 auto 36px;
+}
+
+.time-box {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px 8px;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.time-box:hover {
+  transform: translateY(-4px);
+  border-color: rgba(52, 211, 153, 0.5);
+}
+
+.time-box span {
+  display: block;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.time-box small {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.notify-form {
+  display: flex;
+  gap: 10px;
+  max-width: 460px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.notify-form input {
+  flex: 1;
+  min-width: 220px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(15, 23, 42, 0.85);
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.25s;
+}
+
+.notify-form input:focus {
+  border-color: #10b981;
+}
+
+.notify-form button {
+  padding: 14px 26px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.notify-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.35);
+}
+
+.status-msg {
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #34d399;
+  min-height: 22px;
+  font-weight: 500;
+}
+
+.footer-note {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.5; }
+}
+
+@keyframes cardEntrance {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 480px) {
+  .countdown { gap: 8px; }
+  .brand-title { letter-spacing: 3px; }
+}
+// 1. Live Countdown Timer (15 din ka default timer)
+let savedTarget = localStorage.getItem('required_launch_date');
+if (!savedTarget) {
+  savedTarget = Date.now() + 15 * 24 * 60 * 60 * 1000;
+  localStorage.setItem('required_launch_date', savedTarget);
+}
+const targetDate = Number(savedTarget);
+
+function updateCountdown() {
+  const now = Date.now();
+  const diff = targetDate - now;
+
+  if (diff <= 0) {
+    document.getElementById('days').textContent = '00';
+    document.getElementById('hours').textContent = '00';
+    document.getElementById('minutes').textContent = '00';
+    document.getElementById('seconds').textContent = '00';
+    return;
+  }
+
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const m = Math.floor((diff / (1000 * 60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
+
+  document.getElementById('days').textContent = String(d).padStart(2, '0');
+  document.getElementById('hours').textContent = String(h).padStart(2, '0');
+  document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+  document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// 2. Interactive Notify Form
+document.getElementById('notifyForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const input = document.getElementById('userContact');
+  const status = document.getElementById('statusMsg');
+  if (input.value.trim() !== '') {
+    status.textContent = 'Shukriya! Baikunthpur launch hote hi hum aapko update bhejenge.';
+    input.value = '';
+  }
+});
+
+// 3. Smooth Floating Particles Background Animation
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2.5 + 0.8;
+    this.speedX = (Math.random() - 0.5) * 0.6;
+    this.speedY = (Math.random() - 0.5) * 0.6;
+    this.alpha = Math.random() * 0.5 + 0.15;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+      this.reset();
+    }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(52, 211, 153, ${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 65; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+  
